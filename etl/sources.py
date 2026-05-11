@@ -523,7 +523,8 @@ class ContentSources:
                     'file_path': filepath,
                     'audio_url': 'N/A',
                     'transcript': '',
-                    'pub_date': (extra_metadata or {}).get('pub_date', ''),
+                    'pub_date': (extra_metadata or {}).get('published_date', '')
+                            or (extra_metadata or {}).get('pub_date', ''),
                     'duration_seconds': None,
                     'file_size_mb': file_size_mb,
                     'content_hash': None,
@@ -790,7 +791,9 @@ class ContentSources:
                 'file_path': txt_filepath,
                 'audio_url': 'N/A',
                 'transcript': extracted_text,
-                'pub_date': (extra_metadata or {}).get('pub_date', ''),
+                'pub_date': (extra_metadata or {}).get('published_date', '')
+                            or (extra_metadata or {}).get('pub_date', '')
+                            or result.get('pdf_pub_date', ''),
                 'duration_seconds': None,
                 'file_size_mb': file_size_mb,
                 'content_hash': None,
@@ -901,6 +904,7 @@ class ContentSources:
                 'audio_url': 'N/A',
                 'transcript': clean_text,
                 'pub_date': scraped_meta.get('pub_date', '')
+                            or (extra_metadata or {}).get('published_date', '')
                             or (extra_metadata or {}).get('pub_date', ''),
                 'duration_seconds': None,
                 'file_size_mb': file_size_mb,

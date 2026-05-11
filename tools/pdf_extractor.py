@@ -97,7 +97,32 @@ class PDFExtractor:
             "pdf_url": pdf_url,
             "page_count": page_count,
             "char_count": len(text),
+            "pdf_pub_date": self.extract_pub_date(pdf_path),
         }
+
+    @staticmethod
+    def extract_pub_date(pdf_path: str) -> str:
+        """Extract publication date from PDF document metadata.
+
+        Tries PyMuPDF doc.metadata fields (creationDate, modDate) and
+        parses the PDF date format: D:YYYYMMDDHHmmSS
+
+        Returns ISO date string (YYYY-MM-DD) or empty string.
+        """
+        try:
+            import fitz
+            doc = fitz.open(pdf_path)
+            meta = doc.metadata or {}
+            doc.close()
+            for key in ('creationDate', 'modDate'):
+                raw = meta.get(key, '')
+                if raw and raw.startswith('D:') and len(raw) >= 10:
+                    digits = raw[2:10]  # YYYYMMdd
+                    if digits.isdigit():
+                        return f"{digits[:4]}-{digits[4:6]}-{digits[6:8]}"
+        except Exception:
+            pass
+        return ''
 
     @staticmethod
     def extract_text(pdf_path: str) -> Tuple[str, int]:

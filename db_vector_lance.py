@@ -21,7 +21,9 @@ NOTE: This module is intentionally NOT imported on Jetson.  The lancedb
 package is only installed on Mac dev machines.
 """
 
+import hashlib
 import logging
+import math
 import os
 import time
 from datetime import datetime, timezone
@@ -70,6 +72,8 @@ class LanceVectorDB:
         self.use_builtin_embeddings = use_builtin_embeddings
         self._table_name = self.CORPUS_TABLE  # active table
         self._trust_remote_code = trust_remote_code
+        self._bm25_index = None
+        self._bm25_rows: List[Dict] = []
 
         os.makedirs(self.vector_dir, exist_ok=True)
 
@@ -324,6 +328,146 @@ class LanceVectorDB:
             return []
 
         return filtered
+
+    # ── BM25 + Hybrid Retrieval ───────────────────────────────────────
+
+    @staticmethod
+    def _tokenize(text: str) -> List[str]:
+        return text.lower().split()
+
+    @staticmethod
+    def _doc_key(text: str) -> str:
+        return hashlib.md5(text.encode("utf-8", errors="replace")).hexdigest()
+
+    def build_bm25_index(self, table_name: str = None) -> int:
+        """Build in-memory BM25 index from the LanceDB corpus. Call after loading vectors."""
+        try:
+            from rank_bm25 import BM25Okapi
+        except ImportError:
+            raise ImportError("rank_bm25 is not installed. Install with: pip install rank-bm25")
+
+        tbl_name = table_name or self._table_name
+        tbl = self._get_table(tbl_name)
+        if tbl is None:
+            raise RuntimeError(f"Table '{tbl_name}' not found. Load vectors first.")
+
+        print(f"Building BM25 index from '{tbl_name}'...")
+        self._bm25_rows = tbl.to_pandas().to_dict("records")
+        tokenized = [self._tokenize(r.get("text", "")) for r in self._bm25_rows]
+        self._bm25_index = BM25Okapi(tokenized)
+        print(f"BM25 index built over {len(self._bm25_rows):,} chunks")
+        return len(self._bm25_rows)
+
+    def _bm25_search(self, query: str, top_k: int) -> List[Dict]:
+        """Return top_k BM25 results for a text query."""
+        if self._bm25_index is None:
+            self.build_bm25_index()
+
+        scores = self._bm25_index.get_scores(self._tokenize(query))
+        top_idx = np.argsort(scores)[::-1][:top_k]
+
+        results = []
+        for rank, idx in enumerate(top_idx):
+            if scores[idx] <= 0:
+                continue
+            row = self._bm25_rows[idx]
+            meta = _deserialize_meta(row.get("metadata_json", "{}"))
+            results.append({
+                "document": row.get("text", ""),
+                "metadata": meta,
+                "similarity": 0.0,      # filled by RRF
+                "bm25_score": float(scores[idx]),
+                "bm25_rank": rank,
+            })
+        return results
+
+    @staticmethod
+    def _rrf_fusion(dense: List[Dict], bm25: List[Dict], k: int = 60) -> List[Dict]:
+        """Reciprocal Rank Fusion over dense and BM25 result lists."""
+        pool: Dict[str, Dict] = {}
+
+        for rank, r in enumerate(dense):
+            key = LanceVectorDB._doc_key(r["document"])
+            if key not in pool:
+                pool[key] = {"document": r["document"], "metadata": r["metadata"],
+                             "rrf_score": 0.0, "dense_score": 0.0, "bm25_score": 0.0}
+            pool[key]["rrf_score"] += 1.0 / (k + rank + 1)
+            pool[key]["dense_score"] = r["similarity"]
+
+        for rank, r in enumerate(bm25):
+            key = LanceVectorDB._doc_key(r["document"])
+            if key not in pool:
+                pool[key] = {"document": r["document"], "metadata": r["metadata"],
+                             "rrf_score": 0.0, "dense_score": 0.0, "bm25_score": 0.0}
+            pool[key]["rrf_score"] += 1.0 / (k + rank + 1)
+            pool[key]["bm25_score"] = r["bm25_score"]
+
+        fused = sorted(pool.values(), key=lambda x: x["rrf_score"], reverse=True)
+        for r in fused:
+            r["similarity"] = r.pop("rrf_score")
+        return fused
+
+    def _apply_recency_boost(self, results: List[Dict], decay_lambda: float = 0.01) -> List[Dict]:
+        """Multiply similarity by exp(-lambda * days_since_publish). Sorts descending."""
+        now = datetime.now(timezone.utc)
+        for r in results:
+            meta = r.get("metadata", {})
+            raw_date = meta.get("pub_date") or meta.get("publish_date") or meta.get("date") or meta.get("published_at")
+            days_since = None
+            if raw_date:
+                try:
+                    from dateutil import parser as _dp
+                    pub = _dp.parse(str(raw_date))
+                    if pub.tzinfo is None:
+                        pub = pub.replace(tzinfo=timezone.utc)
+                    days_since = max((now - pub).days, 0)
+                except Exception:
+                    pass
+            if days_since is not None:
+                boost = math.exp(-decay_lambda * days_since)
+                r["similarity"] *= boost
+                r["recency_boost"] = round(boost, 4)
+                r["days_since_publish"] = days_since
+        return sorted(results, key=lambda x: x["similarity"], reverse=True)
+
+    def search_hybrid(
+        self,
+        query: str,
+        top_k: int = 5,
+        cosine_threshold: float = 0.0,
+        rrf_k: int = 60,
+        recency_boost: bool = False,
+        decay_lambda: float = 0.01,
+        table_name: str = None,
+    ) -> List[Dict]:
+        """Hybrid search: LanceDB dense + BM25 with Reciprocal Rank Fusion.
+
+        Args:
+            query: Text query string.
+            top_k: Number of results to return after fusion.
+            cosine_threshold: Minimum dense similarity to include a candidate.
+            rrf_k: RRF constant (default 60 is standard).
+            recency_boost: If True, apply temporal decay to fused scores.
+            decay_lambda: Decay rate for recency boost (higher = faster decay).
+            table_name: Override active table name.
+        """
+        if not isinstance(query, str):
+            raise ValueError("search_hybrid requires a text query string.")
+
+        fetch_k = max(top_k * 10, 100)
+
+        dense = self.search(
+            query, top_k=fetch_k, cosine_threshold=cosine_threshold,
+            adaptive=False, table_name=table_name,
+        )
+        bm25 = self._bm25_search(query, top_k=fetch_k)
+
+        fused = self._rrf_fusion(dense, bm25, k=rrf_k)
+
+        if recency_boost:
+            fused = self._apply_recency_boost(fused, decay_lambda=decay_lambda)
+
+        return fused[:top_k]
 
     # ── Persistence ───────────────────────────────────────────────────
     # LanceDB is inherently persistent — data is written to disk on every

@@ -17,7 +17,8 @@ from db_relational import relationalDB
 from db_vector import VectorDB
 from etl.signals import SignalPipeline
 from logging_config import syslog
-
+import nltk
+# nltk.download("punkt_tab", quiet=True)
 
 CUDA_AVAILABLE = False
 DEVICE = "cpu"
@@ -394,69 +395,86 @@ class contentETL:
         
         return metadata
 
-    def chunk_text(self, text, chunk_size=1000, overlap=200, use_tokens=True):
-        """Chunk text into smaller segments for vectorization."""
-        if not text or not text.strip():
-            return []
+    # def chunk_text(self, text, chunk_size=1000, overlap=200, use_tokens=True):
+    #     """Chunk text into smaller segments for vectorization."""
+    #     if not text or not text.strip():
+    #         return []
         
-        if use_tokens:
-            try:
-                encoding = tiktoken.get_encoding("cl100k_base")
-                tokens = encoding.encode(text)
+    #     if use_tokens:
+    #         try:
+    #             encoding = tiktoken.get_encoding("cl100k_base")
+    #             tokens = encoding.encode(text)
                 
-                chunks = []
-                start_idx = 0
+    #             chunks = []
+    #             start_idx = 0
                 
-                while start_idx < len(tokens):
-                    end_idx = min(start_idx + chunk_size, len(tokens))
-                    chunk_tokens = tokens[start_idx:end_idx]
-                    chunk_text = encoding.decode(chunk_tokens)
+    #             while start_idx < len(tokens):
+    #                 end_idx = min(start_idx + chunk_size, len(tokens))
+    #                 chunk_tokens = tokens[start_idx:end_idx]
+    #                 chunk_text = encoding.decode(chunk_tokens)
                     
-                    chunk_start_char = len(encoding.decode(tokens[:start_idx]))
-                    chunk_end_char = len(encoding.decode(tokens[:end_idx]))
+    #                 chunk_start_char = len(encoding.decode(tokens[:start_idx]))
+    #                 chunk_end_char = len(encoding.decode(tokens[:end_idx]))
                     
-                    chunks.append({
-                        'text': chunk_text.strip(),
-                        'start_token': start_idx,
-                        'end_token': end_idx,
-                        'start_char': chunk_start_char,
-                        'end_char': chunk_end_char,
-                        'token_count': len(chunk_tokens)
-                    })
+    #                 chunks.append({
+    #                     'text': chunk_text.strip(),
+    #                     'start_token': start_idx,
+    #                     'end_token': end_idx,
+    #                     'start_char': chunk_start_char,
+    #                     'end_char': chunk_end_char,
+    #                     'token_count': len(chunk_tokens)
+    #                 })
                     
-                    start_idx = max(start_idx + 1, end_idx - overlap)
+    #                 start_idx = max(start_idx + 1, end_idx - overlap)
                 
-                return chunks
+    #             return chunks
                 
-            except (ImportError, UnicodeError, Exception) as e:
-                print(f"Warning: tiktoken chunking failed ({e}), falling back to character-based chunking")
-                use_tokens = False
+    #         except (ImportError, UnicodeError, Exception) as e:
+    #             print(f"Warning: tiktoken chunking failed ({e}), falling back to character-based chunking")
+    #             use_tokens = False
         
-        chunks = []
-        start = 0
+    #     chunks = []
+    #     start = 0
         
-        while start < len(text):
-            end = min(start + chunk_size, len(text))
+    #     while start < len(text):
+    #         end = min(start + chunk_size, len(text))
             
-            if end < len(text):
-                sentence_end = max(end - 100, start)
-                for i in range(end, sentence_end, -1):
-                    if text[i] in '.!?':
-                        end = i + 1
-                        break
+    #         if end < len(text):
+    #             sentence_end = max(end - 100, start)
+    #             for i in range(end, sentence_end, -1):
+    #                 if text[i] in '.!?':
+    #                     end = i + 1
+    #                     break
             
-            chunk_text = text[start:end].strip()
-            if chunk_text:
-                chunks.append({
-                    'text': chunk_text,
-                    'start_char': start,
-                    'end_char': end,
-                    'char_count': len(chunk_text)
-                })
+    #         chunk_text = text[start:end].strip()
+    #         if chunk_text:
+    #             chunks.append({
+    #                 'text': chunk_text,
+    #                 'start_char': start,
+    #                 'end_char': end,
+    #                 'char_count': len(chunk_text)
+    #             })
             
-            start = max(start + 1, end - overlap)
+    #         start = max(start + 1, end - overlap)
         
+    #     return chunks
+
+    def chunk_text(self, text, max_chars=600, overlap_sents=1):
+        sentences = nltk.sent_tokenize(text)
+        chunks, current, current_len = [], [], 0
+        for sent in sentences:
+            if current_len + len(sent) > max_chars and current:
+                chunk_str = " ".join(current)
+                chunks.append({'text': chunk_str, 'char_count': len(chunk_str)})
+                current     = current[-overlap_sents:]      # last sent carried over as overlap
+                current_len = sum(len(s) for s in current)
+            current.append(sent)
+            current_len += len(sent)
+        if current:
+            chunk_str = " ".join(current)
+            chunks.append({'text': chunk_str, 'char_count': len(chunk_str)})
         return chunks
+        
 
     def add_content_data(self, file_path, title=None, content=None):
         """Add any supported file type to database."""
@@ -521,7 +539,7 @@ class contentETL:
                 duration_seconds = None
         
         print(f"Chunking content ({len(content)} characters)...")
-        segments = self.chunk_text(content, chunk_size=1000, overlap=200, use_tokens=True)
+        segments = self.chunk_text(content)
         print(f"Created {len(segments)} segments from content")
         
         print("Preparing data for database insertion...")
@@ -669,15 +687,16 @@ class contentETL:
                 documents = []
                 if item['segments']:
                     for i, segment in enumerate(item['segments']):
+                        seg_text = segment['text'] if isinstance(segment, dict) else segment
                         doc = {
                             'id': f"{item['id']}_seg_{i}",
-                            'content': segment['text'],
+                            'content': seg_text,
                             'metadata': {
                                 'content_id': item['id'],
                                 'title': item['title'],
                                 'segment_index': i,
-                                'segment_start': segment.get('start_char', 0),
-                                'segment_end': segment.get('end_char', 0),
+                                'segment_start': segment.get('start_char', 0) if isinstance(segment, dict) else 0,
+                                'segment_end': segment.get('end_char', 0) if isinstance(segment, dict) else 0,
                                 **item['metadata']
                             }
                         }
@@ -812,7 +831,7 @@ class contentETL:
                     'extraction_status': 'completed',
                     'content_hash': content_hash,
                     'language': 'en',
-                    'segments': json.dumps(self._create_segments(content)) if content else []
+                    'segments': json.dumps(self.chunk_text(content)) if content else []
                 }
                 
                 # Get file size and duration if available
@@ -929,10 +948,38 @@ if __name__ == '__main__':
     print("Intializing Relational Database...")
     db = relationalDB(db_path)
     db.init_db()
+
+
+
+    # sent_chunks = []
+    # for _, row in docs.iterrows():
+    #     for i, chunk in enumerate(sentence_chunk(row["full_text"])):
+    #         sent_chunks.append({"content_id": row["content_id"], "chunk_idx": i, "text": chunk})
+    # df_sent = pd.DataFrame(sent_chunks)
+    # print(f"Sentence chunks: {len(df_sent):,}  (was 40,776 fixed-size)")
+
     
-    print("Initializing ETL for Signal Vectorization...")
+    # print("Initializing ETL for Signal Vectorization...")
+    # etl = contentETL(media_dir, db=db)
+    
+    # print("Running signal vectorization...")
+    # total_signals = etl.run_signal_vectorization()
+    # print(f"Signal vectorization complete: {total_signals} signals processed")
+
+    print("\n--- Sentence-aware chunking smoke test ---")
     etl = contentETL(media_dir, db=db)
-    
-    print("Running signal vectorization...")
-    total_signals = etl.run_signal_vectorization()
-    print(f"Signal vectorization complete: {total_signals} signals processed")
+    sample = (
+        "Edge AI is transforming industrial automation. Programmable logic controllers now support "
+        "on-device inference without cloud connectivity. This reduces latency significantly. "
+        "Manufacturers are deploying models directly on Jetson hardware. "
+        "The shift enables real-time anomaly detection on the factory floor. "
+        "Energy consumption remains a key concern for embedded deployments. "
+        "New quantization techniques cut model size by up to 4x. "
+        "Several tier-1 automotive suppliers have already adopted this approach. "
+        "Supply chain disruptions in 2024 accelerated edge adoption. "
+        "Industry analysts expect 40% CAGR through 2028."
+    )
+    chunks = etl.chunk_text(sample, max_chars=200, overlap_sents=1)
+    print(f"Input: {len(sample)} chars → {len(chunks)} chunks")
+    for i, c in enumerate(chunks):
+        print(f"  Chunk {i+1} ({c['char_count']} chars): {c['text'][:80]}...")

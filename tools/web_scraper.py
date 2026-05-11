@@ -96,13 +96,14 @@ class WebScraper:
             if len(response.content) > self.max_content_length:
                 return self._error_result("Content too large", url)
 
-            return self.extract(response.text, url=url)
+            last_modified = response.headers.get('Last-Modified', '')
+            return self.extract(response.text, url=url, last_modified=last_modified)
 
         except requests.RequestException as e:
             logger.error(f"Scrape failed for {url}: {e}")
             return self._error_result(str(e), url)
 
-    def extract(self, html: str, url: str = '') -> Dict[str, Any]:
+    def extract(self, html: str, url: str = '', last_modified: str = '') -> Dict[str, Any]:
         """
         Extract clean text from raw HTML string.
 
@@ -128,7 +129,7 @@ class WebScraper:
         self._strip_noise(soup)
 
         # Extract metadata before further stripping
-        metadata = self._extract_metadata(soup, url)
+        metadata = self._extract_metadata(soup, url, last_modified=last_modified)
         title = metadata.get('title', '')
 
         # Try to find article body
@@ -215,7 +216,7 @@ class WebScraper:
             except Exception:
                 pass
 
-    def _extract_metadata(self, soup: BeautifulSoup, url: str = '') -> Dict[str, Any]:
+    def _extract_metadata(self, soup: BeautifulSoup, url: str = '', last_modified: str = '') -> Dict[str, Any]:
         """Extract page metadata from meta tags, Open Graph, etc."""
         meta = {
             'url': url,
@@ -258,7 +259,21 @@ class WebScraper:
                 except (ValueError, KeyError):
                     pass
             if 'pub_date' not in meta:
-                meta['pub_date'] = ''
+                # Microdata: itemprop="datePublished" is explicit about meaning
+                itemprop = (
+                    soup.find('time', attrs={'itemprop': 'datePublished'})
+                    or soup.find(attrs={'itemprop': 'datePublished'})
+                )
+                if itemprop:
+                    meta['pub_date'] = (
+                        itemprop.get('datetime', '')
+                        or itemprop.get('content', '')
+                        or itemprop.get_text(strip=True)
+                    )
+                elif last_modified:
+                    meta['pub_date'] = last_modified  # HTTP Last-Modified as last resort
+                else:
+                    meta['pub_date'] = ''
 
         # Description
         desc_meta = (
