@@ -105,9 +105,14 @@ class DeviceConfig:
         self.SIGNAL_VECTOR_PATH = os.path.join(self.VECTOR_PATH.rstrip('/'), 'signal_vectors')
 
         # LanceDB — Mac-only (testing / AnythingLLM integration)
+        _project_root = Path(__file__).parent
         if self.DEVICE == 'mac':
-            self.LANCE_VECTOR_PATH = os.getenv(
+            _raw_lance = os.getenv(
                 'LANCE_VECTOR_PATH', defaults.get('LANCE_VECTOR_PATH', 'Vectors/lance')
+            )
+            self.LANCE_VECTOR_PATH = (
+                _raw_lance if os.path.isabs(_raw_lance)
+                else str(_project_root / _raw_lance)
             )
         else:
             self.LANCE_VECTOR_PATH = None

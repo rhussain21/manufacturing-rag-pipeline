@@ -16,6 +16,7 @@ import tiktoken
 from db_relational import relationalDB
 from db_vector import VectorDB
 from etl.signals import SignalPipeline
+from etl.data_quality import DataQualityFilter
 from logging_config import syslog
 import nltk
 # nltk.download("punkt_tab", quiet=True)
@@ -109,6 +110,9 @@ class contentETL:
         self.signal_vdb = VectorDB(signal_vector_path, use_builtin_embeddings=True)
         # CUDA is already handled in VectorDB constructor now
         
+        self.dqf = DataQualityFilter()
+        self._dqf_hashes: list = []  # session-level simhash registry for near-dup detection
+
         print(f"ETL initialized with device: {self.device}")
         if self.cuda_available:
             print(f"CUDA memory: {torch.cuda.get_device_properties(0).total_memory / 1024**3:.1f}GB")
@@ -491,7 +495,16 @@ class contentETL:
         if content and ("extraction failed" in content.lower() or "transcription failed" in content.lower()):
             print(f"Skipping {file_path} due to extraction failure")
             return None
-        
+
+        dq_result = self.dqf.screen(content or '', known_hashes=self._dqf_hashes)
+        dq_passed = dq_result["pass"]
+        if dq_result.get("simhash"):
+            self._dqf_hashes.append(dq_result["simhash"])
+        if not dq_passed:
+            print(f"  [DQF] Rejected ({dq_result['reason']}): {file_path}")
+        elif dq_result.get("flags"):
+            print(f"  [DQF] Flags: {dq_result['flags']}")
+
         content_hash = self._generate_file_hash(file_path)
         if content_hash is None:
             print(f"Error: Could not generate hash for {file_path}")
@@ -598,7 +611,14 @@ class contentETL:
         
         result = self.db.add_content_metadata(data)
         print(f"Successfully added to database with ID: {result}")
-        
+
+        if not dq_passed and result:
+            self.db.update_record(result, {
+                'do_not_vectorize': True,
+                'screening_status': 'dq_rejected',
+                'screening_reason': dq_result['reason'],
+            })
+
         # Write structured metadata to content_metadata table
         try:
             self.db.add_content_metadata_record(result, data['metadata'])
@@ -802,6 +822,22 @@ class contentETL:
                     self.db.update_record(content_id, {'extraction_status': 'failed'})
                     continue
                 
+                # Data quality screen
+                dq_result = self.dqf.screen(content, known_hashes=self._dqf_hashes)
+                if dq_result.get("simhash"):
+                    self._dqf_hashes.append(dq_result["simhash"])
+                if not dq_result["pass"]:
+                    print(f"  [DQF] Rejected ({dq_result['reason']}): {title}")
+                    self.db.update_record(content_id, {
+                        'extraction_status': 'completed',
+                        'do_not_vectorize': True,
+                        'screening_status': 'dq_rejected',
+                        'screening_reason': dq_result['reason'],
+                    })
+                    continue
+                elif dq_result.get("flags"):
+                    print(f"  [DQF] Flags for {title}: {dq_result['flags']}")
+
                 # Generate hash (no duplicate check since we're updating existing record)
                 content_hash = self._generate_file_hash(file_path)
                 if content_hash is None:
