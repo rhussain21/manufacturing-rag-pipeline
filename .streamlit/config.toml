@@ -1,0 +1,9 @@
+[theme]
+# Force light base — let CSS handle all visual theming, not Streamlit's theme vars
+base = "light"
+primaryColor = "#225347"
+textColor = "#1a1a1a"
+font = "sans serif"
+
+[browser]
+gatherUsageStats = false
