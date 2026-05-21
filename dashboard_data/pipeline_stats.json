@@ -1,0 +1,188 @@
+{
+  "exported_at": "2026-05-21T06:02:43.348288",
+  "totals": {
+    "content": 1165,
+    "pending": 0,
+    "extracted": 1153,
+    "failed_extraction": 12,
+    "vectorized": 213,
+    "approved": 736,
+    "rejected": 429,
+    "signals_done": 766,
+    "total_signals": 55821,
+    "marked_deletion": 429,
+    "acceptance_rate": 63.0,
+    "extraction_success_rate": 99.0,
+    "avg_signals_per_doc": 72.87
+  },
+  "by_source_type": [
+    {
+      "source_type": "mp3",
+      "content_type": "unknown",
+      "count": 5,
+      "approved": 0,
+      "rejected": 5,
+      "signals_extracted": 0
+    },
+    {
+      "source_type": "xml",
+      "content_type": "text",
+      "count": 1,
+      "approved": 0,
+      "rejected": 1,
+      "signals_extracted": 0
+    },
+    {
+      "source_type": "html",
+      "content_type": "text",
+      "count": 5,
+      "approved": 5,
+      "rejected": 0,
+      "signals_extracted": 5
+    },
+    {
+      "source_type": "audio",
+      "content_type": "audio",
+      "count": 54,
+      "approved": 41,
+      "rejected": 13,
+      "signals_extracted": 52
+    },
+    {
+      "source_type": "pdf",
+      "content_type": "pdf",
+      "count": 139,
+      "approved": 55,
+      "rejected": 84,
+      "signals_extracted": 57
+    },
+    {
+      "source_type": "html",
+      "content_type": "html",
+      "count": 235,
+      "approved": 156,
+      "rejected": 79,
+      "signals_extracted": 175
+    },
+    {
+      "source_type": "pdf",
+      "content_type": "text",
+      "count": 725,
+      "approved": 479,
+      "rejected": 246,
+      "signals_extracted": 477
+    },
+    {
+      "source_type": "mp3",
+      "content_type": "audio",
+      "count": 1,
+      "approved": 0,
+      "rejected": 1,
+      "signals_extracted": 0
+    }
+  ],
+  "rejection_reasons": [
+    {
+      "screening_reason": "[quality_gate] low_diversity (3%)",
+      "count": 45
+    },
+    {
+      "screening_reason": "[quality_gate] low_diversity (6%)",
+      "count": 38
+    },
+    {
+      "screening_reason": "[quality_gate] low_diversity (4%)",
+      "count": 37
+    },
+    {
+      "screening_reason": "[quality_gate] low_diversity (8%)",
+      "count": 36
+    },
+    {
+      "screening_reason": "[quality_gate] low_diversity (5%)",
+      "count": 32
+    },
+    {
+      "screening_reason": "[quality_gate] low_diversity (7%)",
+      "count": 31
+    },
+    {
+      "screening_reason": "[quality_gate] low_diversity (2%)",
+      "count": 31
+    },
+    {
+      "screening_reason": "[quality_gate] low_diversity (9%)",
+      "count": 23
+    },
+    {
+      "screening_reason": "[quality_gate] low_diversity (10%)",
+      "count": 20
+    },
+    {
+      "screening_reason": "The content excerpt is empty, providing no substantive information for signal extraction.",
+      "count": 19
+    },
+    {
+      "screening_reason": "[quality_gate] empty_transcript",
+      "count": 13
+    },
+    {
+      "screening_reason": "[quality_gate] too_short (64 chars < 500)",
+      "count": 9
+    },
+    {
+      "screening_reason": "[quality_gate] low_diversity (1%)",
+      "count": 8
+    },
+    {
+      "screening_reason": "[quality_gate] too_short (27 chars < 500)",
+      "count": 4
+    },
+    {
+      "screening_reason": "The content excerpt is empty, providing no substantive factual information for signal extraction.",
+      "count": 4
+    },
+    {
+      "screening_reason": "[quality_gate] too_short (207 chars < 500)",
+      "count": 2
+    },
+    {
+      "screening_reason": "[quality_gate] too_short (239 chars < 500)",
+      "count": 2
+    },
+    {
+      "screening_reason": "[quality_gate] too_short (221 chars < 500)",
+      "count": 2
+    },
+    {
+      "screening_reason": "The content excerpt consists solely of website navigation, contact information, and boilerplate text, containing no substantive factual information relevant to manufacturing, industrial automation, or AI for signal extraction.",
+      "count": 1
+    },
+    {
+      "screening_reason": "The content is predominantly a login wall and boilerplate text, providing no substantive factual information about the named products or technologies to justify signal extraction.",
+      "count": 1
+    }
+  ],
+  "funnel": [
+    {
+      "stage": "Downloaded",
+      "count": 1165
+    },
+    {
+      "stage": "Extracted",
+      "count": 1153
+    },
+    {
+      "stage": "Screened",
+      "count": 1165
+    },
+    {
+      "stage": "Approved",
+      "count": 736
+    },
+    {
+      "stage": "Signals Extracted",
+      "count": 766
+    }
+  ]
+}

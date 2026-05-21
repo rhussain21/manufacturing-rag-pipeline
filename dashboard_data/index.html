@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html><head><title>AI Industry Signals API</title></head>
+<body>
+<h1>AI Industry Signals — Dashboard Data API</h1>
+<ul>
+  <li><a href="pipeline_stats.json">Pipeline Stats</a></li>
+  <li><a href="signal_stats.json">Signal Stats</a></li>
+  <li><a href="temporal_data.json">Temporal Data</a></li>
+  <li><a href="system_logs.json">System Logs</a></li>
+  <li><a href="discovery_stats.json">Discovery Stats</a></li>
+</ul>
+<p>Last updated: <span id="ts"></span></p>
+<script>
+fetch('pipeline_stats.json').then(r=>r.json()).then(d=>{
+  document.getElementById('ts').textContent = d.exported_at;
+});
+</script>
+</body></html>

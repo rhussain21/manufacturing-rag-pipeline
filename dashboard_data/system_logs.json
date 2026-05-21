@@ -1,0 +1,1904 @@
+{
+  "exported_at": "2026-05-21T06:02:46.526872",
+  "recent_logs": [
+    {
+      "timestamp": "2026-04-13 18:21:27",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signals",
+      "message": "Extracted 2 signals from [PDF] Advanced Process Control Instructions with L",
+      "details_json": "{\"chunks\": 3, \"processed\": 2}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 18:21:00",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signals",
+      "message": "Extracted 13 signals from [PDF] Enable the Autonomous Enterprise with AI at ",
+      "details_json": "{\"chunks\": 2, \"processed\": 14}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 18:20:52",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"17%\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"17%\", \"extraction_class\": \"investment\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 18:20:52",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"31%\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"31%\", \"extraction_class\": \"adoption\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 18:20:52",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"50%\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"50%\", \"extraction_class\": \"performance_claim\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 18:20:35",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signals",
+      "message": "Extracted 10 signals from [PDF] FactoryTalk Batch PC-Based Phase Programming",
+      "details_json": "{\"chunks\": 11, \"processed\": 11}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 18:19:11",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signals",
+      "message": "Extracted 14 signals from [PDF] User Manual - PhaseManager Software - Rockwe",
+      "details_json": "{\"chunks\": 10, \"processed\": 14}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 18:17:37",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signals",
+      "message": "Extracted 11 signals from [PDF] FactoryTalk Batch View HMI Controls User Man",
+      "details_json": "{\"chunks\": 11, \"processed\": 15}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 18:15:30",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signals",
+      "message": "Extracted 6 signals from [PDF] OT Cybersecurity: The essential guide to sec",
+      "details_json": "{\"chunks\": 3, \"processed\": 6}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 18:15:25",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"5G\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"5G\", \"extraction_class\": \"performance_claim\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 18:15:03",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"OT\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"OT\", \"extraction_class\": \"regulation\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 18:14:53",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signals",
+      "message": "Extracted 2 signals from Robotics Tutorial - TutorialsPoint",
+      "details_json": "{\"chunks\": 2, \"processed\": 6}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 18:14:21",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signals",
+      "message": "Extracted 11 signals from Robotics Lab Manual PDF - Scribd",
+      "details_json": "{\"chunks\": 6, \"processed\": 11}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 18:14:06",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"VAL\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"VAL\", \"extraction_class\": \"product_launch\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 18:13:12",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"47%\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"47%\", \"extraction_class\": \"performance_claim\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 18:13:12",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signals",
+      "message": "Extracted 3 signals from Industrial Cybersecurity 1: Implementing Network P",
+      "details_json": "{\"chunks\": 2, \"processed\": 5}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 18:12:54",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signals",
+      "message": "Extracted 24 signals from [PDF] Cybersecurity for Industrial Control Systems",
+      "details_json": "{\"chunks\": 8, \"processed\": 27}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 18:12:15",
+      "level": "ERROR",
+      "source": "pipeline",
+      "action": "signal_chunk_error",
+      "message": "LangExtract error [quota_exceeded] chunk 6/8: [PDF] Cybersecurity for Industrial Control Systems",
+      "details_json": "{\"error_category\": \"quota_exceeded\", \"error_type\": \"InferenceRuntimeError\", \"error_message\": \"Parallel inference error: Gemini API error: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'Resource exhausted. Please try again later. Please refer to https://cloud.google.com/vertex-ai/generative-ai/docs/error-code-429 for more details.', 'status': 'RESOURCE_EXHAUSTED'}}\", \"traceback\": \"    ^^^^^^^^^^^^^\\n  File \\\"/usr/local/lib/python3.12/dist-packages/langextract/providers/gemini.py\\\", line 326, in infer\\n    raise exceptions.InferenceRuntimeError(\\nlangextract.core.exceptions.InferenceRuntimeError: Parallel inference error: Gemini API error: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'Resource exhausted. Please try again later. Please refer to https://cloud.google.com/vertex-ai/generative-ai/docs/error-code-429 for more details.', 'status': 'RESOURCE_EXHAUSTED'}}\\n\", \"chunk_index\": 5, \"total_chunks\": 8, \"chunk_length\": 8000, \"model_id\": \"gemini-2.5-flash\", \"recoverable\": true}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 18:11:53",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"DRP\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"DRP\", \"extraction_class\": \"regulation\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 18:11:03",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signals",
+      "message": "Extracted 178 signals from [PDF] CURRICULAR GUIDANCE: Industrial Cybersecurit",
+      "details_json": "{\"chunks\": 52, \"processed\": 187}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 18:08:46",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"OT\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"OT\", \"extraction_class\": \"product_launch\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 18:08:12",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"TSA\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"TSA\", \"extraction_class\": \"regulation\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 18:08:12",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"NRC\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"NRC\", \"extraction_class\": \"regulation\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 18:07:58",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"ISO\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"ISO\", \"extraction_class\": \"partnership\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 18:07:58",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"API\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"API\", \"extraction_class\": \"regulation\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 18:07:46",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"DHS\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"DHS\", \"extraction_class\": \"regulation\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 18:07:46",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"IEC\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"IEC\", \"extraction_class\": \"partnership\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 18:02:13",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"40%\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"40%\", \"extraction_class\": \"performance_claim\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 17:54:12",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signals",
+      "message": "Extracted 43 signals from Industrial Cybersecurity Guide & Platform - Shield",
+      "details_json": "{\"chunks\": 9, \"processed\": 88}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 17:53:51",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"75%\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"75%\", \"extraction_class\": \"performance_claim\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 17:53:10",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"27%\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"27%\", \"extraction_class\": \"performance_claim\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 17:52:48",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"0\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"0\", \"extraction_class\": \"performance_claim\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 17:52:48",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"2\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"2\", \"extraction_class\": \"performance_claim\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 17:52:48",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"0\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"0\", \"extraction_class\": \"performance_claim\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 17:52:47",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"12\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"12\", \"extraction_class\": \"performance_claim\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 17:52:47",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"0\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"0\", \"extraction_class\": \"performance_claim\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 17:52:26",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"27%\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"27%\", \"extraction_class\": \"performance_claim\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 17:52:26",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"75%\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"75%\", \"extraction_class\": \"performance_claim\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 17:47:20",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signals",
+      "message": "Extracted 25 signals from Technical Guide to ISA/IEC-62443 Industrial Cybers",
+      "details_json": "{\"chunks\": 4, \"processed\": 45}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 17:45:14",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signals",
+      "message": "Extracted 5 signals from What is Industrial Cybersecurity? A BlackBear Comp",
+      "details_json": "{\"chunks\": 2, \"processed\": 5}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 17:44:22",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signals",
+      "message": "Extracted 36 signals from [PDF] The Evolution of Industrial Cybersecurity an",
+      "details_json": "{\"chunks\": 8, \"processed\": 40}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 17:36:13",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"36%\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"36%\", \"extraction_class\": \"performance_claim\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 17:35:20",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"80%\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"80%\", \"extraction_class\": \"performance_claim\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 17:35:20",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped generic token: \"organizations\"",
+      "details_json": "{\"reason\": \"generic_token\", \"entity\": \"organizations\", \"extraction_class\": \"adoption\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 17:35:01",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped generic token: \"companies\"",
+      "details_json": "{\"reason\": \"generic_token\", \"entity\": \"companies\", \"extraction_class\": \"performance_claim\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 17:34:55",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signals",
+      "message": "Extracted 41 signals from [PDF] UC Berkeley Machine Guarding and Equipment S",
+      "details_json": "{\"chunks\": 9, \"processed\": 54}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 17:27:08",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signals",
+      "message": "Extracted 35 signals from ANSI B11 Standards (Safety of Machinery)",
+      "details_json": "{\"chunks\": 2, \"processed\": 37}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 17:26:52",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signals",
+      "message": "Extracted 14 signals from [PDF] Machine Safety Fundamentals - Banner Enginee",
+      "details_json": "{\"chunks\": 2, \"processed\": 15}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 17:26:26",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signals",
+      "message": "Extracted 2 signals from Machine Safety Fundamentals - Banner Engineering",
+      "details_json": "{\"chunks\": 3, \"processed\": 2}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 17:22:07",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"70%\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"70%\", \"extraction_class\": \"performance_claim\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 17:22:07",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signals",
+      "message": "Extracted 22 signals from Evolution of Industrial Networking and Best Practi",
+      "details_json": "{\"chunks\": 2, \"processed\": 24}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 17:21:31",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signals",
+      "message": "Extracted 50 signals from [PDF] Introduction to Industrial Networks",
+      "details_json": "{\"chunks\": 7, \"processed\": 55}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 17:21:15",
+      "level": "ERROR",
+      "source": "pipeline",
+      "action": "signal_chunk_error",
+      "message": "LangExtract error [quota_exceeded] chunk 6/7: [PDF] Introduction to Industrial Networks",
+      "details_json": "{\"error_category\": \"quota_exceeded\", \"error_type\": \"InferenceRuntimeError\", \"error_message\": \"Parallel inference error: Gemini API error: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'Resource exhausted. Please try again later. Please refer to https://cloud.google.com/vertex-ai/generative-ai/docs/error-code-429 for more details.', 'status': 'RESOURCE_EXHAUSTED'}}\", \"traceback\": \"    ^^^^^^^^^^^^^\\n  File \\\"/usr/local/lib/python3.12/dist-packages/langextract/providers/gemini.py\\\", line 326, in infer\\n    raise exceptions.InferenceRuntimeError(\\nlangextract.core.exceptions.InferenceRuntimeError: Parallel inference error: Gemini API error: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'Resource exhausted. Please try again later. Please refer to https://cloud.google.com/vertex-ai/generative-ai/docs/error-code-429 for more details.', 'status': 'RESOURCE_EXHAUSTED'}}\\n\", \"chunk_index\": 5, \"total_chunks\": 7, \"chunk_length\": 8000, \"model_id\": \"gemini-2.5-flash\", \"recoverable\": true}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 17:11:17",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"FDT\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"FDT\", \"extraction_class\": \"performance_claim\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 17:11:17",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"FDT\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"FDT\", \"extraction_class\": \"adoption\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 17:11:17",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"OPC\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"OPC\", \"extraction_class\": \"product_launch\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 17:11:17",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"OPC\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"OPC\", \"extraction_class\": \"performance_claim\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 17:06:41",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signals",
+      "message": "Extracted 30 signals from Industrial Connectivity and Networking 101",
+      "details_json": "{\"chunks\": 9, \"processed\": 31}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 16:59:16",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signals",
+      "message": "Extracted 21 signals from Chapter 2 Industrial Networking and TCP/IP",
+      "details_json": "{\"chunks\": 12, \"processed\": 21}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 16:56:46",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signals",
+      "message": "Extracted 3 signals from PLC Program Organization Best Practices: Documenta",
+      "details_json": "{\"chunks\": 8, \"processed\": 4}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 16:50:33",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signals",
+      "message": "Extracted 13 signals from [PDF] X20PS2110",
+      "details_json": "{\"chunks\": 2, \"processed\": 13}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 16:48:47",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"KC\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"KC\", \"extraction_class\": \"regulation\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 16:48:47",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"CE\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"CE\", \"extraction_class\": \"regulation\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 16:48:22",
+      "level": "ERROR",
+      "source": "pipeline",
+      "action": "signal_chunk_error",
+      "message": "LangExtract error [InferenceRuntimeError] chunk 11/24: [PDF] Machines with intelligence - ABB",
+      "details_json": "{\"error_category\": \"InferenceRuntimeError\", \"error_type\": \"InferenceRuntimeError\", \"error_message\": \"Parallel inference error: Gemini API error: 499 CANCELLED. {'error': {'code': 499, 'message': 'The operation was cancelled.', 'status': 'CANCELLED'}}\", \"traceback\": \"python3.12/dist-packages/langextract/annotation.py\\\", line 378, in _annotate_documents_single_pass\\n    outputs = list(outputs)\\n              ^^^^^^^^^^^^^\\n  File \\\"/usr/local/lib/python3.12/dist-packages/langextract/providers/gemini.py\\\", line 326, in infer\\n    raise exceptions.InferenceRuntimeError(\\nlangextract.core.exceptions.InferenceRuntimeError: Parallel inference error: Gemini API error: 499 CANCELLED. {'error': {'code': 499, 'message': 'The operation was cancelled.', 'status': 'CANCELLED'}}\\n\", \"chunk_index\": 10, \"total_chunks\": 24, \"chunk_length\": 8000, \"model_id\": \"gemini-2.5-flash\", \"recoverable\": false}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 16:48:22",
+      "level": "ERROR",
+      "source": "pipeline",
+      "action": "signal_extraction_failed",
+      "message": "Signal extraction failed [InferenceRuntimeError]: [PDF] Machines with intelligence - ABB",
+      "details_json": "{\"error_category\": \"InferenceRuntimeError\", \"error_type\": \"InferenceRuntimeError\", \"error_message\": \"Parallel inference error: Gemini API error: 499 CANCELLED. {'error': {'code': 499, 'message': 'The operation was cancelled.', 'status': 'CANCELLED'}}\", \"traceback\": \"python3.12/dist-packages/langextract/annotation.py\\\", line 378, in _annotate_documents_single_pass\\n    outputs = list(outputs)\\n              ^^^^^^^^^^^^^\\n  File \\\"/usr/local/lib/python3.12/dist-packages/langextract/providers/gemini.py\\\", line 326, in infer\\n    raise exceptions.InferenceRuntimeError(\\nlangextract.core.exceptions.InferenceRuntimeError: Parallel inference error: Gemini API error: 499 CANCELLED. {'error': {'code': 499, 'message': 'The operation was cancelled.', 'status': 'CANCELLED'}}\\n\", \"content_id\": 860, \"title\": \"[PDF] Machines with intelligence - ABB\", \"transcript_length\": 187099, \"chunks_attempted\": 24, \"signals_before_error\": 95, \"model_id\": \"gemini-2.5-flash\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 16:38:24",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"ABB\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"ABB\", \"extraction_class\": \"adoption\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 16:37:40",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"ABB\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"ABB\", \"extraction_class\": \"partnership\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 16:37:16",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"ABB\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"ABB\", \"extraction_class\": \"adoption\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 16:37:16",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"ABB\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"ABB\", \"extraction_class\": \"performance_claim\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 16:37:16",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"ABB\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"ABB\", \"extraction_class\": \"adoption\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 16:37:16",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"ABB\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"ABB\", \"extraction_class\": \"product_launch\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 16:37:04",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"IBM\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"IBM\", \"extraction_class\": \"product_launch\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 16:36:30",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"B&R\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"B&R\", \"extraction_class\": \"partnership\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 16:36:30",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"ABB\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"ABB\", \"extraction_class\": \"partnership\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 16:36:30",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"ABB\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"ABB\", \"extraction_class\": \"product_launch\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 16:35:54",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"ABB\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"ABB\", \"extraction_class\": \"partnership\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 16:35:54",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"ABB\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"ABB\", \"extraction_class\": \"investment\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 16:35:54",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"ABB\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"ABB\", \"extraction_class\": \"adoption\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 16:35:54",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"ABB\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"ABB\", \"extraction_class\": \"partnership\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 16:35:54",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"ABB\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"ABB\", \"extraction_class\": \"product_launch\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 16:35:34",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"ABB\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"ABB\", \"extraction_class\": \"product_launch\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 16:35:34",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"ABB\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"ABB\", \"extraction_class\": \"investment\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 16:35:34",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"ABB\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"ABB\", \"extraction_class\": \"adoption\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 16:35:34",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"ABB\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"ABB\", \"extraction_class\": \"product_launch\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 16:35:34",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"AI\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"AI\", \"extraction_class\": \"performance_claim\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 16:35:34",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"ABB\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"ABB\", \"extraction_class\": \"partnership\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 16:35:16",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signals",
+      "message": "Extracted 26 signals from [PDF] Industrial edge: From complexity to manageab",
+      "details_json": "{\"chunks\": 3, \"processed\": 29}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 16:34:32",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signals",
+      "message": "Extracted 40 signals from [PDF] Introduction to Integrated Safety",
+      "details_json": "{\"chunks\": 6, \"processed\": 50}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 16:31:35",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"B&R\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"B&R\", \"extraction_class\": \"adoption\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 16:31:16",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"43%\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"43%\", \"extraction_class\": \"performance_claim\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 16:31:16",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"22%\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"22%\", \"extraction_class\": \"performance_claim\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 16:31:16",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"37%\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"37%\", \"extraction_class\": \"performance_claim\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 16:30:58",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signals",
+      "message": "Extracted 23 signals from [PDF] License CODESYS Control Standard S \u2014 Product",
+      "details_json": "{\"chunks\": 2, \"processed\": 26}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 16:30:33",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"256\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"256\", \"extraction_class\": \"performance_claim\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 16:30:33",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"512\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"512\", \"extraction_class\": \"performance_claim\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 16:30:10",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signals",
+      "message": "Extracted 396 signals from [PDF] OPC Unified Architecture",
+      "details_json": "{\"chunks\": 25, \"processed\": 535}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 16:29:13",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"P&G\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"P&G\", \"extraction_class\": \"adoption\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 16:29:13",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"P&G\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"P&G\", \"extraction_class\": \"performance_claim\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 16:29:13",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"P&G\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"P&G\", \"extraction_class\": \"partnership\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 16:29:13",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"P&G\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"P&G\", \"extraction_class\": \"adoption\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 16:28:41",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"P&G\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"P&G\", \"extraction_class\": \"adoption\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 16:28:41",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"IWS\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"IWS\", \"extraction_class\": \"adoption\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 16:28:20",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"PMI\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"PMI\", \"extraction_class\": \"partnership\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 16:28:20",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"PMI\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"PMI\", \"extraction_class\": \"partnership\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 16:28:20",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"PMI\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"PMI\", \"extraction_class\": \"adoption\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 16:28:20",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"PMI\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"PMI\", \"extraction_class\": \"adoption\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 16:28:20",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"PMI\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"PMI\", \"extraction_class\": \"partnership\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 16:28:20",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"PMI\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"PMI\", \"extraction_class\": \"adoption\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 16:28:20",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"PMI\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"PMI\", \"extraction_class\": \"adoption\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 16:28:20",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"PMI\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"PMI\", \"extraction_class\": \"adoption\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 16:28:02",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"E3\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"E3\", \"extraction_class\": \"performance_claim\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 16:25:25",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"30%\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"30%\", \"extraction_class\": \"performance_claim\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 16:23:51",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"ABB\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"ABB\", \"extraction_class\": \"partnership\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 16:23:51",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"ABB\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"ABB\", \"extraction_class\": \"partnership\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 16:23:51",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"AWS\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"AWS\", \"extraction_class\": \"partnership\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 16:23:51",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"B&R\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"B&R\", \"extraction_class\": \"partnership\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 16:23:51",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"SAP\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"SAP\", \"extraction_class\": \"partnership\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 16:23:51",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"AWS\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"AWS\", \"extraction_class\": \"partnership\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 16:09:42",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"21+\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"21+\", \"extraction_class\": \"performance_claim\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 16:09:42",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"17\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"17\", \"extraction_class\": \"performance_claim\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 16:09:42",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"10+\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"10+\", \"extraction_class\": \"performance_claim\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 16:08:32",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"CPX\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"CPX\", \"extraction_class\": \"product_launch\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 16:08:32",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"SAP\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"SAP\", \"extraction_class\": \"partnership\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 16:08:08",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"MxD\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"MxD\", \"extraction_class\": \"regulation\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 16:08:08",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"MxD\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"MxD\", \"extraction_class\": \"adoption\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 16:07:49",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"DTC\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"DTC\", \"extraction_class\": \"adoption\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 16:07:16",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"OPC\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"OPC\", \"extraction_class\": \"adoption\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 16:07:16",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"OPC\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"OPC\", \"extraction_class\": \"performance_claim\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 16:06:58",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signals",
+      "message": "Extracted 10 signals from [PDF] Overview of implementation principles of art",
+      "details_json": "{\"chunks\": 4, \"processed\": 11}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 16:06:45",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"PLC\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"PLC\", \"extraction_class\": \"product_launch\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 16:03:38",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"Git\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"Git\", \"extraction_class\": \"product_launch\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 16:03:38",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signals",
+      "message": "Extracted 108 signals from [PDF] The Comprehensive Software Suite for Automat",
+      "details_json": "{\"chunks\": 2, \"processed\": 112}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 16:03:38",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"CNC\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"CNC\", \"extraction_class\": \"product_launch\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 16:02:27",
+      "level": "ERROR",
+      "source": "pipeline",
+      "action": "signal_extraction_failed",
+      "message": "Signal extraction failed [InferenceRuntimeError]: [PDF] User manual XSOFT-CODESYS-2 - Eaton",
+      "details_json": "{\"error_category\": \"InferenceRuntimeError\", \"error_type\": \"InferenceRuntimeError\", \"error_message\": \"Parallel inference error: Gemini API error: 499 CANCELLED. {'error': {'code': 499, 'message': 'The operation was cancelled.', 'status': 'CANCELLED'}}\", \"traceback\": \"python3.12/dist-packages/langextract/annotation.py\\\", line 378, in _annotate_documents_single_pass\\n    outputs = list(outputs)\\n              ^^^^^^^^^^^^^\\n  File \\\"/usr/local/lib/python3.12/dist-packages/langextract/providers/gemini.py\\\", line 326, in infer\\n    raise exceptions.InferenceRuntimeError(\\nlangextract.core.exceptions.InferenceRuntimeError: Parallel inference error: Gemini API error: 499 CANCELLED. {'error': {'code': 499, 'message': 'The operation was cancelled.', 'status': 'CANCELLED'}}\\n\", \"content_id\": 834, \"title\": \"[PDF] User manual XSOFT-CODESYS-2 - Eaton\", \"transcript_length\": 89581, \"chunks_attempted\": 12, \"signals_before_error\": 16, \"model_id\": \"gemini-2.5-flash\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 16:02:27",
+      "level": "ERROR",
+      "source": "pipeline",
+      "action": "signal_chunk_error",
+      "message": "LangExtract error [InferenceRuntimeError] chunk 4/12: [PDF] User manual XSOFT-CODESYS-2 - Eaton",
+      "details_json": "{\"error_category\": \"InferenceRuntimeError\", \"error_type\": \"InferenceRuntimeError\", \"error_message\": \"Parallel inference error: Gemini API error: 499 CANCELLED. {'error': {'code': 499, 'message': 'The operation was cancelled.', 'status': 'CANCELLED'}}\", \"traceback\": \"python3.12/dist-packages/langextract/annotation.py\\\", line 378, in _annotate_documents_single_pass\\n    outputs = list(outputs)\\n              ^^^^^^^^^^^^^\\n  File \\\"/usr/local/lib/python3.12/dist-packages/langextract/providers/gemini.py\\\", line 326, in infer\\n    raise exceptions.InferenceRuntimeError(\\nlangextract.core.exceptions.InferenceRuntimeError: Parallel inference error: Gemini API error: 499 CANCELLED. {'error': {'code': 499, 'message': 'The operation was cancelled.', 'status': 'CANCELLED'}}\\n\", \"chunk_index\": 3, \"total_chunks\": 12, \"chunk_length\": 8000, \"model_id\": \"gemini-2.5-flash\", \"recoverable\": false}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 15:52:29",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"1\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"1\", \"extraction_class\": \"performance_claim\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 15:52:29",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"1\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"1\", \"extraction_class\": \"performance_claim\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 15:51:40",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signals",
+      "message": "Extracted 4 signals from [PDF] CODESYS SoftMotion Axis Groups/CNC Interpola",
+      "details_json": "{\"chunks\": 2, \"processed\": 6}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 15:47:40",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signals",
+      "message": "Extracted 89 signals from [PDF] FA Remote Solutions - Mitsubishi Electric",
+      "details_json": "{\"chunks\": 9, \"processed\": 123}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 15:46:57",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"HMS\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"HMS\", \"extraction_class\": \"partnership\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 15:46:57",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"5\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"5\", \"extraction_class\": \"performance_claim\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 15:43:59",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"AI\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"AI\", \"extraction_class\": \"product_launch\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 15:42:27",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signals",
+      "message": "Extracted 17 signals from [PDF] Mitsubishi Electric Data Science Tool MELSOF",
+      "details_json": "{\"chunks\": 4, \"processed\": 30}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 15:41:30",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"AI\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"AI\", \"extraction_class\": \"performance_claim\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 15:41:04",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signals",
+      "message": "Extracted 70 signals from [PDF] Industrial Computer MELIPC Series - Mitsubis",
+      "details_json": "{\"chunks\": 5, \"processed\": 94}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 15:38:51",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signals",
+      "message": "Extracted 202 signals from [PDF] Edgecross-supporting Software Catalog",
+      "details_json": "{\"chunks\": 12, \"processed\": 257}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 15:36:16",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"15\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"15\", \"extraction_class\": \"performance_claim\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 15:36:16",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped generic token: \"Data\"",
+      "details_json": "{\"reason\": \"generic_token\", \"entity\": \"Data\", \"extraction_class\": \"performance_claim\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 15:35:17",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped generic token: \"Software\"",
+      "details_json": "{\"reason\": \"generic_token\", \"entity\": \"Software\", \"extraction_class\": \"performance_claim\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 15:35:17",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped generic token: \"Software\"",
+      "details_json": "{\"reason\": \"generic_token\", \"entity\": \"Software\", \"extraction_class\": \"performance_claim\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 15:34:42",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signals",
+      "message": "Extracted 123 signals from [PDF] Mitsubishi Electric Sensorless Servo Global ",
+      "details_json": "{\"chunks\": 6, \"processed\": 140}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 15:33:51",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"34\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"34\", \"extraction_class\": \"performance_claim\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 15:33:51",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"34\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"34\", \"extraction_class\": \"performance_claim\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 15:33:51",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"28\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"28\", \"extraction_class\": \"performance_claim\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 15:33:51",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"40\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"40\", \"extraction_class\": \"performance_claim\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 15:33:51",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"28\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"28\", \"extraction_class\": \"performance_claim\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 15:33:51",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"490\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"490\", \"extraction_class\": \"performance_claim\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 15:33:51",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"109\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"109\", \"extraction_class\": \"performance_claim\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 15:33:51",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"8.2\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"8.2\", \"extraction_class\": \"performance_claim\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 15:33:51",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"392\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"392\", \"extraction_class\": \"performance_claim\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 15:33:51",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"2.9\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"2.9\", \"extraction_class\": \"performance_claim\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 15:33:51",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"3.9\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"3.9\", \"extraction_class\": \"performance_claim\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 15:33:51",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"196\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"196\", \"extraction_class\": \"performance_claim\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 15:33:51",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"200\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"200\", \"extraction_class\": \"performance_claim\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 15:33:51",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"6.4\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"6.4\", \"extraction_class\": \"performance_claim\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 15:33:51",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"3.9\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"3.9\", \"extraction_class\": \"performance_claim\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 15:33:51",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"2.9\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"2.9\", \"extraction_class\": \"performance_claim\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 15:33:51",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"4.9\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"4.9\", \"extraction_class\": \"performance_claim\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 15:33:51",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"22\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"22\", \"extraction_class\": \"performance_claim\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 15:33:51",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"980\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"980\", \"extraction_class\": \"performance_claim\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 15:33:51",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"6.7\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"6.7\", \"extraction_class\": \"performance_claim\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 15:33:51",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"9.5\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"9.5\", \"extraction_class\": \"performance_claim\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 15:33:51",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"200\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"200\", \"extraction_class\": \"performance_claim\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 15:33:51",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"294\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"294\", \"extraction_class\": \"performance_claim\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 15:32:49",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"90%\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"90%\", \"extraction_class\": \"performance_claim\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 15:31:53",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"IE5\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"IE5\", \"extraction_class\": \"performance_claim\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 15:31:39",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signals",
+      "message": "Extracted 27 signals from [PDF] Automation Products and Solutions | Power Mo",
+      "details_json": "{\"chunks\": 3, \"processed\": 27}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 15:31:11",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"we\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"we\", \"extraction_class\": \"investment\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 15:31:11",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"50%\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"50%\", \"extraction_class\": \"performance_claim\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 15:29:13",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signals",
+      "message": "Extracted 46 signals from [PDF] C Controller Applications - Mitsubishi Elect",
+      "details_json": "{\"chunks\": 6, \"processed\": 58}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 15:24:16",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signals",
+      "message": "Extracted 143 signals from [PDF] FA-IT Solution e-F@ctory - Mitsubishi Electr",
+      "details_json": "{\"chunks\": 8, \"processed\": 163}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 15:23:06",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"40%\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"40%\", \"extraction_class\": \"performance_claim\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 15:22:23",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"15%\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"15%\", \"extraction_class\": \"performance_claim\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 15:22:23",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"15%\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"15%\", \"extraction_class\": \"performance_claim\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 15:20:11",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signals",
+      "message": "Extracted 112 signals from [PDF] Industrial Computer MELIPC Series",
+      "details_json": "{\"chunks\": 8, \"processed\": 141}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 15:19:31",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"120\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"120\", \"extraction_class\": \"performance_claim\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 15:19:31",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"1G\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"1G\", \"extraction_class\": \"performance_claim\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 15:18:54",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"\u2264 \u00b2\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"\\u2264 \\u00b2\", \"extraction_class\": \"performance_claim\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 15:18:54",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"\u2264 2\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"\\u2264 2\", \"extraction_class\": \"performance_claim\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 15:17:05",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signals",
+      "message": "Extracted 321 signals from [PDF] Programmable Automation Controllers MELSEC M",
+      "details_json": "{\"chunks\": 14, \"processed\": 431}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 15:15:32",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"256\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"256\", \"extraction_class\": \"performance_claim\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 15:12:51",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"our\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"our\", \"extraction_class\": \"partnership\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 15:12:29",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"1/5\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"1/5\", \"extraction_class\": \"performance_claim\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 15:12:07",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"5\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"5\", \"extraction_class\": \"performance_claim\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 15:11:38",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signals",
+      "message": "Extracted 65 signals from [PDF] Motion Controller MR-MQ100 Quick-Start Guide",
+      "details_json": "{\"chunks\": 17, \"processed\": 88}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 15:09:12",
+      "level": "ERROR",
+      "source": "pipeline",
+      "action": "signal_chunk_error",
+      "message": "LangExtract error [parse_error] chunk 6/17: [PDF] Motion Controller MR-MQ100 Quick-Start Guide",
+      "details_json": "{\"error_category\": \"parse_error\", \"error_type\": \"ResolverParsingError\", \"error_message\": \"Failed to parse JSON content: Invalid control character at: line 8 column 58 (char 251)\", \"traceback\": \"nts_single_pass(\\n  File \\\"/usr/local/lib/python3.12/dist-packages/langextract/annotation.py\\\", line 388, in _annotate_documents_single_pass\\n    resolved_extractions = resolver.resolve(\\n                           ^^^^^^^^^^^^^^^^^\\n  File \\\"/usr/local/lib/python3.12/dist-packages/langextract/resolver.py\\\", line 271, in resolve\\n    raise ResolverParsingError(str(e)) from e\\nlangextract.resolver.ResolverParsingError: Failed to parse JSON content: Invalid control character at: line 8 column 58 (char 251)\\n\", \"chunk_index\": 5, \"total_chunks\": 17, \"chunk_length\": 8000, \"model_id\": \"gemini-2.5-flash\", \"recoverable\": true}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 15:08:54",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"16\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"16\", \"extraction_class\": \"performance_claim\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 15:08:38",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"255\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"255\", \"extraction_class\": \"performance_claim\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 15:08:38",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"255\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"255\", \"extraction_class\": \"performance_claim\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 15:06:38",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signals",
+      "message": "Extracted 71 signals from [PDF] ICONICS Automation Software Suite",
+      "details_json": "{\"chunks\": 10, \"processed\": 90}",
+      "run_id": null
+    }
+  ],
+  "runs": [
+    {
+      "run_id": "20260412_202142_b697af",
+      "started": "2026-04-12 20:21:42",
+      "ended": "2026-04-12 20:21:42",
+      "events": 3,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "run_id": "20260412_202101_35304d",
+      "started": "2026-04-12 20:21:01",
+      "ended": "2026-04-12 20:21:01",
+      "events": 2,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "run_id": "20260412_201756_8740ef",
+      "started": "2026-04-12 20:17:56",
+      "ended": "2026-04-12 20:18:38",
+      "events": 3,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "run_id": "20260412_201542_120af6",
+      "started": "2026-04-12 20:15:42",
+      "ended": "2026-04-12 20:16:21",
+      "events": 3,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "run_id": "20260412_201412_675a34",
+      "started": "2026-04-12 20:14:12",
+      "ended": "2026-04-12 20:14:51",
+      "events": 2,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "run_id": "20260328_060022_9de1fb",
+      "started": "2026-03-28 06:00:22",
+      "ended": "2026-03-28 08:38:03",
+      "events": 65,
+      "errors": 2,
+      "warnings": 1
+    },
+    {
+      "run_id": "20260327_060012_513239",
+      "started": "2026-03-27 06:00:12",
+      "ended": "2026-03-27 07:45:52",
+      "events": 5,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "run_id": "20260324_060135_bd2931",
+      "started": "2026-03-24 06:01:35",
+      "ended": "2026-03-24 08:49:23",
+      "events": 345,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "run_id": "20260323_011130_ff0560",
+      "started": "2026-03-23 01:11:30",
+      "ended": "2026-03-23 03:15:19",
+      "events": 177,
+      "errors": 1,
+      "warnings": 1
+    },
+    {
+      "run_id": "20260323_010419_0a5e6b",
+      "started": "2026-03-23 01:04:19",
+      "ended": "2026-03-23 01:11:13",
+      "events": 4,
+      "errors": 0,
+      "warnings": 1
+    },
+    {
+      "run_id": "20260323_003056_b8affc",
+      "started": "2026-03-23 00:30:56",
+      "ended": "2026-03-23 00:49:31",
+      "events": 6,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "run_id": "20260323_002704_01d071",
+      "started": "2026-03-23 00:27:04",
+      "ended": "2026-03-23 00:30:05",
+      "events": 4,
+      "errors": 0,
+      "warnings": 0
+    }
+  ],
+  "error_summary_7d": []
+}

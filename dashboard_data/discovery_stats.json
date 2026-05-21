@@ -1,0 +1,35 @@
+{
+  "exported_at": "2026-05-21T06:02:46.531199",
+  "discovery_runs": [
+    {
+      "timestamp": "2026-03-27 06:41:25",
+      "queries": 200,
+      "found": 1599,
+      "approved": 1197,
+      "rejected": 106,
+      "deduped": 296
+    }
+  ],
+  "ingestion_logs": [
+    {
+      "timestamp": "2026-03-27 07:45:51",
+      "message": "Downloaded 1197 items",
+      "details_json": "{\"count\": 1197}"
+    },
+    {
+      "timestamp": "2026-03-27 06:41:25",
+      "message": "1197 approved from 1599 candidates",
+      "details_json": "{\"queries\": 200, \"found\": 1599, \"approved\": 1197, \"rejected\": 106, \"source_types\": [\"web\"], \"topic\": null}"
+    },
+    {
+      "timestamp": "2026-03-23 00:30:05",
+      "message": "Downloaded 77 items",
+      "details_json": "{\"count\": 77}"
+    },
+    {
+      "timestamp": "2026-03-23 00:29:01",
+      "message": "77 approved from 205 candidates",
+      "details_json": "{\"queries\": 5, \"found\": 205, \"approved\": 77, \"rejected\": 67, \"source_types\": [\"rss\", \"web\"], \"topic\": null}"
+    }
+  ]
+}
