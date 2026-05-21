@@ -31,7 +31,7 @@ LOCAL_DATA_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'dashb
 REMOTE_DATA_URL = os.getenv('DATA_URL', '')
 
 st.set_page_config(
-    page_title="RAG Ops Demo",
+    page_title="IndustryIQ Demo",
     page_icon="🏭",
     layout="wide",
     initial_sidebar_state="collapsed",
@@ -1428,7 +1428,7 @@ def main():
     <div class="dash-inner">
       <div style="text-align:center; padding:26px 52px 20px 52px; background:{INNER_BG}; margin:0;">
         <h1 style="color:{TXT_DARK}; margin:0 0 6px 0; font-size:1.65rem; font-weight:700; letter-spacing:-0.02em;">
-          RAG Ops Demo
+          IndustryIQ Demo
         </h1>
         <p style="color:{TXT2}; margin:0; font-size:0.84rem; line-height:1.5;">
           System health and retrieval quality dashboard — tracks pipeline throughput, corpus composition, and how well the knowledge base supports RAG applications.
