@@ -42,6 +42,7 @@ RUN python3 -m pip install -i https://pypi.org/simple --no-cache-dir \
     openai-whisper \
     faster-whisper \
     tiktoken \
+    nltk \
     psycopg2-binary \
     feedparser \
     requests \
