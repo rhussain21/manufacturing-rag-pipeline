@@ -48,7 +48,7 @@ MAX_CHARS = 500_000      # above this: flag as oversized (likely full manual)
 MIN_TOKEN_DIVERSITY = 0.05   # unique_tokens / total_tokens; below = repetitive boilerplate
 MAX_BOILERPLATE_RATIO = 0.40 # ratio of lines that are pure headers/numbers/whitespace
 MIN_DOMAIN_SCORE = 0.02      # fraction of domain keywords present; below = off-topic
-NEAR_DUPLICATE_THRESHOLD = 5  # SimHash bit-distance; at or below = near-duplicate
+NEAR_DUPLICATE_THRESHOLD = 2  # SimHash bit-distance; at or below = near-duplicate
 
 
 class DataQualityFilter:

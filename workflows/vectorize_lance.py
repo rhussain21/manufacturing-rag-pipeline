@@ -59,7 +59,7 @@ class LanceVectorizer:
     CORPUS_TABLE = "corpus_vectors"
     SIGNAL_TABLE = "signal_vectors"
 
-    def __init__(self, db_path: str = None, lance_path: str = None, model_name: str = "all-MiniLM-L6-v2"):
+    def __init__(self, db_path: str = None, lance_path: str = None, model_name: str = "nomic-ai/nomic-embed-text-v1.5"):
         from db_relational import relationalDB
         from db_vector_lance import LanceVectorDB
 
@@ -83,7 +83,8 @@ class LanceVectorizer:
         """Get all approved content with transcripts/segments from DuckDB."""
         rows = self.db.query("""
             SELECT id, title, transcript, segments, metadata_json,
-                   source_type, source_name, content_type, created_at
+                   source_type, source_name, content_type, created_at,
+                   context_summary
             FROM content
             WHERE screening_status = 'approved'
               AND extraction_status IN ('completed', 'NA')
@@ -158,6 +159,8 @@ class LanceVectorizer:
                 except (json.JSONDecodeError, TypeError):
                     meta_base = {}
 
+            context_prefix = (item.get('context_summary') or '').strip()
+
             if segments:
                 for i, seg in enumerate(segments):
                     # Handle both dict segments and string segments
@@ -171,9 +174,15 @@ class LanceVectorizer:
                         end_char = len(seg)
                     else:
                         continue
-                    
+
                     if not text or len(text) < 50:
                         continue
+                    # Skip oversized segments (TOC pages, acronym tables, etc.)
+                    # These are structurally noisy and produce low-quality vectors.
+                    if len(text) > 1500:
+                        continue
+                    if context_prefix:
+                        text = f"{context_prefix}\n\n{text}"
                     meta = {
                         'content_id': str(item['id']),
                         'title': item.get('title', ''),
@@ -192,6 +201,8 @@ class LanceVectorizer:
                 text = (item.get('transcript') or '').strip()
                 if not text or len(text) < 50:
                     continue
+                if context_prefix:
+                    text = f"{context_prefix}\n\n{text}"
                 meta = {
                     'content_id': str(item['id']),
                     'title': item.get('title', ''),
@@ -346,8 +357,8 @@ def main():
                         help='Max items to process (default: 5000)')
     parser.add_argument('--anythingllm-path', action='store_true',
                         help='Just print the AnythingLLM storage path and exit')
-    parser.add_argument('--model', type=str, default='all-MiniLM-L6-v2',
-                        help='Embedding model name (default: all-MiniLM-L6-v2, try nomic-ai/nomic-embed-text-v1.5)')
+    parser.add_argument('--model', type=str, default='nomic-ai/nomic-embed-text-v1.5',
+                        help='Embedding model name (default: nomic-ai/nomic-embed-text-v1.5)')
     args = parser.parse_args()
 
     lv = LanceVectorizer(model_name=args.model)

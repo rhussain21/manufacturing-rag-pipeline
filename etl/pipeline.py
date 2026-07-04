@@ -617,6 +617,7 @@ class contentETL:
                 'do_not_vectorize': True,
                 'screening_status': 'dq_rejected',
                 'screening_reason': dq_result['reason'],
+                'vectorization_status': 'not_applicable',
             })
 
         # Write structured metadata to content_metadata table
@@ -833,6 +834,7 @@ class contentETL:
                         'do_not_vectorize': True,
                         'screening_status': 'dq_rejected',
                         'screening_reason': dq_result['reason'],
+                        'vectorization_status': 'not_applicable',
                     })
                     continue
                 elif dq_result.get("flags"):

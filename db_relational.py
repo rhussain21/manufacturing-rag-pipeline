@@ -416,6 +416,7 @@ class relationalDB:
              "CREATE INDEX IF NOT EXISTS idx_extraction_status ON content(extraction_status)"),
             ("do_not_vectorize", "ALTER TABLE content ADD COLUMN do_not_vectorize BOOLEAN DEFAULT FALSE",
              "CREATE INDEX IF NOT EXISTS idx_do_not_vectorize ON content(do_not_vectorize)"),
+            ("context_summary", "ALTER TABLE content ADD COLUMN context_summary TEXT", None),
         ]
 
         # Rename columns for existing databases (safe: only runs if old column exists)
@@ -809,7 +810,10 @@ class relationalDB:
                         transcription_model = excluded.transcription_model,
                         extraction_hardware = excluded.extraction_hardware,
                         extraction_status = excluded.extraction_status,
-                        vectorization_status = excluded.vectorization_status,
+                        vectorization_status = CASE
+                            WHEN excluded.content_hash != content.content_hash THEN 'pending'
+                            ELSE content.vectorization_status
+                        END,
                         screening_status = excluded.screening_status,
                         screening_reason = excluded.screening_reason,
                         screened_at = excluded.screened_at,
@@ -826,7 +830,7 @@ class relationalDB:
                     record.get('content_hash'), record.get('transcript'), record.get('language'),
                     record.get('transcription_date'), record.get('transcription_model'),
                     record.get('extraction_hardware'),
-                    record.get('extraction_status'), record.get('vectorization_status'),
+                    record.get('extraction_status'), record.get('vectorization_status') or 'pending',
                     record.get('screening_status'), record.get('screening_reason'),
                     record.get('screened_at'),
                     record.get('signal_processed', False), record.get('marked_for_deletion', False),

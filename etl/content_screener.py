@@ -407,6 +407,7 @@ class ContentScreener:
         if status == "rejected":
             update_data["marked_for_deletion"] = True
             update_data["do_not_vectorize"] = True
+            update_data["vectorization_status"] = "not_applicable"
 
         self.db.update_record(content_id, update_data)
 

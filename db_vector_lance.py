@@ -117,7 +117,7 @@ class LanceVectorDB:
         print(f"Loading embedding model: {model_name} on {device}...")
         try:
             model = SentenceTransformer(
-                model_name, 
+                model_name,
                 device=device,
                 trust_remote_code=self._trust_remote_code,
             )
@@ -125,10 +125,17 @@ class LanceVectorDB:
             print(f"Failed on {device}, falling back to CPU...")
             device = "cpu"
             model = SentenceTransformer(
-                model_name, 
+                model_name,
                 device="cpu",
                 trust_remote_code=self._trust_remote_code,
             )
+
+        # Nomic models report max_seq_length=2048 but don't always enforce it
+        # via the tokenizer when loaded with trust_remote_code. Cap explicitly
+        # so the attention buffer never exceeds ~64MB per head.
+        if not hasattr(model, 'max_seq_length') or model.max_seq_length is None or model.max_seq_length > 2048:
+            model.max_seq_length = 512
+        print(f"max_seq_length: {model.max_seq_length}")
 
         return model, device
 
@@ -141,6 +148,11 @@ class LanceVectorDB:
 
         if not texts:
             return np.empty((0, self.embedding_dim), dtype=np.float32)
+
+        # Hard truncate as a safety net — prevents OOM on pathologically long segments
+        # (e.g. full transcripts with no chunking). ~4 chars/token.
+        max_chars = (self.model.max_seq_length or 512) * 4
+        texts = [t[:max_chars] for t in texts]
 
         print(f"Creating embeddings for {len(texts)} documents...")
         embeddings = self.model.encode(

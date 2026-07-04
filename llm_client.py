@@ -216,6 +216,89 @@ class GeminiClient:
 
         raise last_error or RuntimeError(f"Gemini failed after {MAX_RETRIES} attempts")
 
+class OpenAIClient:
+    def __init__(self, model="gpt-4o"):
+        from openai import OpenAI
+        self.model_name = model
+        api_key = os.getenv("OPENAI_API_KEY")
+        if not api_key:
+            raise ValueError("Set OPENAI_API_KEY in your .env file")
+        self._client = OpenAI(api_key=api_key)
+
+    def generate(self, prompt, system_prompt, temperature=0.7):
+        last_error = None
+
+        for attempt in range(1, MAX_RETRIES + 1):
+            try:
+                response = self._client.chat.completions.create(
+                    model=self.model_name,
+                    temperature=temperature,
+                    messages=[
+                        {"role": "system", "content": system_prompt},
+                        {"role": "user",   "content": prompt},
+                    ],
+                )
+                return response.choices[0].message.content
+
+            except Exception as e:
+                error_cat = _classify_error(e)
+                last_error = e
+
+                if error_cat in ('rate_limit', 'timeout', 'server_error', 'connection_error'):
+                    wait = BASE_BACKOFF ** attempt * (3 if error_cat == 'rate_limit' else 1)
+                    logger.warning(f"OpenAI attempt {attempt}/{MAX_RETRIES} failed ({error_cat}), retrying in {wait}s")
+                    time.sleep(wait)
+                elif attempt < MAX_RETRIES:
+                    wait = BASE_BACKOFF ** attempt
+                    logger.warning(f"OpenAI attempt {attempt}/{MAX_RETRIES} failed ({error_cat}: {e}), retrying in {wait}s")
+                    time.sleep(wait)
+                else:
+                    raise
+
+        raise last_error or RuntimeError(f"OpenAI failed after {MAX_RETRIES} attempts")
+
+
+class ClaudeClient:
+    def __init__(self, model="claude-sonnet-4-6"):
+        import anthropic
+        self.model_name = model
+        api_key = os.getenv("ANTHROPIC_API_KEY")
+        if not api_key:
+            raise ValueError("Set ANTHROPIC_API_KEY in your .env file")
+        self._client = anthropic.Anthropic(api_key=api_key)
+
+    def generate(self, prompt, system_prompt, temperature=0.7):
+        last_error = None
+
+        for attempt in range(1, MAX_RETRIES + 1):
+            try:
+                response = self._client.messages.create(
+                    model=self.model_name,
+                    max_tokens=8192,
+                    temperature=temperature,
+                    system=system_prompt,
+                    messages=[{"role": "user", "content": prompt}],
+                )
+                return response.content[0].text
+
+            except Exception as e:
+                error_cat = _classify_error(e)
+                last_error = e
+
+                if error_cat in ('rate_limit', 'timeout', 'server_error', 'connection_error'):
+                    wait = BASE_BACKOFF ** attempt * (3 if error_cat == 'rate_limit' else 1)
+                    logger.warning(f"Claude attempt {attempt}/{MAX_RETRIES} failed ({error_cat}), retrying in {wait}s")
+                    time.sleep(wait)
+                elif attempt < MAX_RETRIES:
+                    wait = BASE_BACKOFF ** attempt
+                    logger.warning(f"Claude attempt {attempt}/{MAX_RETRIES} failed ({error_cat}: {e}), retrying in {wait}s")
+                    time.sleep(wait)
+                else:
+                    raise
+
+        raise last_error or RuntimeError(f"Claude failed after {MAX_RETRIES} attempts")
+
+
 class LLMClient:
     def __init__(self, vector_db, relational_db, llm_client):
         self.vdb = vector_db

@@ -2,7 +2,6 @@ content_files/
 Vectors/
 Database/   
 Benchmark/
-Dashboards/
 media/
 .chainlit/
 .env
@@ -23,7 +22,6 @@ test_adapter.py
 test_pipeline.py
 workflows/backfill_status.py
 notebooks/
-dashboard_data/
 sync_metadata/
 text_markdowns/
 analysis/

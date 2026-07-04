@@ -123,11 +123,13 @@ def run_ingestion(args):
     health_tracker = SourceHealthTracker()
     downloader = ContentSources(config.MEDIA_DIR, db=db, health_tracker=health_tracker)
 
-    downloader.download_approved(approved)
+    actually_downloaded = downloader.download_approved(approved)
+    n_new = len(actually_downloaded)
+    n_skipped = len(approved) - n_new
 
     syslog.info('ingestion', 'download_complete',
-                f'Downloaded {len(approved)} items',
-                details={'count': len(approved)})
+                f'Downloaded {n_new} new items ({n_skipped} already in DB)',
+                details={'new': n_new, 'skipped': n_skipped, 'attempted': len(approved)})
 
     # ── Step 3: Health Report ──
     print("\n── Source Health Report ──")
@@ -142,7 +144,7 @@ def run_ingestion(args):
         print("No sources flagged.")
 
     syslog.end_run('ingestion',
-                   summary=f'{results.candidates_approved} approved, {len(approved)} downloaded')
+                   summary=f'{results.candidates_approved} approved, {n_new} new downloaded, {n_skipped} already in DB')
 
     print(f"\n{'=' * 60}")
     print("INGESTION COMPLETE")
