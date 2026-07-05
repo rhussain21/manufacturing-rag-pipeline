@@ -185,6 +185,7 @@ class GeminiClient:
                     config=self._types.GenerateContentConfig(
                         temperature=temperature,
                         max_output_tokens=8192,
+                        http_options=self._types.HttpOptions(timeout=60000),  # ms; prevents an indefinite hang on a stalled connection
                     )
                 )
                 if response.text is None:

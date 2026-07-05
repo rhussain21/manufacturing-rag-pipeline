@@ -5,17 +5,20 @@ Content Processing Workflow.
 Processes pending content through the ETL pipeline:
   1. Content extraction (transcription for audio, text extraction for PDF/HTML)
   2. Content screening (LLM quality gate)
-  3. Signal extraction (extract structured signals from approved content)
+  3. Signal extraction — OFF BY DEFAULT. Cut from the pipeline: NB3 retrieval
+     experiments showed signal-based pre-filtering hurts retrieval quality
+     (both embedding-based and SQL-lexical variants). The code is intact and
+     can still be run manually with --run-signals.
 
 Usage:
-    # Full pipeline (all steps)
+    # Full pipeline as it runs by default (extraction + screening, no signals)
     python workflows/process.py
 
-    # Only transcribe/extract, nothing else
-    python workflows/process.py --skip-screening --skip-signals
+    # Only transcribe/extract, skip screening too
+    python workflows/process.py --skip-screening
 
-    # Limit signal extraction batch size
-    python workflows/process.py --signal-batch 5
+    # Opt in to signal extraction (manual use only — not part of the default flow)
+    python workflows/process.py --run-signals --signal-batch 5
 
     # Process only audio content
     python workflows/process.py --content-type audio
@@ -56,7 +59,7 @@ def run_processing(args):
     print("=" * 60)
     print(f"Content type:      {args.content_type or 'all'}")
     print(f"Skip screening:    {args.skip_screening}")
-    print(f"Skip signals:      {args.skip_signals}")
+    print(f"Run signals:       {args.run_signals} (off by default — cut from the pipeline)")
     print(f"Signal batch:      {args.signal_batch}")
     print()
 
@@ -180,8 +183,11 @@ def run_processing(args):
             print("No pending content to screen.")
 
     # ── Step 3: Signal Extraction ──
-    if args.skip_signals:
-        print("\n── Step 3: Signal Extraction SKIPPED ──")
+    # Off by default — cut from the retrieval pipeline (NB3 experiments showed
+    # signal-based pre-filtering hurts retrieval quality). Code is kept intact
+    # and can still be run manually via --run-signals.
+    if not args.run_signals:
+        print("\n── Step 3: Signal Extraction SKIPPED (opt-in via --run-signals) ──")
     else:
         print("\n── Step 3: Signal Extraction ──")
         pending_signals = db.query("""
@@ -240,7 +246,8 @@ def run_processing(args):
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Content processing workflow (extraction, screening, signals).",
+        description="Content processing workflow (extraction, screening; "
+                    "signal extraction is opt-in via --run-signals).",
         formatter_class=argparse.RawDescriptionHelpFormatter,
     )
     parser.add_argument(
@@ -253,8 +260,9 @@ def main():
         help='Skip LLM content screening',
     )
     parser.add_argument(
-        '--skip-signals', action='store_true',
-        help='Skip signal extraction',
+        '--run-signals', action='store_true',
+        help='Run signal extraction (off by default — cut from the pipeline; '
+             'code is intact and can still be run manually with this flag)',
     )
     parser.add_argument(
         '--signal-batch', type=int, default=5,

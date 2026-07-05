@@ -1,0 +1,57 @@
+[
+  {
+    "id": 139,
+    "title": "[PDF] Beckhoff PLC Configuration Guide | ESO",
+    "url": "https://www.eso.org/projects/elt/develop/ifw/ifw-ll/sphinx/plc_config_guide/latexpdf/latex/plc_config_guide.pdf"
+  },
+  {
+    "id": 204,
+    "title": "[PDF] Beckhoff plc programming manual",
+    "url": "https://assets-global.website-files.com/6861d06c5213bd6666fb9344/68b40b74a41a17d562ab9eb2_mumuxajalijojote.pdf"
+  },
+  {
+    "id": 297,
+    "title": "[PDF] Industrial Edge: Real-time intelligence in process plants",
+    "url": "https://assets.new.siemens.com/siemens/assets/api/uuid:1a9305ff-070c-4a21-97cb-33f16bcaada6/whitepaper-industrial-edge-en-0621.pdf"
+  },
+  {
+    "id": 405,
+    "title": "[PDF] Safety in control systems according to EN ISO 13849-1 - ABB",
+    "url": "https://search.abb.com/library/Download.aspx?DocumentID=2TLC172003B02002"
+  },
+  {
+    "id": 932,
+    "title": "[PDF] CURRICULAR GUIDANCE: Industrial Cybersecurity Knowledge",
+    "url": "https://isagca.org/hubfs/2023%20ISA%20Website%20Redesigns/ISAGCA/PDFs/Industrial%20Cybersecurity%20Knowledge%20FINAL.pdf"
+  },
+  {
+    "id": 922,
+    "title": "[PDF] The Evolution of Industrial Cybersecurity and Cyber Risk White Paper",
+    "url": "https://www.the-digital-insurer.com/wp-content/uploads/2020/01/1554-whitepaper-c11-742528.pdf"
+  },
+  {
+    "id": 1039,
+    "title": "[PDF] Transforming Manufacturing with AI and Edge Computing - Dell",
+    "url": "https://www.delltechnologies.com/asset/en-us/solutions/business-solutions/briefs-summaries/transforming-manufacturing-with-ai-and-edge-computing-ebook.pdf"
+  },
+  {
+    "id": 1029,
+    "title": "[PDF] Exploring Intelligent Edge Computing and AI for Industrial Automation",
+    "url": "http://admin.mantechpublications.com/index.php/IJSCAI/article/download/3098/1700"
+  },
+  {
+    "id": 1045,
+    "title": "[PDF] Introduction to Siemens Industrial Edge \u2022 Managing AI Lifecycle",
+    "url": "https://indico.cern.ch/event/1009424/contributions/4246135/attachments/2205833/3732073/20210310_Edge%20Computing%20and%20AI%20for%20Industrial%20Applications.pdf"
+  },
+  {
+    "id": 1145,
+    "title": "[PDF] System Security Design Guidelines - Literature Library",
+    "url": "https://literature.rockwellautomation.com/idc/groups/literature/documents/rm/secure-rm001_-en-p.pdf"
+  },
+  {
+    "id": 1550,
+    "title": "[PDF] Digital Platforms for Industrial Edge Management in Europe 2025",
+    "url": "https://assets.new.siemens.com/siemens/assets/api/uuid:bac0b256-9895-4afe-8802-e7320c75a7f7/EdgeMgmt-PAC-RADAR-Platforms-Europe-2025-reprint-Siemens.pdf"
+  }
+]

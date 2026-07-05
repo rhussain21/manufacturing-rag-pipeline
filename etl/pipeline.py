@@ -139,28 +139,38 @@ class contentETL:
 
 
     def extract_content(self,file_path, file_type=None):
-        """Extract text content from various file types"""
-        
+        """Extract text content from various file types.
+
+        Returns (content, file_type, extraction_method) — extraction_method
+        records provenance for the transcription_model column: the PDF
+        backend that succeeded (reducto/pymupdf/pdfplumber), the Whisper
+        variant for audio, or 'N/A' for types where it isn't tracked.
+        """
+
         if file_type is None:
             file_type = self.detect_file_type(file_path)
-        
+
         print(f"Extracting content from {file_path} (type: {file_type})")
-             
+
         if file_type == 'text':
             content = self.extract_text_file(file_path)
+            extraction_method = 'N/A'
         elif file_type == 'pdf':
-            content = self.extract_pdf_text(file_path)
+            content, extraction_method = self.extract_pdf_text(file_path)
         elif file_type == 'docx':
             content = self.extract_docx_text(file_path)
+            extraction_method = 'N/A'
         elif file_type == 'html':
             content = self.extract_html_text(file_path)
+            extraction_method = 'N/A'
         elif file_type == 'audio':
             content = self.extract_audio_text(file_path)
+            extraction_method = self._get_whisper_model_name()
         else:
             raise ValueError(f"Unsupported file type: {file_type}")
-        
+
         print(f"Content extraction completed, length: {len(content)}")
-        return content, file_type    
+        return content, file_type, extraction_method
     
 
     def extract_text_file(self,file_path):
@@ -175,18 +185,20 @@ class contentETL:
 
     def extract_pdf_text(self, file_path):
         """Extract text from PDF files.
-        Delegates to PDFExtractor (PyMuPDF primary, pdfplumber fallback).
-        Strips NUL (0x00) characters that cause PostgreSQL insert failures."""
-        from tools.pdf_extractor import PDFExtractor
+        Delegates to extract_pdf_text_smart: Reducto primary, legacy
+        (PyMuPDF/pdfplumber) fallback on failure or over the page-count
+        ceiling. Strips NUL (0x00) characters that cause PostgreSQL insert
+        failures. Returns (text, extraction_method)."""
+        from tools.pdf_extractor import extract_pdf_text_smart
 
         print(f"Attempting PDF extraction for {file_path}")
-        text, page_count = PDFExtractor.extract_text(file_path)
+        text, page_count, method = extract_pdf_text_smart(file_path)
         if text and text.strip():
-            print(f"PDF extracted {len(text)} characters ({page_count} pages)")
-            return text.strip()
+            print(f"PDF extracted via {method}: {len(text)} characters ({page_count} pages)")
+            return text.strip(), method
 
         print(f"All PDF extraction methods failed for {file_path}")
-        return f"PDF extraction failed: All methods failed"
+        return f"PDF extraction failed: All methods failed", "failed"
 
 
     def extract_docx_text(self,file_path):
@@ -488,9 +500,10 @@ class contentETL:
             return None
         
         if content is None:
-            content, file_type = self.extract_content(file_path)
+            content, file_type, extraction_method = self.extract_content(file_path)
         else:
             file_type = self.detect_file_type(file_path)
+            extraction_method = 'N/A'
         
         if content and ("extraction failed" in content.lower() or "transcription failed" in content.lower()):
             print(f"Skipping {file_path} due to extraction failure")
@@ -593,7 +606,7 @@ class contentETL:
             'file_size_mb': file_size_mb,
             'content_hash': content_hash,
             'transcription_date': datetime.now().isoformat(),
-            'transcription_model': self._get_whisper_model_name() if file_type == 'audio' else 'N/A',
+            'transcription_model': extraction_method,
             'extraction_hardware': hw,
             'segments': segments,
             'metadata': {
@@ -817,7 +830,7 @@ class contentETL:
                     continue
                 
                 # Extract content (transcribe audio or extract text)
-                content, file_type = self.extract_content(file_path)
+                content, file_type, extraction_method = self.extract_content(file_path)
                 if not content or "extraction failed" in content.lower() or "transcription failed" in content.lower():
                     print(f"  Extraction failed for: {title}")
                     self.db.update_record(content_id, {'extraction_status': 'failed'})
@@ -864,7 +877,7 @@ class contentETL:
                 update_data = {
                     'transcript': content,
                     'transcription_date': datetime.now().isoformat(),
-                    'transcription_model': self._get_whisper_model_name() if is_audio else 'N/A',
+                    'transcription_model': extraction_method,
                     'extraction_hardware': hw,
                     'extraction_status': 'completed',
                     'content_hash': content_hash,

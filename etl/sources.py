@@ -761,13 +761,15 @@ class ContentSources:
 
         extracted_text = result["text"]
         pdf_path = result["pdf_path"]
+        extraction_method = result.get("extraction_method", "N/A")
 
         # Save clean text
         with open(txt_filepath, 'w', encoding='utf-8') as f:
             f.write(extracted_text)
 
         file_size_mb = round(len(extracted_text.encode('utf-8')) / (1024 * 1024), 2)
-        print(f"PDF extracted [{result['page_count']} pages, {result['char_count']} chars]: {base_name}")
+        print(f"PDF extracted via {extraction_method} "
+              f"[{result['page_count']} pages, {result['char_count']} chars]: {base_name}")
 
         provider = (extra_metadata or {}).get('provider', '')
         metadata = self._create_content_metadata(
@@ -797,6 +799,7 @@ class ContentSources:
                 'duration_seconds': None,
                 'file_size_mb': file_size_mb,
                 'content_hash': None,
+                'transcription_model': extraction_method,
                 'segments': [],
                 'metadata': metadata,
             }

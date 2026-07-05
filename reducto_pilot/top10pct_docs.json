@@ -1,0 +1,782 @@
+[
+ {
+  "id": 182,
+  "title": "[PDF] GE Fanuc Automation - Optimal Control Systems",
+  "size_mb": 76.51000213623047,
+  "url": "http://optimalcontrol.net/user_manuals/General_Electric/Controllers/GE_Fanuc_Automation_Series_90-30_Programmable_Controller_GFK-0356C.pdf"
+ },
+ {
+  "id": 1080,
+  "title": "[PDF] Operator Components and Networking Manual - Support",
+  "size_mb": 63.40999984741211,
+  "url": "https://support.industry.siemens.com/cs/attachments/42699295/BHsl_0310_en.pdf"
+ },
+ {
+  "id": 725,
+  "title": "[PDF] Automation Control Environment (ACE) Version 4 User's Manual",
+  "size_mb": 63.130001068115234,
+  "url": "https://files.omron.eu/downloads/latest/manual/en/i633_ace_4.0_users_manual_en.pdf?v=2"
+ },
+ {
+  "id": 307,
+  "title": "[PDF] SIMATIC PCS 7 Process Control System - Support",
+  "size_mb": 62.779998779296875,
+  "url": "https://support.industry.siemens.com/cs/attachments/109745632/KG_STPCS7_en_2024_Web.pdf"
+ },
+ {
+  "id": 762,
+  "title": "[PDF] EcoStruxure Cobot Expert Software Guide - Conrad Electronic",
+  "size_mb": 59.18000030517578,
+  "url": "https://asset.conrad.com/media10/add/160267/c1/-/en/003304612ML01/upute-za-rukovanje-3304612-schneider-electric-lxmrl12c1000-upravljanje-1-st.pdf"
+ },
+ {
+  "id": 861,
+  "title": "[PDF] X20 system - all4sps.com",
+  "size_mb": 56.36000061035156,
+  "url": "https://www.all4sps.com/mediafiles/Sonstiges/X20PS3300_1.pdf?srsltid=AfmBOor9TpnwQmIVZrx7tTXpqhmLh-g-9yis27nhWOgb9qvmJdTJlNVf"
+ },
+ {
+  "id": 1572,
+  "title": "[PDF] X20 system - User's Manual - all4sps.com",
+  "size_mb": 56.36000061035156,
+  "url": "https://www.all4sps.com/mediafiles/Sonstiges/X20PS3300_1.pdf"
+ },
+ {
+  "id": 1088,
+  "title": "[PDF] S7-1200 Functional Safety Manual - Hmkdirect.com",
+  "size_mb": 54.459999084472656,
+  "url": "https://www.hmkdirect.com/downloads/faq_docs/plc/s7-1200/s7-1200__user_manual.pdf"
+ },
+ {
+  "id": 1507,
+  "title": "[PDF] Schneider Electric General Machine Control Automation solutions ...",
+  "size_mb": 53.9900016784668,
+  "url": "https://www-ftckamf0hvg4htft.a02.azurefd.net/wordpressprd/wp-content/uploads/2019/02/45_GENERAL-MACHINE-CONTROL.pdf"
+ },
+ {
+  "id": 1269,
+  "title": "[PDF] Kinetix Motion Control Selection Guide - Literature Library",
+  "size_mb": 50.2400016784668,
+  "url": "https://literature.rockwellautomation.com/idc/groups/literature/documents/sg/knx-sg001_-en-p.pdf"
+ },
+ {
+  "id": 168,
+  "title": "[PDF] X20 system - User's Manual - EU Automation",
+  "size_mb": 50.220001220703125,
+  "url": "https://assets.euautomation.com/uploads/parts/datasheet/11/x20if1063.pdf"
+ },
+ {
+  "id": 265,
+  "title": "[PDF] SIMATIC Safety - Getting Started - Siemens Industry Online Support",
+  "size_mb": 49.880001068115234,
+  "url": "https://cache.industry.siemens.com/dl/files/838/49972838/att_63504/v1/safety_getting_started_en-US.pdf"
+ },
+ {
+  "id": 1151,
+  "title": "IMC 120 Motion Control System Programming Manual",
+  "size_mb": 47.130001068115234,
+  "url": "https://literature.rockwellautomation.com/idc/groups/literature/documents/pm/1771-pm551_-en-p.pdf"
+ },
+ {
+  "id": 1779,
+  "title": "[PDF] IMC 120 Motion Control System Programming Manual",
+  "size_mb": 47.130001068115234,
+  "url": "https://literature.rockwellautomation.com/idc/groups/literature/documents/pm/1771-pm551_-en-p.pdf"
+ },
+ {
+  "id": 856,
+  "title": "[PDF] B&R Acopos Manual - Motor Systems Inc.",
+  "size_mb": 44.81999969482422,
+  "url": "https://www.motorsystems.com/uploads/pdfs/B&R-Acopos-Automation-Drive-Manual.pdf"
+ },
+ {
+  "id": 759,
+  "title": "[PDF] EcoStruxure Cobot Expert Software Guide - RS-online.com",
+  "size_mb": 43.7400016784668,
+  "url": "https://assets.rs-online.com/v1729159921/Datasheets/c98cf2f2efab6935bce18bb2ae195a46.pdf"
+ },
+ {
+  "id": 1552,
+  "title": "[PDF] B&R SYSTEM 2005 User's Manual",
+  "size_mb": 41.7599983215332,
+  "url": "https://icdn.tradew.com/file/201606/1569362/pdf/8310015.pdf"
+ },
+ {
+  "id": 133,
+  "title": "[PDF] B&R SYSTEM 2005 User's Manual V4.0",
+  "size_mb": 41.7599983215332,
+  "url": "https://www.br-automation.com/downloads_br_productcatalogue/BRP44400000000000000023993/MASYS22005-E_V40_10_2003.pdf"
+ },
+ {
+  "id": 1506,
+  "title": "[PDF] The essential guide Automation and Control - CompuNet Engineering",
+  "size_mb": 40.77000045776367,
+  "url": "http://compunet.com.mk/catalogs/schneider-electric/Automation&Contorl.pdf"
+ },
+ {
+  "id": 1467,
+  "title": "[PDF] NB-series Programmable Terminals NB-Designer Operation Manual",
+  "size_mb": 40.41999816894531,
+  "url": "https://files.omron.eu/downloads/latest/manual/en/v106_nb-designer_software_operation_manual_en.pdf?v=1"
+ },
+ {
+  "id": 1216,
+  "title": "[PDF] SIMATIC HMI WinCC (TIA Portal) - Siemens Industry Online Support",
+  "size_mb": 39.439998626708984,
+  "url": "https://support.industry.siemens.com/cs/attachments/109813308/WinCC_VisualizingProcessesUnified_enUS_en-US.pdf"
+ },
+ {
+  "id": 282,
+  "title": "[PDF] SIMATIC HMI WinCC (TIA Portal) - Support",
+  "size_mb": 39.439998626708984,
+  "url": "https://support.industry.siemens.com/cs/attachments/109813308/WinCC_VisualizingProcessesUnified_enUS_en-US.pdf"
+ },
+ {
+  "id": 349,
+  "title": "[PDF] Modern HMI solutions - Literature Library - Rockwell Automation",
+  "size_mb": 38.36000061035156,
+  "url": "https://literature.rockwellautomation.com/idc/groups/literature/documents/sp/ftalk-sp027_-en-p.pdf"
+ },
+ {
+  "id": 853,
+  "title": "[PDF] Products 2016",
+  "size_mb": 38.34000015258789,
+  "url": "https://pzip.ru/editor/upload/pdf/Produktkatalog2016%20-%20Volume%20%20I%20-%20Control,%20HMI%20&%20Motion.pdf"
+ },
+ {
+  "id": 1421,
+  "title": "[PDF] Hello ASSISTA Quick Set-up Guide",
+  "size_mb": 38.11000061035156,
+  "url": "https://www.mitsubishifa.co.th/files/dl/bfp-a3715c.pdf"
+ },
+ {
+  "id": 994,
+  "title": "[PDF] Motion Control Technology Systems & Programming",
+  "size_mb": 37.34000015258789,
+  "url": "https://cdn-static.nidec-netherlands.nl/media/2925-a-guide-to-motion-control-technology-systems-programming-iss2x-0704-0007-02x.pdf"
+ },
+ {
+  "id": 1312,
+  "title": "[PDF] ENGINEERING MANUAL SSC600 - ABB",
+  "size_mb": 35.70000076293945,
+  "url": "https://library.e.abb.com/public/b7c27988722d427f9dca5630ac0c2464/SSC600_eng_758920_ENa.pdf?x-sign=qN4iffUUT17eOdMgrXiAVHCbkFZLIHx8rfb9UNdH%2FsU%2BDhk8aF%2F%2BdvIOdEbsErNZ"
+ },
+ {
+  "id": 1443,
+  "title": "FA-IT Integrated Solution e-F@ctory",
+  "size_mb": 34.869998931884766,
+  "url": "https://www.mitsubishielectric.com/dl/fa/document/catalog/efactory/l16012/I16012.pdf"
+ },
+ {
+  "id": 1144,
+  "title": "[PDF] CIP Security with Rockwell Automation Products Application ...",
+  "size_mb": 34.529998779296875,
+  "url": "https://literature.rockwellautomation.com/idc/groups/literature/documents/at/secure-at001_-en-p.pdf"
+ },
+ {
+  "id": 1444,
+  "title": "[PDF] TOTAL MAINTENANCE SOLUTIONS",
+  "size_mb": 34.119998931884766,
+  "url": "https://www.mitsubishielectric.co.jp/dl/fa/document/catalog/competencies/l16094/l16094enga.pdf"
+ },
+ {
+  "id": 489,
+  "title": "[PDF] Documentation | EN - Application Guide TwinSAFE - Robo Challenge",
+  "size_mb": 34.099998474121094,
+  "url": "https://robochallenge.pl/wp-content/uploads/2022/09/TwinSAFE-Application-Guide.pdf"
+ },
+ {
+  "id": 665,
+  "title": "[PDF] MELSEC iQ-R CPU Module User's Manual (Application)",
+  "size_mb": 33.529998779296875,
+  "url": "https://www.mitsubishielectric.com/dl/fa/document/manual/plc/sh081264eng/sh081264engaq.pdf"
+ },
+ {
+  "id": 194,
+  "title": "[PDF] B&R SYSTEM 2000",
+  "size_mb": 33.439998626708984,
+  "url": "https://www.br-automation.com/downloads_br_productcatalogue/BRP44400000000000000023981/MASYS22003-E_V40_03_2001.pdf"
+ },
+ {
+  "id": 1403,
+  "title": "[PDF] Programming Basics - Mitsubishi Electric",
+  "size_mb": 33.22999954223633,
+  "url": "https://www.mitsubishielectric.com/fa/service-support/global/e-learning/pdf/eng/1-Program_Basics_na_eng.pdf"
+ },
+ {
+  "id": 662,
+  "title": "[PDF] FA-IT Integrated Solutione-F@ctory - Mitsubishi Electric",
+  "size_mb": 33.16999816894531,
+  "url": "https://mitsubishielectric.in/dl/fa/document/catalog/efactory/l16012/I16012.pdf"
+ },
+ {
+  "id": 256,
+  "title": "Automation Framework V2.2 - Support",
+  "size_mb": 33.13999938964844,
+  "url": "https://support.industry.siemens.com/cs/attachments/109817223/109817223_AutomationFramework_DOC_V2_2_2_en.pdf"
+ },
+ {
+  "id": 407,
+  "title": "[PDF] ABB Safety Handbook Machine Safety - Jokab Safety products",
+  "size_mb": 33.02000045776367,
+  "url": "https://library.e.abb.com/public/9175ca249a3b49119c56d5956de36fdd/ABB_Safety_Handbook_2TLC172001C0202.pdf"
+ },
+ {
+  "id": 742,
+  "title": "[PDF] Preventa solutions for efficient machine safety - TME.eu.",
+  "size_mb": 32.77000045776367,
+  "url": "https://www.tme.eu/Document/900a61047a8a10e571a82d8a9f0b037e/preventa.pdf"
+ },
+ {
+  "id": 631,
+  "title": "MELFA FAMILY",
+  "size_mb": 32.029998779296875,
+  "url": "https://eu-assets.contentstack.com/v3/assets/blt5412ff9af9aef77f/blt5022be0ded6691fa/67a2239f91091f1f8f712f8d/MELFA_Family_203684-O.pdf"
+ },
+ {
+  "id": 790,
+  "title": "[PDF] EcoStruxure Control Expert Operating Modes - Microsoft .NET",
+  "size_mb": 32.0099983215332,
+  "url": "https://pimassetsprdst.blob.core.windows.net/assets/apc_Original/37/03/41993703.pdf"
+ },
+ {
+  "id": 663,
+  "title": "[PDF] FA Remote Solutions - Mitsubishi Electric",
+  "size_mb": 31.43000030517578,
+  "url": "https://www.mitsubishifa.co.th/files/dl/FA_RemoteSolution_catalog_ENG_L(NA)16090ENG-A%202103.pdf"
+ },
+ {
+  "id": 611,
+  "title": "[PDF] MELSEC iQ-R Safety Application Guide - Mitsubishi Electric",
+  "size_mb": 31.40999984741211,
+  "url": "https://www.mitsubishielectric.com/dl/fa/document/manual/plc/sh081538eng/sh081538engh.pdf"
+ },
+ {
+  "id": 707,
+  "title": "[PDF] NJ-series CPU Unit Motion Control User's Manual - MIEL - OMRON",
+  "size_mb": 31.389999389648438,
+  "url": "http://www.miel.si/wp-content/VsebinaPDF/W507-E1-01_NJ-series%20CPU%20Unit%20Motion%20Control%20User.pdf"
+ },
+ {
+  "id": 620,
+  "title": "[PDF] Data Collection/Analysis Solutions",
+  "size_mb": 29.3700008392334,
+  "url": "https://dl.mitsubishielectric.co.jp/dl/fa/document/catalog/competencies/l16101/l16101eng.pdf"
+ },
+ {
+  "id": 664,
+  "title": "[PDF] Mitsubishi Electric Programmable Controller Training Manual ...",
+  "size_mb": 29.09000015258789,
+  "url": "https://www.mitsubishielectric.com/dl/fa/document/schooltext/school_text/sh030278eng/sh030278enga.pdf"
+ },
+ {
+  "id": 142,
+  "title": "[PDF] TF5200 | TwinCAT 3 CNC - Programming manual - download",
+  "size_mb": 29.049999237060547,
+  "url": "https://download.beckhoff.com/download/document/automation/twincat3/TF5200_programming_manual_en.pdf"
+ },
+ {
+  "id": 760,
+  "title": "[PDF] Operating Manual - Robot T-Series - 12/2017",
+  "size_mb": 28.81999969482422,
+  "url": "https://fra-connect.mo.cloudinary.net/PRODUCT/DOCUMENT/1887/VRKT3M0FNC00000_NOTICE_1.pdf?ts=1704848307629"
+ },
+ {
+  "id": 1715,
+  "title": "[PDF] Introduction to Process Control - ElCoM",
+  "size_mb": 28.780000686645508,
+  "url": "https://elcom-team.com/Subjects/%D9%85%D8%AC%D8%B3%D8%A7%D8%AA%20%D9%88%D8%AA%D8%B1%D8%A7%D8%A8%D8%B7%D8%A7%D8%AA%D9%87%D8%A7/%D8%A7%D9%84%D8%B3%D9%84%D8%A7%D9%8A%D8%AF%D8%A7%D8%AA/%D8%B3%D9%84%D8%A7%D9%8A%D8%AF%D8%A7%D8%AA%20%D8%AA%D8%B1%D8%A7%D9%86%D8%B3%20%D8%B9%D8%A8%D8%A7%D8%A8%D9%86%D8%A9.pdf"
+ },
+ {
+  "id": 559,
+  "title": "[PDF] CNC Controls - FANUC America",
+  "size_mb": 28.3799991607666,
+  "url": "https://www.fanucamerica.com/docs/default-source/cnc-files/cnc-function-catalog.pdf"
+ },
+ {
+  "id": 716,
+  "title": "[PDF] Omron NX-series Digital I/O Units User's Manual - BigCommerce",
+  "size_mb": 28.209999084472656,
+  "url": "https://cdn11.bigcommerce.com/s-ca10qrhzok/content/documents/omron-nx-series-digital-io-units-iom.pdf"
+ },
+ {
+  "id": 21,
+  "title": "2601.02792v1",
+  "size_mb": 28.190000534057617,
+  "url": null
+ },
+ {
+  "id": 1425,
+  "title": "[PDF] Revolutionized Social Infrastructure Solutions - Mitsubishi Electric",
+  "size_mb": 27.920000076293945,
+  "url": "https://mitsubishielectricfa.com.my/wp-content/uploads/2021/03/MELViz_iQ_Plantsuite.pdf"
+ },
+ {
+  "id": 570,
+  "title": "[PDF] FANUC Robot - OPERATOR'S MANUAL - Robo Challenge",
+  "size_mb": 27.510000228881836,
+  "url": "https://robochallenge.pl/wp-content/uploads/2023/09/Tablet_TP_operator_manual_B-84274EN_04.pdf"
+ },
+ {
+  "id": 1431,
+  "title": "[PDF] Motion Module Quick Start Guide - Mitsubishi Electric",
+  "size_mb": 27.31999969482422,
+  "url": "https://www.mitsubishielectric.com/dl/fa/document/catalog/ssc/l03191eng/l03191enga.pdf"
+ },
+ {
+  "id": 643,
+  "title": "[PDF] Mitsubishi Electric Servo System Motion Module Quick Start Guide",
+  "size_mb": 27.31999969482422,
+  "url": "https://www.mitsubishielectric.com/dl/fa/document/catalog/ssc/l03191eng/l03191enga.pdf"
+ },
+ {
+  "id": 1440,
+  "title": "MELSEC Consolidated Catalog",
+  "size_mb": 27.040000915527344,
+  "url": "https://www.mitsubishielectric.com/dl/fa/document/catalog/plc/l08322eng/l08322engg.pdf"
+ },
+ {
+  "id": 218,
+  "title": "S7-1200 Programmable controller",
+  "size_mb": 26.5,
+  "url": "https://cache.industry.siemens.com/dl/files/465/36932465/att_106119/v1/s71200_system_manual_en-US_en-US.pdf"
+ },
+ {
+  "id": 115,
+  "title": "[PDF] S7-1200 Programmable controller - Siemens Industry Online Support",
+  "size_mb": 26.5,
+  "url": "https://cache.industry.siemens.com/dl/files/465/36932465/att_106119/v1/s71200_system_manual_en-US_en-US.pdf"
+ },
+ {
+  "id": 660,
+  "title": "[PDF] FA-IT Integrated solutions e-F@ctory - Mitsubishi Electric",
+  "size_mb": 25.6299991607666,
+  "url": "https://mitsubishielectricfa.com.my/wp-content/uploads/2021/03/l16012ej.pdf"
+ },
+ {
+  "id": 438,
+  "title": "AC500 V3 Motion Controller Documentation",
+  "size_mb": 25.549999237060547,
+  "url": "https://search.abb.com/library/Download.aspx?DocumentID=3ADR011239&LanguageCode=en&DocumentPartId=&Action=Launch"
+ },
+ {
+  "id": 1317,
+  "title": "[PDF] AC500 V3 Motion Controller Documentation - ABB",
+  "size_mb": 25.549999237060547,
+  "url": "https://search.abb.com/library/Download.aspx?DocumentID=3ADR011239&LanguageCode=en&DocumentPartId=&Action=Launch"
+ },
+ {
+  "id": 713,
+  "title": "[PDF] Product Catalog - otomasyonline",
+  "size_mb": 25.239999771118164,
+  "url": "https://www.otomasyonline.com/download/Omron/PRODUCT%20CATALOGUE-FULL.pdf"
+ },
+ {
+  "id": 404,
+  "title": "[PDF] ABB JOKAB SAFETY - Ad-Tech CCI",
+  "size_mb": 24.90999984741211,
+  "url": "https://www.ad-techcci.com/Catalogs/ProductLines/safety/ABB_JokabSafety_Compendium_LR.pdf"
+ },
+ {
+  "id": 272,
+  "title": "[PDF] Automation Framework Basic - Support",
+  "size_mb": 24.639999389648438,
+  "url": "https://support.industry.siemens.com/cs/attachments/109987391/109987391_AutomationFramework_Basic_DOC_V2_2_2_en.pdf"
+ },
+ {
+  "id": 1523,
+  "title": "[PDF] AC500-S Safety user manual V1.2.0 - iautomatica.ru",
+  "size_mb": 24.6200008392334,
+  "url": "https://s3.iautomatica.ru/uf/f68/f68e9f0462dea383b99c9259552ca04a/%D0%A0%D1%83%D0%BA%D0%BE%D0%B2%D0%BE%D0%B4%D1%81%D1%82%D0%B2%D0%BE%20%D0%BF%D0%BE%20%D1%8D%D0%BA%D1%81%D0%BF%D0%BB%D1%83%D0%B0%D1%82%D0%B0%D1%86%D0%B8%D0%B8%20AC500-S.pdf"
+ },
+ {
+  "id": 556,
+  "title": "[PDF] FANUC Robot series R-30iB Mate + Mate Plus Maintenance Manual",
+  "size_mb": 24.450000762939453,
+  "url": "https://www.haascnc.com/content/dam/haascnc/en/service/reference/fanuc-manuals/Fanuc%20Robot%20Series%20R-30iB%20Mate%20+%20Mate%20Plus%20Maintenance%20Manual.pdf"
+ },
+ {
+  "id": 1760,
+  "title": "[PDF] PCS 7 Advanced Process Library V8.0",
+  "size_mb": 24.350000381469727,
+  "url": "https://cache.industry.siemens.com/dl/files/842/57265842/att_48310/v1/s7jal80b_en-US.pdf"
+ },
+ {
+  "id": 342,
+  "title": "[PDF] Power Device Library",
+  "size_mb": 24.290000915527344,
+  "url": "https://literature.rockwellautomation.com/idc/groups/literature/documents/rm/device-rm100_-en-p.pdf"
+ },
+ {
+  "id": 171,
+  "title": "[PDF] MELSEC-Q/L Programming Manual (Common Instruction)",
+  "size_mb": 24.229999542236328,
+  "url": "https://www.mitsubishielectric.com/dl/fa/document/manual/plc/sh080809eng/sh080809engx.pdf"
+ },
+ {
+  "id": 515,
+  "title": "[PDF] Manual | EN - CX1020 / CX1030 - download - Beckhoff",
+  "size_mb": 24.209999084472656,
+  "url": "https://download.beckhoff.com/download/document/ipc/embedded-pc/embedded-pc-cx/cx1020_hwen.pdf"
+ },
+ {
+  "id": 649,
+  "title": "[PDF] MELSEC Consolidated Catalog",
+  "size_mb": 24.149999618530273,
+  "url": "https://www.mitsubishielectric.com/dl/fa/document/catalog/plc/l08322eng/l08322engh.pdf"
+ },
+ {
+  "id": 492,
+  "title": "[PDF] IPC Security Guideline - for Windows 10 - download - Beckhoff",
+  "size_mb": 24.0,
+  "url": "https://download.beckhoff.com/download/document/product-security/guidelines/IPC_Security_Guideline_Win10_en.pdf"
+ },
+ {
+  "id": 422,
+  "title": "[PDF] IRB 1100 - Product manual - Carolina Motion Controls",
+  "size_mb": 23.299999237060547,
+  "url": "https://carolinamotioncontrols.com/content/abb-robotics/IRB%201100/ABB%20Robotics%20IRB%201100%20manual.pdf?srsltid=AfmBOoo1sdF65BrmPYivz3oi09ehzID-Ay3lS55hN_VIY9NhTRXzPENw"
+ },
+ {
+  "id": 605,
+  "title": "[PDF] CC-Link IE TSN Industrial Managed Ethernet Switch User's Manual",
+  "size_mb": 23.270000457763672,
+  "url": "https://www.mitsubishielectric.com/dl/fa/document/manual/plc/sh082449eng/sh082449engg.pdf"
+ },
+ {
+  "id": 1205,
+  "title": "[PDF] SINUMERIK SINUMERIK 840D sl Safety Integrated - Support",
+  "size_mb": 23.18000030517578,
+  "url": "https://support.industry.siemens.com/cs/attachments/109757622/840Dsl_SI_fct_man_1217_en-US.pdf"
+ },
+ {
+  "id": 583,
+  "title": "[PDF] CNC Controls - Functions - FANUC America",
+  "size_mb": 23.06999969482422,
+  "url": "https://www.fanucamerica.com/docs/default-source/cnc-files/brochures/function-catalog.pdf?sfvrsn=999f41bd_13"
+ },
+ {
+  "id": 1436,
+  "title": "[PDF] MELSEC Consolidated Catalog - Mitsubishi Electric",
+  "size_mb": 22.81999969482422,
+  "url": "https://www.mitsubishielectric.com/dl/fa/document/catalog/plc/l08322eng/l08322engj.pdf"
+ },
+ {
+  "id": 497,
+  "title": "[PDF] PC Control 04 - Beckhoff",
+  "size_mb": 22.6299991607666,
+  "url": "https://www.beckhoff.com/media/downloads/information-media/pc-control/pcc_0424_e.pdf"
+ },
+ {
+  "id": 1455,
+  "title": "NX-series EtherNet/IP Unit User's Manual",
+  "size_mb": 22.450000762939453,
+  "url": "https://files.omron.eu/downloads/latest/manual/en/w627_nx_series_ethernetip_unit_users_manual_en.pdf?v=2"
+ },
+ {
+  "id": 675,
+  "title": "[PDF] NX-series EtherNet/IP Unit User's Manual",
+  "size_mb": 22.450000762939453,
+  "url": "https://files.omron.eu/downloads/latest/manual/en/w627_nx_series_ethernetip_unit_users_manual_en.pdf?v=2"
+ },
+ {
+  "id": 1218,
+  "title": "[PDF] SIMATIC HMI WinCC V8.1 Getting Started - Support",
+  "size_mb": 21.950000762939453,
+  "url": "https://support.industry.siemens.com/cs/attachments/109976618/GettingStartedenUS_en-US.pdf"
+ },
+ {
+  "id": 858,
+  "title": "[PDF] Analog input and output modules - RS-online.com",
+  "size_mb": 21.899999618530273,
+  "url": "https://docs.rs-online.com/8e69/A700000013895957.pdf"
+ },
+ {
+  "id": 1406,
+  "title": "[PDF] FX3S/FX3G/FX3GC/FX3U/FX3UC Series Programmable Controllers",
+  "size_mb": 21.799999237060547,
+  "url": "https://www.motionworld.com/assets/mitsubishi-melsec-f-fx3u-series-programmable-logic-controller-manual-programming.pdf"
+ },
+ {
+  "id": 640,
+  "title": "[PDF] Control and Monitoring System for Social Infrastructure MELViz iQ ...",
+  "size_mb": 21.770000457763672,
+  "url": "https://www.mitsubishielectric.com/fa/products/hmi/scada/pdf/l16026eb.pdf"
+ },
+ {
+  "id": 1341,
+  "title": "[PDF] PC Control 01 | 2026 - Beckhoff",
+  "size_mb": 21.760000228881836,
+  "url": "https://www.beckhoff.com/media/downloads/information-media/pc-control/pcc_0126_e.pdf"
+ },
+ {
+  "id": 652,
+  "title": "[PDF] FA-IT Solution e-F@ctory - Mitsubishi Electric",
+  "size_mb": 21.6299991607666,
+  "url": "http://dl.mitsubishielectric.com/dl/fa/document/catalog/sol/efactory/l16012/l16012eh.pdf"
+ },
+ {
+  "id": 172,
+  "title": "[PDF] Logix 5000 Controllers General Instructions - Literature Library",
+  "size_mb": 21.479999542236328,
+  "url": "https://literature.rockwellautomation.com/idc/groups/literature/documents/rm/1756-rm003_-en-p.pdf"
+ },
+ {
+  "id": 650,
+  "title": "[PDF] mitsubishi automation book.pdf",
+  "size_mb": 21.31999969482422,
+  "url": "https://www.lcautomation.com/wb_documents/mitsubishi/mitsubishi%20automation%20book.pdf"
+ },
+ {
+  "id": 1549,
+  "title": "[PDF] WEG-PLC500-users-manual-10009242382-en.pdf",
+  "size_mb": 21.1299991607666,
+  "url": "https://static.weg.net/medias/downloadcenter/ha5/h87/WEG-PLC500-users-manual-10009242382-en.pdf"
+ },
+ {
+  "id": 1370,
+  "title": "[PDF] High-end measurement technology - download - Beckhoff",
+  "size_mb": 21.030000686645508,
+  "url": "https://download.beckhoff.com/download/document/catalog/Beckhoff_Measurement.pdf"
+ },
+ {
+  "id": 735,
+  "title": "[PDF] Industry Services Academy - Schneider Electric",
+  "size_mb": 20.90999984741211,
+  "url": "https://www.se.com/ww/en/work/services/training/isacademy/public/pdfs/Industry%20Services%20Academy%20Training%20Catalog.pdf"
+ },
+ {
+  "id": 397,
+  "title": "[PDF] \u2014 ABB AbilityTM Edge Industrial Gateway",
+  "size_mb": 20.780000686645508,
+  "url": "https://library.e.abb.com/public/c2e8d37f3ce4478cbb14e62da11cf959/ABB%20Ability%20Industrial%20Edge%20Gateway_User%20Manual_02-2021.pdf?x-sign=FAFumpGQqivXqwBnNxgsw3LzV6%2BPewNLvfvtpClLESlF1yX2jyPDBsYDbH4qWxyb"
+ },
+ {
+  "id": 1136,
+  "title": "[PDF] Logix 5000 Controller Safety Application Instruction Set",
+  "size_mb": 20.68000030517578,
+  "url": "https://literature.rockwellautomation.com/idc/groups/literature/documents/rm/1756-rm095_-en-p.pdf"
+ },
+ {
+  "id": 671,
+  "title": "[PDF] Mitsubishi Programmable Controllers Training Manual MELSEC iQ ...",
+  "size_mb": 20.190000534057617,
+  "url": "https://www.mitsubishielectric.com/dl/fa/document/schooltext/school_text/sh082349eng/sh082349enga.pdf"
+ },
+ {
+  "id": 543,
+  "title": "[PDF] PC Control Automotive Compendium 2025 - Beckhoff",
+  "size_mb": 19.959999084472656,
+  "url": "https://www.beckhoff.com/media/downloads/information-media/pc_control_automotive_compendium_2025_e.pdf"
+ },
+ {
+  "id": 385,
+  "title": "[PDF] PlantPAx Distributed Control System Configuration and ...",
+  "size_mb": 19.600000381469727,
+  "url": "https://literature.rockwellautomation.com/idc/groups/literature/documents/um/proces-um100_-en-p.pdf"
+ },
+ {
+  "id": 709,
+  "title": "[PDF] NJ/NX-series CPU Unit Motion Control User's Manual - Omron Europe",
+  "size_mb": 19.56999969482422,
+  "url": "https://files.omron.eu/downloads/latest/manual/en/w507_nj_nx-series_cpu_unit_motion_control_users_manual_en.pdf?v=3"
+ },
+ {
+  "id": 1411,
+  "title": "[PDF] Ethernet-based Open Network CC-Link IE Product Catalog",
+  "size_mb": 19.510000228881836,
+  "url": "https://www.accs.cz/Files/FA/REMOTE_IO/CC-Link_IE.pdf"
+ },
+ {
+  "id": 1446,
+  "title": "[PDF] iQ Platform-compatible PAC MELSEC Process Control/Redundant ...",
+  "size_mb": 19.469999313354492,
+  "url": "https://www.mitsubishielectric.com/dl/fa/document/catalog/plc/l08030e/l08030eh.pdf"
+ },
+ {
+  "id": 518,
+  "title": "TE5910 - TC3 Motion Designer - download - Beckhoff",
+  "size_mb": 19.420000076293945,
+  "url": "https://download.beckhoff.com/download/document/motion/tcmotiondesigner_ba_en.pdf"
+ },
+ {
+  "id": 656,
+  "title": "[PDF] CC-Link IE TSN Product Catalog - Mitsubishi Electric",
+  "size_mb": 19.34000015258789,
+  "url": "https://mitsubishielectricfa.com.my/wp-content/uploads/2021/03/l08656engb.pdf"
+ },
+ {
+  "id": 1419,
+  "title": "[PDF] Robot Seminar Textbook <Robot Maintenance FR/F Series>",
+  "size_mb": 18.889999389648438,
+  "url": "https://www.mitsubishielectric.com/dl/fa/document/schooltext/school_text/bfp-a3616/bfp-a3616a.pdf"
+ },
+ {
+  "id": 1422,
+  "title": "MELFA Robot Seminar Textbook <FR/F Series Basics>",
+  "size_mb": 18.850000381469727,
+  "url": "https://www.mitsubishielectric.com/dl/fa/document/schooltext/school_text/bfp-a3592/bfp-a3592Z.pdf"
+ },
+ {
+  "id": 697,
+  "title": "[PDF] Omron TM Collaborative Robot: Software Manual TMFlow, Version 2",
+  "size_mb": 18.770000457763672,
+  "url": "https://files.omron.eu/downloads/latest/manual/en/i689_tm_collaborative_robot_software_manual_tmflow_version_2_operation_manual_en.pdf?v=3"
+ },
+ {
+  "id": 1251,
+  "title": "[PDF] Converged Plantwide Ethernet (CPwE) Design and Implementation ...",
+  "size_mb": 18.520000457763672,
+  "url": "https://literature.rockwellautomation.com/idc/groups/literature/documents/td/enet-td001_-en-p.pdf"
+ },
+ {
+  "id": 318,
+  "title": "Converged Plantwide Ethernet (CPwE) Design and ...",
+  "size_mb": 18.520000457763672,
+  "url": "https://literature.rockwellautomation.com/idc/groups/literature/documents/td/enet-td001_-en-p.pdf"
+ },
+ {
+  "id": 1281,
+  "title": "[PDF] Industrial Automation & Motion PLCs, HMIs, Drives, Servo ... - ABB",
+  "size_mb": 18.420000076293945,
+  "url": "https://library.e.abb.com/public/1a5de0a66468256885257d6b0062d72c/PLC-PHTC02U-EN_WEB.pdf"
+ },
+ {
+  "id": 504,
+  "title": "[PDF] PC Control Intralogistics Special 2026 - Beckhoff",
+  "size_mb": 18.1299991607666,
+  "url": "https://www.beckhoff.com/media/downloads/information-media/pc-control/pcc_intralogistics_special_2026_e.pdf"
+ },
+ {
+  "id": 693,
+  "title": "[PDF] LD Platform Peripherals User's Guide - OMRON Robotics",
+  "size_mb": 18.06999969482422,
+  "url": "https://robotics.omron.com/wp-content/uploads/2025/07/13732-000_RevJ_LD_Platform_Peripherals-Users-Guide.pdf"
+ },
+ {
+  "id": 666,
+  "title": "[PDF] iQ Platform-compatible PAC MELSEC Process Control/Redundant ...",
+  "size_mb": 18.059999465942383,
+  "url": "https://www.mitsubishifa.co.th/files/dl/l08030ef.pdf"
+ },
+ {
+  "id": 541,
+  "title": "[PDF] PC Control 01 | 2025 - Beckhoff",
+  "size_mb": 17.899999618530273,
+  "url": "https://www.beckhoff.com/media/downloads/information-media/pc-control/pcc_0125_e.pdf"
+ },
+ {
+  "id": 1266,
+  "title": "[PDF] Industrial Education Solutions",
+  "size_mb": 17.860000610351562,
+  "url": "https://aptmfg.com/wp-content/uploads/2022/08/FANUC-Rockwell-Miller-EDU-Catalog-July-2022.pdf"
+ },
+ {
+  "id": 567,
+  "title": "[PDF] Fanuc-HandlingTool-&-Operations-manual.pdf",
+  "size_mb": 17.700000762939453,
+  "url": "https://www.ctnet11.net/sac/webfiles/134files/Fanuc-HandlingTool-&-Operations-manual.pdf"
+ },
+ {
+  "id": 534,
+  "title": "[PDF] Documentation | EN - EtherCAT - System Manual - download",
+  "size_mb": 17.489999771118164,
+  "url": "https://download.beckhoff.com/download/document/io/ethercat-terminals/ethercatsystem_en.pdf"
+ },
+ {
+  "id": 1338,
+  "title": "[PDF] TE1000 - TwinCAT 3 | PLC - download - Beckhoff",
+  "size_mb": 17.43000030517578,
+  "url": "https://download.beckhoff.com/download/document/automation/twincat3/TwinCAT_3_PLC_EN.pdf"
+ },
+ {
+  "id": 672,
+  "title": "[PDF] INSTRUCTIONS REFERENCE MANUAL - Lakewood Automation",
+  "size_mb": 17.280000686645508,
+  "url": "https://www.lakewoodautomation.com/support/manuals/Omron/W340E116%20CJ%20CS%20Instruction%20Reference%20Manual.pdf"
+ },
+ {
+  "id": 383,
+  "title": "[PDF] Rockwell Automation Library of Process Objects: Display Elements",
+  "size_mb": 17.239999771118164,
+  "url": "https://literature.rockwellautomation.com/idc/groups/literature/documents/rm/proces-rm014_-en-p.pdf"
+ },
+ {
+  "id": 1109,
+  "title": "[PDF] Industrial AI AI Inference Server - Support - Siemens",
+  "size_mb": 17.030000686645508,
+  "url": "https://support.industry.siemens.com/cs/attachments/109973105/AI_Inference_Server_en-US.pdf"
+ },
+ {
+  "id": 601,
+  "title": "[PDF] Industrial Managed Switch User's Manual - Mitsubishi Electric",
+  "size_mb": 17.010000228881836,
+  "url": "https://www.mitsubishielectric.com/dl/fa/document/manual/plc/sh081612eng/sh081612engc.pdf"
+ },
+ {
+  "id": 127,
+  "title": "[PDF] TE1000 - TwinCAT 3 | PLC - download",
+  "size_mb": 16.979999542236328,
+  "url": "https://download.beckhoff.com/download/document/automation/twincat3/TwinCAT_3_PLC_EN.pdf"
+ },
+ {
+  "id": 232,
+  "title": "[PDF] Industrial Ethernet Networking Manual - ADEGIS",
+  "size_mb": 16.889999389648438,
+  "url": "https://adegis.com/media/asset/2359c7b8a42285b892cc0450cd9c254bf879a6833bdcd3e991c9da673e0a0aff.pdf"
+ },
+ {
+  "id": 363,
+  "title": "[PDF] Motion-RM003 Integrated Motion on the EtherNet/IP Network",
+  "size_mb": 16.690000534057617,
+  "url": "https://literature.rockwellautomation.com/idc/groups/literature/documents/rm/motion-rm003_-en-p.pdf"
+ },
+ {
+  "id": 514,
+  "title": "[PDF] C6525 - Manual Industrial PC - download - Beckhoff",
+  "size_mb": 16.559999465942383,
+  "url": "https://download.beckhoff.com/download/document/ipc/industrial-pc/C6525_en.pdf"
+ },
+ {
+  "id": 613,
+  "title": "[PDF] Safety Controller Setting and Monitoring Tool Operating Manual",
+  "size_mb": 16.469999313354492,
+  "url": "https://www.mitsubishifa.co.th/files/dl/sh080856engk.pdf"
+ },
+ {
+  "id": 540,
+  "title": "[PDF] PC Control 01 - Beckhoff",
+  "size_mb": 16.260000228881836,
+  "url": "https://www.beckhoff.com/media/downloads/information-media/pc-control/pcc_0124_e.pdf"
+ },
+ {
+  "id": 1777,
+  "title": "[PDF] FactoryTalk View Site Edition User's Guide - Literature Library",
+  "size_mb": 16.219999313354492,
+  "url": "https://literature.rockwellautomation.com/idc/groups/literature/documents/um/viewse-um006_-en-e.pdf"
+ },
+ {
+  "id": 658,
+  "title": "[PDF] Edgecross-supporting Software Catalog",
+  "size_mb": 16.059999465942383,
+  "url": "https://www.mitsubishielectric.co.jp/dl/fa/document/catalog/efactory/l16074/l16074eng.pdf"
+ },
+ {
+  "id": 1376,
+  "title": "[PDF] PC Control 03|25 - Beckhoff",
+  "size_mb": 15.84000015258789,
+  "url": "https://www.beckhoff.com/media/downloads/information-media/pc-control/pcc_0325_e.pdf"
+ },
+ {
+  "id": 505,
+  "title": "[PDF] PC Control 03 | 2025 - Beckhoff",
+  "size_mb": 15.84000015258789,
+  "url": "https://www.beckhoff.com/media/downloads/information-media/pc-control/pcc_0325_e.pdf"
+ },
+ {
+  "id": 1409,
+  "title": "[PDF] CC-Link IE TSN",
+  "size_mb": 15.789999961853027,
+  "url": "https://dl.mitsubishielectric.co.jp/dl/fa/document/catalog/plcnet/l08658eng/l08658engd.pdf"
+ }
+]

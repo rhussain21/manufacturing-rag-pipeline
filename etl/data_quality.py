@@ -97,18 +97,23 @@ class DataQualityFilter:
         return True, f"diversity_ok: {ratio:.3f}"
 
     def gate_boilerplate(self, text: str) -> Tuple[bool, str]:
-        """Reject documents where most lines are headers, numbers, or whitespace."""
-        lines = text.splitlines()
+        """Reject documents where most lines are headers, numbers, or whitespace.
+
+        Blank lines are excluded entirely (from both the boilerplate count and
+        the total) — they're meaningful structural separators in markdown
+        output (paragraph/section breaks), not evidence of boilerplate the way
+        repeated blank space is in a raw flat-text page dump.
+        """
+        lines = [line for line in text.splitlines() if line.strip()]
         if not lines:
             return False, "no_lines"
 
         boilerplate_count = 0
         for line in lines:
             stripped = line.strip()
-            # Blank lines, pure numbers, short all-caps headers, page markers
+            # Pure numbers/punctuation, short all-caps headers, page markers
             if (
-                not stripped
-                or re.fullmatch(r'[\d\s\.\-–—/\\]+', stripped)
+                re.fullmatch(r'[\d\s\.\-–—/\\]+', stripped)
                 or (len(stripped) < 40 and stripped.isupper())
                 or re.fullmatch(r'(page\s*\d+|\d+\s*of\s*\d+)', stripped, re.I)
             ):

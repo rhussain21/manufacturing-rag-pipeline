@@ -1,0 +1,65 @@
+{
+  "139": {
+    "pages": 51,
+    "chars": 39379,
+    "pdf_path": "reducto_pilot/downloaded/139_PDF_Beckhoff_PLC_Configuration_Guide_ESO.pdf",
+    "ok": true
+  },
+  "204": {
+    "pages": 1,
+    "chars": 21456,
+    "pdf_path": "reducto_pilot/downloaded/204_PDF_Beckhoff_plc_programming_manual.pdf",
+    "ok": true
+  },
+  "297": {
+    "pages": 8,
+    "chars": 22045,
+    "pdf_path": "reducto_pilot/downloaded/297_PDF_Industrial_Edge_Real-time_intelligence_in_process_plants.pdf",
+    "ok": true
+  },
+  "405": {
+    "pages": 20,
+    "chars": 43373,
+    "pdf_path": "reducto_pilot/downloaded/405_PDF_Safety_in_control_systems_according_to_EN_ISO_13849-1_-_ABB.pdf",
+    "ok": true
+  },
+  "932": {
+    "pages": 125,
+    "chars": 410708,
+    "pdf_path": "reducto_pilot/downloaded/932_PDF_CURRICULAR_GUIDANCE_Industrial_Cybersecurity_Knowledge.pdf",
+    "ok": true
+  },
+  "922": {
+    "pages": 25,
+    "chars": 61002,
+    "pdf_path": "reducto_pilot/downloaded/922_PDF_The_Evolution_of_Industrial_Cybersecurity_and_Cyber_Risk_White_Paper.pdf",
+    "ok": true
+  },
+  "1039": {
+    "ok": false
+  },
+  "1029": {
+    "pages": 15,
+    "chars": 29934,
+    "pdf_path": "reducto_pilot/downloaded/1029_PDF_Exploring_Intelligent_Edge_Computing_and_AI_for_Industrial_Automation.pdf",
+    "ok": true
+  },
+  "1045": {
+    "pages": 13,
+    "chars": 5528,
+    "pdf_path": "reducto_pilot/downloaded/1045_PDF_Introduction_to_Siemens_Industrial_Edge_Managing_AI_Lifecycle.pdf",
+    "ok": true
+  },
+  "1145": {
+    "pages": 64,
+    "chars": 111318,
+    "pdf_path": "reducto_pilot/downloaded/1145_PDF_System_Security_Design_Guidelines_-_Literature_Library.pdf",
+    "ok": true
+  },
+  "1550": {
+    "pages": 22,
+    "chars": 55550,
+    "pdf_path": "reducto_pilot/downloaded/1550_PDF_Digital_Platforms_for_Industrial_Edge_Management_in_Europe_2025.pdf",
+    "ok": true
+  }
+}

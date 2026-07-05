@@ -1,18 +1,30 @@
 """
 PDFExtractor — download and extract text from PDF files.
 
+PDFExtractor itself is the legacy backend (PyMuPDF primary, pdfplumber
+fallback). The pipeline's primary extraction entry point is the
+module-level extract_pdf_text_smart(), which prefers Reducto
+(tools/reducto_extractor.py) and only falls back to PDFExtractor when
+Reducto fails, is out of credits, or the document exceeds
+REDUCTO_MAX_PAGES (cost control, checked for free via local PyMuPDF).
+
 General-purpose PDF handling for the ingestion pipeline. Supports:
   - Downloading PDFs from any URL (with retries, streaming, content-type checks)
   - Extracting text via PyMuPDF (primary) with pdfplumber fallback
   - NUL-byte stripping (prevents PostgreSQL insert failures)
   - arXiv URL helpers for routing decisions
 
-Usage (extract text from local file):
+Usage (primary entry point — Reducto with legacy fallback):
+    from tools.pdf_extractor import extract_pdf_text_smart
+
+    text, page_count, method = extract_pdf_text_smart("path/to/paper.pdf")
+
+Usage (legacy extractor directly, e.g. for comparison):
     from tools.pdf_extractor import PDFExtractor
 
     text, page_count = PDFExtractor.extract_text("path/to/paper.pdf")
 
-Usage (download + extract):
+Usage (download + extract, Reducto-primary):
     extractor = PDFExtractor(pdf_dir="media/pdf")
     result = extractor.download_and_extract(
         pdf_url="https://example.com/paper.pdf",
@@ -21,6 +33,7 @@ Usage (download + extract):
     if result:
         print(result["text"][:200])
         print(result["pdf_path"])
+        print(result["extraction_method"])  # "reducto", "pymupdf", or "pdfplumber"
 """
 
 import logging
@@ -33,6 +46,12 @@ from urllib.parse import urlparse
 import requests
 
 logger = logging.getLogger(__name__)
+
+# Reducto is the primary PDF extractor (see extract_pdf_text_smart below).
+# Documents longer than this fall back to the legacy extractor directly,
+# skipping Reducto entirely, as a cost-control ceiling — page count is
+# checked for free via local PyMuPDF before any paid call is made.
+REDUCTO_MAX_PAGES = 1500
 
 
 class PDFExtractor:
@@ -64,8 +83,9 @@ class PDFExtractor:
             source_url: Original page URL (e.g. arXiv /abs/ page). Stored in result.
 
         Returns:
-            Dict with keys: text, pdf_path, source_url, pdf_url, page_count, char_count
-            or None on failure.
+            Dict with keys: text, pdf_path, source_url, pdf_url, page_count,
+            char_count, extraction_method ("reducto", "pymupdf", or
+            "pdfplumber") — or None on failure.
         """
         if not pdf_url:
             logger.error(f"No PDF URL provided for: {title}")
@@ -76,8 +96,8 @@ class PDFExtractor:
         if not pdf_path:
             return None
 
-        # Extract text
-        text, page_count = self.extract_text(pdf_path)
+        # Extract text — Reducto primary, legacy fallback (see function docstring)
+        text, page_count, extraction_method = extract_pdf_text_smart(pdf_path)
         if not text or len(text.strip()) < 200:
             logger.warning(
                 f"Insufficient text extracted from PDF "
@@ -86,7 +106,7 @@ class PDFExtractor:
             return None
 
         logger.info(
-            f"PDF extracted: {page_count} pages, "
+            f"PDF extracted via {extraction_method}: {page_count} pages, "
             f"{len(text)} chars — {title[:60]}"
         )
 
@@ -96,6 +116,7 @@ class PDFExtractor:
             "source_url": source_url or pdf_url,
             "pdf_url": pdf_url,
             "page_count": page_count,
+            "extraction_method": extraction_method,
             "char_count": len(text),
             "pdf_pub_date": self.extract_pub_date(pdf_path),
         }
@@ -137,13 +158,27 @@ class PDFExtractor:
         Returns:
             (text, page_count) tuple. Empty string and 0 on failure.
         """
+        text, pages, _method = PDFExtractor.extract_text_with_method(pdf_path)
+        return text, pages
+
+    @staticmethod
+    def extract_text_with_method(pdf_path: str) -> Tuple[str, int, str]:
+        """Same as extract_text, but also reports which backend produced the
+        result — used for the 'transcription_model' provenance column.
+
+        Returns:
+            (text, page_count, method) — method is "pymupdf", "pdfplumber",
+            or "failed".
+        """
         text, pages = PDFExtractor._extract_with_pymupdf(pdf_path)
         if text and len(text.strip()) > 200:
-            return text, pages
+            return text, pages, "pymupdf"
 
         logger.info(f"PyMuPDF extraction insufficient, trying pdfplumber: {pdf_path}")
         text, pages = PDFExtractor._extract_with_pdfplumber(pdf_path)
-        return text, pages
+        if text and len(text.strip()) > 200:
+            return text, pages, "pdfplumber"
+        return text, pages, "failed"
 
     # ── arXiv URL helpers ─────────────────────────────────────────────
 
@@ -282,3 +317,53 @@ class PDFExtractor:
         except Exception as e:
             logger.warning(f"pdfplumber extraction error: {e}")
             return "", 0
+
+
+# ── Primary extraction entry point (Reducto, with legacy fallback) ───────────
+
+def _get_page_count(pdf_path: str) -> Optional[int]:
+    """Free, local page count via PyMuPDF — no Reducto call involved.
+    Returns None if the file can't be opened."""
+    try:
+        import fitz
+        doc = fitz.open(pdf_path)
+        pages = doc.page_count
+        doc.close()
+        return pages
+    except Exception as e:
+        logger.warning(f"Could not read page count for {pdf_path}: {e}")
+        return None
+
+
+def extract_pdf_text_smart(pdf_path: str) -> Tuple[str, int, str]:
+    """Extract PDF text, preferring Reducto with automatic legacy fallback.
+
+    Routing:
+      1. Page count is checked for free via local PyMuPDF first.
+      2. If it exceeds REDUCTO_MAX_PAGES, Reducto is skipped entirely
+         (cost control) and the legacy extractor is used directly.
+      3. Otherwise Reducto is tried first. If it fails for any reason
+         (out of credits, API/network error, etc.), falls back to the
+         legacy extractor rather than losing the document.
+
+    Returns:
+        (text, page_count, method) — method is "reducto", "pymupdf",
+        "pdfplumber", or "failed".
+    """
+    from tools.reducto_extractor import ReductoExtractor
+
+    page_count = _get_page_count(pdf_path)
+
+    if page_count is not None and page_count > REDUCTO_MAX_PAGES:
+        logger.info(
+            f"PDF exceeds {REDUCTO_MAX_PAGES}-page Reducto threshold "
+            f"({page_count} pages) — using legacy extractor: {pdf_path}"
+        )
+        return PDFExtractor.extract_text_with_method(pdf_path)
+
+    text, reducto_pages = ReductoExtractor.extract_text(pdf_path)
+    if text and len(text.strip()) > 200:
+        return text, reducto_pages, "reducto"
+
+    logger.warning(f"Reducto extraction failed or empty, falling back to legacy: {pdf_path}")
+    return PDFExtractor.extract_text_with_method(pdf_path)

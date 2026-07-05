@@ -25,3 +25,5 @@ notebooks/
 sync_metadata/
 text_markdowns/
 analysis/
+reducto_pilot/downloaded/
+reducto_pilot/raw/
