@@ -21,6 +21,7 @@ import pandas as pd
 import numpy as np
 import plotly.express as px
 import plotly.graph_objects as go
+from streamlit_javascript import st_javascript
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
@@ -35,6 +36,16 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="collapsed",
 )
+
+# ── Mobile detection ─────────────────────────────────────────────────────
+# Reads the real browser viewport width so Plotly figures (which are built
+# server-side with fixed pixel fonts/margins) can be laid out differently on
+# phones instead of just being squeezed into a narrower container. Matches the
+# 640px breakpoint used by the CSS media queries below. Falls back to desktop
+# on the first render, before the browser has reported a width, and on any
+# read failure (e.g. no JS runtime available) so nothing regresses.
+_viewport_width = st_javascript("window.innerWidth")
+IS_MOBILE = isinstance(_viewport_width, (int, float)) and 0 < _viewport_width < 641
 
 # ── Theme ─────────────────────────────────────────────────────────────────
 
@@ -351,6 +362,40 @@ st.markdown(f"""<style>
     @media (max-width: 900px) {{
         .tab-explainer {{ grid-template-columns: 1fr; }}
     }}
+
+    /* ── Mobile (phone-width viewports) — additive only, desktop rules above
+       are untouched so this can't regress the browser/desktop layout ── */
+    @media (max-width: 640px) {{
+        .stMainBlockContainer, .block-container {{
+            margin: 8px auto !important;
+            padding: 8px 8px !important;
+            max-width: calc(100% - 16px) !important;
+        }}
+        .dash-hero-wrap {{ padding: 14px 16px 12px 16px !important; }}
+        .dash-hero-title {{ font-size: 1.2rem !important; }}
+        .dash-hero-text {{ white-space: normal !important; font-size: 0.74rem !important; }}
+        .dash-hero-note {{ font-size: 0.66rem !important; }}
+
+        .stTabs [data-baseweb="tab-list"] {{ gap: 0 !important; }}
+        .stTabs [data-baseweb="tab"] {{
+            padding: 8px 8px !important;
+            font-size: 0.76rem !important;
+        }}
+        .stTabs [data-baseweb="tab-panel"] {{ padding: 16px 12px 24px 12px !important; }}
+
+        .tab-explainer {{ padding: 12px 14px !important; gap: 10px !important; }}
+        .tab-explainer-text {{ font-size: 0.78rem !important; }}
+
+        .metric-card {{
+            height: auto !important;
+            min-height: 84px;
+            padding: 10px 14px !important;
+        }}
+        .metric-card .metric-value {{ font-size: 1.35rem !important; }}
+
+        div[data-testid="stMetric"] {{ padding: 10px 12px !important; }}
+        div[data-testid="stMetric"] [data-testid="stMetricValue"] {{ font-size: 1.3rem !important; }}
+    }}
 </style>""", unsafe_allow_html=True)
 
 # ── Color scales ──────────────────────────────────────────────────────────
@@ -516,17 +561,23 @@ def tab_explainer(tab_name: str):
 
 
 # Standard sizes so every chart's axes and legend read at the same scale.
-AXIS_FONT_SIZE = 14
-LEGEND_FONT_SIZE = 14
+# Smaller on mobile so labels have a fighting chance in a much narrower chart.
+AXIS_FONT_SIZE = 11 if IS_MOBILE else 14
+LEGEND_FONT_SIZE = 11 if IS_MOBILE else 14
 
 # Shared Plotly config for interactive charts: keeps hover tooltips and the
 # autoscale ("fit to view") button, drops drag-to-zoom/pan/select so charts
 # can't get scrolled/dragged into a confusing state.
+# On mobile, go fully static instead: Plotly's own drag/hover layer otherwise
+# captures touch input, which blocks the browser's native pinch-to-zoom. With
+# staticPlot, that layer is gone, hover/drag is out (nothing to accidentally
+# trigger with a thumb), and pinch-zoom on the rendered chart works again.
 PLOTLY_CONFIG = {
     'displaylogo': False,
     'modeBarButtonsToRemove': [
         'zoom2d', 'pan2d', 'select2d', 'lasso2d', 'zoomIn2d', 'zoomOut2d',
     ],
+    'staticPlot': IS_MOBILE,
 }
 
 
@@ -633,17 +684,31 @@ def tab_overview(data):
        "(extraction failure, DQ rejection, LLM rejection) peels off below the stage where it happens.")
 
     total_dl = t.get('content', 0) or 1
+    # Canonical keys — used to wire up links below — stay full-length regardless
+    # of device; only the on-node display text shortens for mobile.
     node_names = [
         'Downloaded', 'Extracted', 'Extraction Failed', 'DQ Passed', 'DQ Rejected',
         'Approved', 'LLM Rejected', 'Docs Vectorized',
     ]
+    node_display = (
+        # 'Approved' and 'Docs Vectorized' sit close together at the right edge —
+        # keep those two extra short so their labels don't run into each other.
+        ['DL', 'Extracted', 'Extr. Failed', 'DQ Passed', 'DQ Rejected',
+         'Appr', 'LLM Rejected', 'Vec']
+        if IS_MOBILE else node_names
+    )
     node_counts = [
         t.get('content', 0), t.get('extracted', 0), t.get('failed_extraction', 0),
         t.get('dq_passed', 0), t.get('dq_rejected', 0), t.get('approved', 0),
         t.get('llm_rejected', 0), docs_vectorized,
     ]
     idx = {name: i for i, name in enumerate(node_names)}
-    labels = [f"{n}<br>{c:,} ({_safe_div_pct(c, total_dl):.0f}%)" for n, c in zip(node_names, node_counts)]
+    # Percent is dropped on mobile — narrower nodes don't have room for a third
+    # line, and the count alone is still legible at a glance.
+    labels = (
+        [f"{n}<br>{c:,}" for n, c in zip(node_display, node_counts)] if IS_MOBILE else
+        [f"{n}<br>{c:,} ({_safe_div_pct(c, total_dl):.0f}%)" for n, c in zip(node_display, node_counts)]
+    )
 
     # Fixed layout: the surviving chain (Downloaded -> ... -> Docs Vectorized) pinned along
     # the top (low y); each drop-off node sits below the stage it branches from.
@@ -670,7 +735,7 @@ def tab_overview(data):
         arrangement='fixed',
         node=dict(
             label=labels, color=node_colors, x=node_x, y=node_y,
-            pad=28, thickness=20,
+            pad=16 if IS_MOBILE else 28, thickness=20,
             line=dict(color=BDR, width=1),
         ),
         link=dict(
@@ -681,9 +746,12 @@ def tab_overview(data):
             customdata=link_labels,
             hovertemplate='%{source.label} → %{target.label}<br>%{customdata}<extra></extra>',
         ),
-        textfont=dict(color='#000000', size=14),
+        textfont=dict(color='#000000', size=10 if IS_MOBILE else 14),
     ))
-    fig_sankey.update_layout(**_lay(height=280, margin=dict(l=10, r=10, t=15, b=10)))
+    # Taller on mobile despite the narrower width — the node labels wrap to more
+    # lines when there's less horizontal room, so they need more vertical space
+    # to avoid overlapping the row below.
+    fig_sankey.update_layout(**_lay(height=360 if IS_MOBILE else 280, margin=dict(l=10, r=10, t=15, b=10)))
     st.plotly_chart(fig_sankey, use_container_width=True, config=PLOTLY_CONFIG)
 
     by_type = ps.get('by_source_type', [])
@@ -721,11 +789,18 @@ def tab_overview(data):
                 ('dq_rejected', 'DQ Rejected', '#e15759'),
                 ('extraction_failed', 'Extraction Failed', '#9c755f'),
             ]:
+                # Same rule as Top Sources: below 35% width, Plotly rotates cramped
+                # inside-text 90° rather than shrink it further — worse than blank.
+                if IS_MOBILE:
+                    seg_text = [f"{v:,.0f} ({p:.0f}%)" if p >= 35 else ''
+                                for v, p in zip(dof_df[col], dof_df[f'{col}_pct'])]
+                else:
+                    seg_text = [f"{v:,.0f} ({p:.0f}%)" for v, p in zip(dof_df[col], dof_df[f'{col}_pct'])]
                 fig.add_trace(go.Bar(
                     y=dof_df['content_type'], x=dof_df[f'{col}_pct'], name=name,
                     orientation='h', marker_color=color,
-                    text=[f"{v:,.0f} ({p:.0f}%)" for v, p in zip(dof_df[col], dof_df[f'{col}_pct'])],
-                    textposition='inside', textfont=dict(color='#ffffff', size=12),
+                    text=seg_text,
+                    textposition='inside', textfont=dict(color='#ffffff', size=10 if IS_MOBILE else 12),
                 ))
             fig.update_layout(**_lay(
                 height=max(380, len(dof_df) * 48), barmode='stack',
@@ -788,22 +863,33 @@ def tab_sources(data):
         tsdf['rejected_pct'] = 100 - tsdf['accept_pct']
         tsdf = tsdf.sort_values('accept_pct', ascending=True)
 
+        # On mobile the plot area is only ~330px, so a narrow segment doesn't have
+        # room for its text — Plotly's 'inside' textposition then rotates it 90°
+        # to force a fit, which reads worse than no label at all (tried a percent-
+        # only middle tier first; even "23%" alone still got rotated below ~25%
+        # width, so there's no legible partial label — it's full text or nothing).
+        # The opposing segment's label already implies the split either way.
+        def _seg_text(vals, pcts, fmt):
+            if not IS_MOBILE:
+                return [fmt(v, p) for v, p in zip(vals, pcts)]
+            return [fmt(v, p) if p >= 35 else '' for v, p in zip(vals, pcts)]
+
         fig = go.Figure()
         fig.add_trace(go.Bar(
             y=tsdf['source_name'], x=tsdf['accept_pct'],
             name='Approved', orientation='h',
             marker_color='#59a14f', opacity=0.9,
-            text=[f"{a:.0f} ({p:.0f}%)" for a, p in zip(tsdf['approved'], tsdf['accept_pct'])],
+            text=_seg_text(tsdf['approved'], tsdf['accept_pct'], lambda a, p: f"{a:.0f} ({p:.0f}%)"),
             textposition='inside',
-            textfont=dict(color='#ffffff', size=13),
+            textfont=dict(color='#ffffff', size=10 if IS_MOBILE else 13),
         ))
         fig.add_trace(go.Bar(
             y=tsdf['source_name'], x=tsdf['rejected_pct'],
             name='Rejected', orientation='h',
             marker_color='#e15759', opacity=0.9,
-            text=[f"{r:.0f} ({p:.0f}%)" for r, p in zip(tsdf['rejected_count'], tsdf['rejected_pct'])],
+            text=_seg_text(tsdf['rejected_count'], tsdf['rejected_pct'], lambda r, p: f"{r:.0f} ({p:.0f}%)"),
             textposition='inside',
-            textfont=dict(color='#ffffff', size=13),
+            textfont=dict(color='#ffffff', size=10 if IS_MOBILE else 13),
         ))
         fig.update_layout(**_lay(
             height=max(480, len(tsdf) * 36),
@@ -914,14 +1000,19 @@ def tab_corpus_map(data):
         hover_data={'title': True, 'content_type': True, 'x': False, 'y': False, 'cluster_label': False},
         opacity=0.75,
     )
-    fig.update_traces(marker=dict(size=7, line=dict(width=0)))
+    # Smaller markers on mobile so overlapping points in dense clusters separate a
+    # little instead of fusing into a solid blob at a narrower chart width.
+    fig.update_traces(marker=dict(size=5 if IS_MOBILE else 7, line=dict(width=0)))
     fig.update_layout(**_lay(
         height=620,
         xaxis=dict(title='', showticklabels=False, zeroline=False),
         yaxis=dict(title='', showticklabels=False, zeroline=False),
         legend_title_text='',
     ))
-    st.plotly_chart(fig, use_container_width=True, config=PLOTLY_CONFIG)  # hover is essential here — 846 points can't all be direct-labeled
+    # On desktop, hover is essential — 846 points can't all be direct-labeled. On
+    # mobile this chart goes static (see PLOTLY_CONFIG) so hover isn't available;
+    # the per-cluster breakdown and CLUSTER SIZES table below cover that gap.
+    st.plotly_chart(fig, use_container_width=True, config=PLOTLY_CONFIG)
 
     cl, cr = st.columns([3, 2])
     with cl:
@@ -1309,14 +1400,14 @@ def tab_retrieval_quality(data):
 def main():
     st.markdown(f"""
     <div class="dash-inner">
-      <div style="text-align:center; padding:26px 40px 20px 40px; background:{INNER_BG}; margin:0;">
-        <h1 style="color:{TXT_DARK}; margin:0 0 9px 0; font-size:2.3rem; font-weight:800; letter-spacing:-0.03em;">
+      <div class="dash-hero-wrap" style="text-align:center; padding:26px 40px 20px 40px; background:{INNER_BG}; margin:0;">
+        <h1 class="dash-hero-title" style="color:{TXT_DARK}; margin:0 0 9px 0; font-size:2.3rem; font-weight:800; letter-spacing:-0.03em;">
           Private RAG Evaluation Dashboard
         </h1>
-        <p style="color:{TXT_DARK}; margin:0 0 5px 0; font-size:1rem; line-height:1.45; white-space:nowrap;">
+        <p class="dash-hero-text" style="color:{TXT_DARK}; margin:0 0 5px 0; font-size:1rem; line-height:1.45; white-space:nowrap;">
           An end-to-end view of how well a private document intelligence pipeline ingests, prepares, retrieves, and validates evidence from internal knowledge.
         </p>
-        <p style="color:{TXT2}; margin:0; font-size:0.86rem; line-height:1.4; white-space:nowrap;">
+        <p class="dash-hero-text dash-hero-note" style="color:{TXT2}; margin:0; font-size:0.86rem; line-height:1.4; white-space:nowrap;">
           Manufacturing is used as the demo domain because it reflects a common enterprise problem: legacy PDFs, manuals, SOPs, and engineering documents that often need to stay inside private or controlled environments.
         </p>
       </div>
