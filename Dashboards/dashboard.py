@@ -1075,12 +1075,16 @@ _ABLATION = [
 ]
 
 
-def tab_retrieval_quality(_data):
+def tab_retrieval_quality(data):
     tab_explainer("Retrieval Quality")
+
+    # Corpus doc count comes from the same source as the Dataset Quality tab
+    # (unique docs in the LanceDB vector index) so the two can't drift apart.
+    corpus_docs = len(data.get('topic_map', {}).get('docs', [])) or "N/A"
 
     # ── KPI cards ─────────────────────────────────────────────────────────
     c = st.columns(5)
-    with c[0]: mc("CORPUS DOCS", "736")
+    with c[0]: mc("CORPUS DOCS", f"{corpus_docs:,}" if isinstance(corpus_docs, int) else corpus_docs)
     with c[1]: mc("CHUNKS", "92,705")
     with c[2]: mc("LABELED QUERIES", "31")
     with c[3]: mc("BEST MRR", "0.489")
