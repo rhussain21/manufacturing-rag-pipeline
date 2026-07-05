@@ -511,6 +511,16 @@ def tab_explainer(tab_name: str):
 AXIS_FONT_SIZE = 12
 LEGEND_FONT_SIZE = 12
 
+# Shared Plotly config for interactive charts: keeps hover tooltips and the
+# autoscale ("fit to view") button, drops drag-to-zoom/pan/select so charts
+# can't get scrolled/dragged into a confusing state.
+PLOTLY_CONFIG = {
+    'displaylogo': False,
+    'modeBarButtonsToRemove': [
+        'zoom2d', 'pan2d', 'select2d', 'lasso2d', 'zoomIn2d', 'zoomOut2d',
+    ],
+}
+
 
 def _lay(height=400, **kw):
     """Build a Plotly layout dict with black fonts and transparent background.
@@ -539,6 +549,10 @@ def _lay(height=400, **kw):
             y=-0.22, yanchor='top',
             font=dict(color='#000000', size=LEGEND_FONT_SIZE),
             bgcolor='rgba(0,0,0,0)',
+            # Click a legend entry to isolate it (fades/hides the rest) instead of
+            # removing just that one series — double-click to restore everything.
+            itemclick='toggleothers',
+            itemdoubleclick='toggle',
         ),
         xaxis=dict(**_ax),
         yaxis=dict(**_ax),
@@ -593,9 +607,14 @@ def tab_overview(data):
     dq_rejection_pct = _safe_div_pct(t.get('dq_rejected', 0), t.get('extracted', 0))
     llm_rejection_pct = _safe_div_pct(t.get('llm_rejected', 0), t.get('dq_passed', 0))
 
+    # Same source as Dataset Quality / Retrieval Quality (unique docs actually in the
+    # LanceDB vector index) — not the DuckDB vectorization_status flag, which can drift
+    # a few docs out of sync. One number for "docs vectorized," used everywhere.
+    docs_vectorized = len(data.get('topic_map', {}).get('docs', [])) or t.get('vectorized', 0)
+
     c = st.columns(5)
     with c[0]: mc("DOCS INGESTED", t.get('content', 0))
-    with c[1]: mc("DOCS VECTORIZED", t.get('vectorized', 0))
+    with c[1]: mc("DOCS VECTORIZED", docs_vectorized)
     with c[2]: mc("EXTRACTION SUCCESS RATE", f"{extraction_pct:.0f}%")
     with c[3]: mc("DQ REJECTION RATE", f"{dq_rejection_pct:.0f}%", "r")
     with c[4]: mc("LLM REJECTION RATE", f"{llm_rejection_pct:.0f}%", "r")
@@ -613,7 +632,7 @@ def tab_overview(data):
     node_counts = [
         t.get('content', 0), t.get('extracted', 0), t.get('failed_extraction', 0),
         t.get('dq_passed', 0), t.get('dq_rejected', 0), t.get('approved', 0),
-        t.get('llm_rejected', 0), t.get('vectorized', 0),
+        t.get('llm_rejected', 0), docs_vectorized,
     ]
     idx = {name: i for i, name in enumerate(node_names)}
     labels = [f"{n}<br>{c:,} ({_safe_div_pct(c, total_dl):.0f}%)" for n, c in zip(node_names, node_counts)]
@@ -632,7 +651,7 @@ def tab_overview(data):
         ('Extracted', 'DQ Rejected', t.get('dq_rejected', 0), 'bad'),
         ('DQ Passed', 'Approved', t.get('approved', 0), 'good'),
         ('DQ Passed', 'LLM Rejected', t.get('llm_rejected', 0), 'bad'),
-        ('Approved', 'Docs Vectorized', t.get('vectorized', 0), 'good'),
+        ('Approved', 'Docs Vectorized', docs_vectorized, 'good'),
     ]
     link_color = {'good': 'rgba(89,161,79,0.35)', 'bad': 'rgba(225,87,89,0.35)'}
     link_pct = [_safe_div_pct(v, total_dl) for _, _, v, _ in links]
@@ -657,7 +676,7 @@ def tab_overview(data):
         textfont=dict(color='#000000', size=12),
     ))
     fig_sankey.update_layout(**_lay(height=280, margin=dict(l=10, r=10, t=15, b=10)))
-    st.plotly_chart(fig_sankey, use_container_width=True)
+    st.plotly_chart(fig_sankey, use_container_width=True, config=PLOTLY_CONFIG)
 
     by_type = ps.get('by_source_type', [])
 
@@ -675,7 +694,7 @@ def tab_overview(data):
                                      legend_title_text=''))
             fig.update_traces(textinfo='percent+label', textposition='outside', textfont_size=11,
                               texttemplate='%{label}<br>%{percent:.0%}')
-            st.plotly_chart(fig, use_container_width=True)
+            st.plotly_chart(fig, use_container_width=True, config=PLOTLY_CONFIG)
 
     with cr:
         sl("DROP-OFF BY FORMAT")
@@ -705,7 +724,7 @@ def tab_overview(data):
                 xaxis=dict(title='% of documents', range=[0, 100]), yaxis=dict(title=''),
                 legend=dict(),
             ))
-            st.plotly_chart(fig, use_container_width=True)
+            st.plotly_chart(fig, use_container_width=True, config=PLOTLY_CONFIG)
 
     # ── Rejection reasons (categorized) + Errors ──────────────────────────
     reasons = ps.get('rejection_reasons', [])
@@ -722,7 +741,7 @@ def tab_overview(data):
             fig.update_layout(**_lay(height=max(240, len(agg_reasons) * 52),
                                      yaxis=dict(autorange='reversed', title=''),
                                      xaxis=dict(title='Documents Rejected')))
-            st.plotly_chart(fig, use_container_width=True)
+            st.plotly_chart(fig, use_container_width=True, config=PLOTLY_CONFIG)
         else:
             st.caption("No rejection data.")
 
@@ -738,7 +757,7 @@ def tab_overview(data):
                                      yaxis=dict(autorange='reversed', title=''),
                                      xaxis=dict(title='Error Count'),
                                      legend_title_text=''))
-            st.plotly_chart(fig, use_container_width=True)
+            st.plotly_chart(fig, use_container_width=True, config=PLOTLY_CONFIG)
         else:
             st.caption("No errors in the last 7 days.")
 
@@ -785,7 +804,7 @@ def tab_sources(data):
             xaxis=dict(title='% of documents', range=[0, 100]),
             yaxis=dict(title=''),
         ))
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, use_container_width=True, config=PLOTLY_CONFIG)
 
     else:
         st.caption("No top sources data available.")
@@ -810,7 +829,7 @@ def tab_trends(data):
                          barmode='stack', color_discrete_sequence=MULTI)
             fig.update_layout(**_lay(height=310, xaxis=dict(title=''), yaxis=dict(title='Documents'),
                                      legend_title_text=''))
-            st.plotly_chart(fig, use_container_width=True)
+            st.plotly_chart(fig, use_container_width=True, config=PLOTLY_CONFIG)
 
     with cr:
         sl("CUMULATIVE CONTENT")
@@ -824,7 +843,7 @@ def tab_trends(data):
             fig = px.area(cdf, x='date', y='cumulative', color_discrete_sequence=['#4e79a7'])
             fig.update_layout(**_lay(height=310, xaxis=dict(title=''),
                                      yaxis=dict(title='Cumulative')))
-            st.plotly_chart(fig, use_container_width=True)
+            st.plotly_chart(fig, use_container_width=True, config=PLOTLY_CONFIG)
 
     sl("SCREENING OVER TIME")
     so("Approval vs. rejection balance as the pipeline matures — rising approval rate means the LLM gate is better calibrated.")
@@ -840,7 +859,7 @@ def tab_trends(data):
         fig.update_layout(**_lay(barmode='stack', height=300,
                                  legend=dict(),
                                  xaxis=dict(title=''), yaxis=dict(title='Count')))
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, use_container_width=True, config=PLOTLY_CONFIG)
 
 
 # ══════════════════════════════════════════════════════════════════════════
@@ -894,7 +913,7 @@ def tab_corpus_map(data):
         yaxis=dict(title='', showticklabels=False, zeroline=False),
         legend_title_text='',
     ))
-    st.plotly_chart(fig, use_container_width=True)  # hover is essential here — 846 points can't all be direct-labeled
+    st.plotly_chart(fig, use_container_width=True, config=PLOTLY_CONFIG)  # hover is essential here — 846 points can't all be direct-labeled
 
     cl, cr = st.columns([3, 2])
     with cl:
@@ -910,7 +929,7 @@ def tab_corpus_map(data):
             xaxis=dict(title='Documents'), yaxis=dict(title=''),
             legend_title_text='',
         ))
-        st.plotly_chart(fig2, use_container_width=True)
+        st.plotly_chart(fig2, use_container_width=True, config=PLOTLY_CONFIG)
 
     with cr:
         sl("CLUSTER SIZES")
@@ -934,7 +953,7 @@ def tab_corpus_map(data):
         xaxis=dict(title='% of docs flagged as likely duplicates', range=[0, max(dup_cl_df['near_dup_pct'].max() * 1.3, 10)]),
         yaxis=dict(title=''),
     ))
-    st.plotly_chart(fig3, use_container_width=True)
+    st.plotly_chart(fig3, use_container_width=True, config=PLOTLY_CONFIG)
 
     dup_pairs = tm.get('duplicate_pairs', [])
     if dup_pairs:
@@ -983,7 +1002,7 @@ def tab_system_logs(data):
             fig.update_layout(**_lay(barmode='stack', height=300,
                                      legend=dict(),
                                      xaxis=dict(title=''), yaxis=dict(title='Candidates')))
-            st.plotly_chart(fig, use_container_width=True)
+            st.plotly_chart(fig, use_container_width=True, config=PLOTLY_CONFIG)
 
         st.dataframe(ddf, use_container_width=True, hide_index=True)
     else:
@@ -1046,10 +1065,10 @@ _RQ_CONFIGS = [
 # MRR at each project milestone — for the progression chart below.
 # Only MRR is tracked across every milestone (Recall@5 wasn't recorded pre-v5).
 _RQ_TIMELINE = [
-    {'label': 'v2 baseline', 'sub': 'dense only',            'mrr': 0.307, 'milestone': None},
-    {'label': 'v2',          'sub': '+ hybrid + reranker',   'mrr': 0.374, 'milestone': 'Hybrid + reranker added'},
-    {'label': 'v4',          'sub': '+ contextual chunking', 'mrr': 0.412, 'milestone': 'Contextual chunking added'},
-    {'label': 'v5',          'sub': 'HyDE + hybrid',         'mrr': 0.489, 'milestone': 'HyDE added'},
+    {'label': 'Dense Baseline',         'mrr': 0.307, 'milestone': None},
+    {'label': '+ Hybrid + Reranker',    'mrr': 0.374, 'milestone': True},
+    {'label': '+ Contextual Chunking',  'mrr': 0.412, 'milestone': True},
+    {'label': '+ HyDE',                 'mrr': 0.489, 'milestone': True},
 ]
 _RQ_RECALL_CURVE = [
     {'k': 1,  'recall': 0.110},
@@ -1136,8 +1155,8 @@ def tab_retrieval_quality(data):
     st.plotly_chart(fig2, use_container_width=True, config={'staticPlot': True})
 
     # ── MRR progression over project milestones ────────────────────────────
-    sl("MRR PROGRESSION OVER PROJECT MILESTONES")
-    so("Best recorded MRR at each stage, annotated with the feature that drove the change. Single metric — Recall@5 wasn't tracked before v5.")
+    sl("MRR PROGRESSION AS FEATURES WERE ADDED")
+    so("Best recorded MRR at each stage — each label is cumulative (each stage includes everything to its left).")
 
     tl_df = pd.DataFrame(_RQ_TIMELINE)
     fig_tl = go.Figure()
@@ -1156,10 +1175,6 @@ def tab_retrieval_quality(data):
             fig_tl.add_shape(
                 type='line', x0=row['label'], x1=row['label'], y0=_TL_YMIN, y1=_TL_YMAX,
                 line=dict(color='#C44E52', width=1.5, dash='dash'),
-            )
-            fig_tl.add_annotation(
-                x=row['label'], y=_TL_YMAX, text=row['milestone'], showarrow=False,
-                yshift=12, font=dict(color='#C44E52', size=10),
             )
     fig_tl.update_layout(**_lay(
         height=380,
@@ -1191,7 +1206,7 @@ def tab_retrieval_quality(data):
             xaxis=dict(title='k', tickvals=[1, 3, 5, 10, 20]),
             yaxis=dict(title='Mean Recall@k', range=[0, 0.65]),
         ))
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, use_container_width=True, config=PLOTLY_CONFIG)
 
     with cr:
         sl("RECALL@10 BY QUERY TYPE")
@@ -1210,7 +1225,7 @@ def tab_retrieval_quality(data):
             xaxis=dict(title='Mean Recall@10', range=[0, 1]),
             yaxis=dict(title=''),
         ))
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, use_container_width=True, config=PLOTLY_CONFIG)
 
     # ── Chunking ablation ─────────────────────────────────────────────────
     st.divider()
@@ -1251,7 +1266,7 @@ def tab_retrieval_quality(data):
                       line=dict(color='#C44E52', width=2, dash='dash'))
         fig.add_annotation(x=_winner_label, y=1, text='winner', showarrow=False,
                            yshift=10, font=dict(color='#C44E52', size=11))
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, use_container_width=True, config=PLOTLY_CONFIG)
 
     with cr2:
         fig = go.Figure()
@@ -1267,7 +1282,7 @@ def tab_retrieval_quality(data):
             xaxis=dict(title='max_chars'),
             yaxis=dict(title='Total Chunks'),
         ))
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, use_container_width=True, config=PLOTLY_CONFIG)
 
     st.dataframe(
         abl_df.rename(columns={
