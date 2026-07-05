@@ -1303,7 +1303,6 @@ def main():
         "Pipeline Overview",
         "Dataset Quality",
         "Retrieval Quality",
-        "System Logs",
     ])
 
     with tabs[0]: tab_overview(data)
@@ -1312,7 +1311,6 @@ def main():
         st.divider()
         tab_sources(data)
     with tabs[2]: tab_retrieval_quality(data)
-    with tabs[3]: tab_system_logs(data)
 
     if exported_at:
         st.caption(f"Data snapshot: {exported_at[:19]}")

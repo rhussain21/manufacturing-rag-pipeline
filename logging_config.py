@@ -158,9 +158,9 @@ class SystemLogger:
         try:
             db.execute("""
                 INSERT INTO system_logs
-                    (timestamp, level, source, action, message, details_json,
+                    (id, timestamp, level, source, action, message, details_json,
                      content_id, duration_sec, run_id)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+                VALUES (nextval('system_logs_id_seq'), ?, ?, ?, ?, ?, ?, ?, ?, ?)
             """, [now, level, source, action, message, details_json,
                   content_id, duration_sec, self._run_id])
         except Exception as e:
