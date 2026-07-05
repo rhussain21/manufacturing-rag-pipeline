@@ -115,10 +115,18 @@ st.markdown(f"""<style>
         border-radius: 4px 4px 0 0;
         overflow: hidden;
     }}
-    /* collapse the gap Streamlit adds after the markdown block */
+    /* Streamlit's vertical flex gap between top-level blocks is what shows as a
+       dark seam between the hero and the tab bar (empty flex gap exposing the
+       page behind it, not a color mismatch) — remove the gap at the source,
+       scoped to the top-level block only so column/widget spacing elsewhere
+       is untouched. */
+    section[data-testid="stMain"] > div > div[data-testid="stVerticalBlock"] {{
+        gap: 0 !important;
+    }}
     div[data-testid="stMarkdownContainer"]:has(.dash-inner),
-    div[data-testid="element-container"]:has(.dash-inner) {{
-        margin-bottom: -4px !important;
+    div[data-testid="element-container"]:has(.dash-inner),
+    div[data-testid="stElementContainer"]:has(.dash-inner) {{
+        margin-bottom: 0 !important;
         padding-bottom: 0 !important;
         line-height: 0;
     }}
@@ -143,7 +151,7 @@ st.markdown(f"""<style>
         font-weight: 600;
         border-radius: 0;
         padding: 10px 18px;
-        font-size: 0.88rem;
+        font-size: 1.02rem;
         border-bottom: 3px solid transparent;
         background: transparent !important;
     }}
@@ -198,7 +206,7 @@ st.markdown(f"""<style>
 
     /* ── Section headers ── */
     .section-label {{
-        font-size: 0.78rem;
+        font-size: 0.92rem;
         font-weight: 700;
         letter-spacing: 0.08em;
         color: {TXT_DARK} !important;
@@ -207,7 +215,7 @@ st.markdown(f"""<style>
         margin: 18px 0 2px 0;
     }}
     .section-so {{
-        font-size: 0.75rem;
+        font-size: 0.88rem;
         color: {TXT2} !important;
         font-style: italic;
         margin: 0 0 10px 0;
@@ -220,14 +228,14 @@ st.markdown(f"""<style>
         border: 1px solid {BDR};
         border-radius: 8px;
         padding: 14px 18px;
-        height: 104px;
+        height: 116px;
         display: flex;
         flex-direction: column;
         justify-content: center;
         gap: 4px;
     }}
     .metric-card .metric-value {{
-        font-size: 1.7rem; font-weight: 700; color: {TXT_DARK} !important;
+        font-size: 1.95rem; font-weight: 700; color: {TXT_DARK} !important;
         line-height: 1.15;
         display: -webkit-box;
         -webkit-line-clamp: 2;
@@ -235,7 +243,7 @@ st.markdown(f"""<style>
         overflow: hidden;
     }}
     .metric-card .metric-label {{
-        font-size: 0.72rem; font-weight: 600; color: {TXT2} !important;
+        font-size: 0.82rem; font-weight: 600; color: {TXT2} !important;
         text-transform: uppercase; letter-spacing: 0.05em;
     }}
 
@@ -328,7 +336,7 @@ st.markdown(f"""<style>
         margin: 2px 0 22px 0;
     }}
     .tab-explainer-label {{
-        font-size: 0.68rem;
+        font-size: 0.78rem;
         font-weight: 700;
         text-transform: uppercase;
         letter-spacing: 0.07em;
@@ -336,7 +344,7 @@ st.markdown(f"""<style>
         margin-bottom: 3px;
     }}
     .tab-explainer-text {{
-        font-size: 0.82rem;
+        font-size: 0.92rem;
         line-height: 1.5;
         color: {TXT_DARK} !important;
     }}
@@ -448,7 +456,7 @@ def so(text):
 
 def mc(label, value, color="g", small=False):
     bg = GRN_PALE if color == "g" else ('#fce4ec' if color == "r" else '#fff3e0')
-    value_style = "font-size:1.05rem;" if small else ""
+    value_style = "font-size:1.2rem;" if small else ""
     st.markdown(f"""<div class="metric-card" style="background:{bg};">
         <div class="metric-value" style="{value_style}">{value}</div>
         <div class="metric-label">{label}</div>
@@ -508,8 +516,8 @@ def tab_explainer(tab_name: str):
 
 
 # Standard sizes so every chart's axes and legend read at the same scale.
-AXIS_FONT_SIZE = 12
-LEGEND_FONT_SIZE = 12
+AXIS_FONT_SIZE = 14
+LEGEND_FONT_SIZE = 14
 
 # Shared Plotly config for interactive charts: keeps hover tooltips and the
 # autoscale ("fit to view") button, drops drag-to-zoom/pan/select so charts
@@ -538,7 +546,7 @@ def _lay(height=400, **kw):
         )
     )
     base = dict(
-        font=dict(family='Inter, system-ui, sans-serif', size=13, color='#000000'),
+        font=dict(family='Inter, system-ui, sans-serif', size=15, color='#000000'),
         paper_bgcolor='rgba(0,0,0,0)',
         plot_bgcolor='rgba(0,0,0,0)',
         margin=dict(l=40, r=20, t=30, b=80),
@@ -673,7 +681,7 @@ def tab_overview(data):
             customdata=link_labels,
             hovertemplate='%{source.label} → %{target.label}<br>%{customdata}<extra></extra>',
         ),
-        textfont=dict(color='#000000', size=12),
+        textfont=dict(color='#000000', size=14),
     ))
     fig_sankey.update_layout(**_lay(height=280, margin=dict(l=10, r=10, t=15, b=10)))
     st.plotly_chart(fig_sankey, use_container_width=True, config=PLOTLY_CONFIG)
@@ -692,7 +700,7 @@ def tab_overview(data):
             fig.update_layout(**_lay(height=380, showlegend=True,
                                      legend=dict(orientation='h', y=-0.15, font=dict(size=LEGEND_FONT_SIZE)),
                                      legend_title_text=''))
-            fig.update_traces(textinfo='percent+label', textposition='outside', textfont_size=11,
+            fig.update_traces(textinfo='percent+label', textposition='outside', textfont_size=13,
                               texttemplate='%{label}<br>%{percent:.0%}')
             st.plotly_chart(fig, use_container_width=True, config=PLOTLY_CONFIG)
 
@@ -717,7 +725,7 @@ def tab_overview(data):
                     y=dof_df['content_type'], x=dof_df[f'{col}_pct'], name=name,
                     orientation='h', marker_color=color,
                     text=[f"{v:,.0f} ({p:.0f}%)" for v, p in zip(dof_df[col], dof_df[f'{col}_pct'])],
-                    textposition='inside', textfont=dict(color='#ffffff', size=10),
+                    textposition='inside', textfont=dict(color='#ffffff', size=12),
                 ))
             fig.update_layout(**_lay(
                 height=max(380, len(dof_df) * 48), barmode='stack',
@@ -787,7 +795,7 @@ def tab_sources(data):
             marker_color='#59a14f', opacity=0.9,
             text=[f"{a:.0f} ({p:.0f}%)" for a, p in zip(tsdf['approved'], tsdf['accept_pct'])],
             textposition='inside',
-            textfont=dict(color='#ffffff', size=11),
+            textfont=dict(color='#ffffff', size=13),
         ))
         fig.add_trace(go.Bar(
             y=tsdf['source_name'], x=tsdf['rejected_pct'],
@@ -795,7 +803,7 @@ def tab_sources(data):
             marker_color='#e15759', opacity=0.9,
             text=[f"{r:.0f} ({p:.0f}%)" for r, p in zip(tsdf['rejected_count'], tsdf['rejected_pct'])],
             textposition='inside',
-            textfont=dict(color='#ffffff', size=11),
+            textfont=dict(color='#ffffff', size=13),
         ))
         fig.update_layout(**_lay(
             height=max(480, len(tsdf) * 36),
@@ -947,7 +955,7 @@ def tab_corpus_map(data):
     fig3 = px.bar(dup_cl_df, x='near_dup_pct', y='label', orientation='h',
                   color_discrete_sequence=['#e15759'],
                   text=dup_cl_df['near_dup_pct'].map(lambda v: f"{v:.0f}%"))
-    fig3.update_traces(textposition='outside', textfont=dict(color='#000000', size=10))
+    fig3.update_traces(textposition='outside', textfont=dict(color='#000000', size=12))
     fig3.update_layout(**_lay(
         height=max(320, len(clusters) * 32),
         xaxis=dict(title='% of docs flagged as likely duplicates', range=[0, max(dup_cl_df['near_dup_pct'].max() * 1.3, 10)]),
@@ -1144,7 +1152,7 @@ def tab_retrieval_quality(data):
     fig2.add_annotation(
         x=labels[best_mrr_idx], y=cfg_df['mrr'].iloc[best_mrr_idx],
         text='★ best MRR', showarrow=True, arrowhead=0, ax=0, ay=-32,
-        font=dict(color='#000000', size=11), bgcolor='#FFFFFF', bordercolor='#000000', borderwidth=1,
+        font=dict(color='#000000', size=13), bgcolor='#FFFFFF', bordercolor='#000000', borderwidth=1,
     )
     fig2.update_layout(**_lay(
         height=460, barmode='group',
@@ -1167,7 +1175,7 @@ def tab_retrieval_quality(data):
         marker=dict(size=10, color='#4C72B0', line=dict(color='#FFFFFF', width=2)),
         text=[f'{v:.3f}' for v in tl_df['mrr']],
         textposition='top center',
-        textfont=dict(color='#000000', size=11),
+        textfont=dict(color='#000000', size=13),
     ))
     _TL_YMIN, _TL_YMAX = 0.28, 0.54
     for row in _RQ_TIMELINE:  # raw list, not the DataFrame — avoids None→NaN coercion in a mixed-type column
@@ -1199,7 +1207,7 @@ def tab_retrieval_quality(data):
             marker=dict(size=9, color='#4C72B0'),
             text=[f'{v:.3f}' for v in rc_df['recall']],
             textposition='top center',
-            textfont=dict(color='#000000', size=10),
+            textfont=dict(color='#000000', size=12),
         ))
         fig.update_layout(**_lay(
             height=320,
@@ -1218,7 +1226,7 @@ def tab_retrieval_quality(data):
             marker_color=['#e15759' if v == 0 else '#4e79a7' for v in qt_df['recall10']],
             text=[f'{v:.2f}' for v in qt_df['recall10']],
             textposition='outside',
-            textfont=dict(color='#000000', size=10),
+            textfont=dict(color='#000000', size=12),
         ))
         fig.update_layout(**_lay(
             height=320,
@@ -1242,14 +1250,14 @@ def tab_retrieval_quality(data):
             y=[r['top_sim'] for r in _ABLATION],
             name='top_sim', marker_color='#4C72B0', opacity=0.85,
             text=[f"{r['top_sim']:.3f}" for r in _ABLATION],
-            textposition='outside', textfont=dict(color='#000000', size=10),
+            textposition='outside', textfont=dict(color='#000000', size=12),
         ))
         fig.add_trace(go.Bar(
             x=[str(r['max_chars']) for r in _ABLATION],
             y=[r['recall5'] for r in _ABLATION],
             name='Recall@5', marker_color='#55A868', opacity=0.85,
             text=[f"{r['recall5']:.3f}" for r in _ABLATION],
-            textposition='outside', textfont=dict(color='#000000', size=10),
+            textposition='outside', textfont=dict(color='#000000', size=12),
         ))
         fig.update_layout(**_lay(
             height=320, barmode='group',
@@ -1265,7 +1273,7 @@ def tab_retrieval_quality(data):
         fig.add_shape(type='line', x0=_winner_label, x1=_winner_label, y0=0, y1=1,
                       line=dict(color='#C44E52', width=2, dash='dash'))
         fig.add_annotation(x=_winner_label, y=1, text='winner', showarrow=False,
-                           yshift=10, font=dict(color='#C44E52', size=11))
+                           yshift=10, font=dict(color='#C44E52', size=13))
         st.plotly_chart(fig, use_container_width=True, config=PLOTLY_CONFIG)
 
     with cr2:
@@ -1275,7 +1283,7 @@ def tab_retrieval_quality(data):
             y=[r['n_chunks'] for r in _ABLATION],
             marker_color=TABLEAU[:4], opacity=0.85,
             text=[f"{r['n_chunks']:,}" for r in _ABLATION],
-            textposition='outside', textfont=dict(color='#000000', size=10),
+            textposition='outside', textfont=dict(color='#000000', size=12),
         ))
         fig.update_layout(**_lay(
             height=320,
@@ -1301,14 +1309,14 @@ def tab_retrieval_quality(data):
 def main():
     st.markdown(f"""
     <div class="dash-inner">
-      <div style="text-align:center; padding:18px 40px 16px 40px; background:{INNER_BG}; margin:0;">
-        <h1 style="color:{TXT_DARK}; margin:0 0 5px 0; font-size:1.4rem; font-weight:700; letter-spacing:-0.02em;">
+      <div style="text-align:center; padding:26px 40px 20px 40px; background:{INNER_BG}; margin:0;">
+        <h1 style="color:{TXT_DARK}; margin:0 0 9px 0; font-size:2.3rem; font-weight:800; letter-spacing:-0.03em;">
           Private RAG Evaluation Dashboard
         </h1>
-        <p style="color:{TXT_DARK}; margin:0 0 4px 0; font-size:0.86rem; line-height:1.4; white-space:nowrap;">
+        <p style="color:{TXT_DARK}; margin:0 0 5px 0; font-size:1rem; line-height:1.45; white-space:nowrap;">
           An end-to-end view of how well a private document intelligence pipeline ingests, prepares, retrieves, and validates evidence from internal knowledge.
         </p>
-        <p style="color:{TXT2}; margin:0; font-size:0.74rem; line-height:1.4; white-space:nowrap;">
+        <p style="color:{TXT2}; margin:0; font-size:0.86rem; line-height:1.4; white-space:nowrap;">
           Manufacturing is used as the demo domain because it reflects a common enterprise problem: legacy PDFs, manuals, SOPs, and engineering documents that often need to stay inside private or controlled environments.
         </p>
       </div>
