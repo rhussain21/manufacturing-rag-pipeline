@@ -1,122 +1,102 @@
 {
-  "exported_at": "2026-05-21T06:02:43.348288",
+  "exported_at": "2026-07-05T04:19:39.388722",
   "totals": {
-    "content": 1165,
+    "content": 1786,
     "pending": 0,
-    "extracted": 1153,
-    "failed_extraction": 12,
-    "vectorized": 213,
-    "approved": 736,
-    "rejected": 429,
-    "signals_done": 766,
-    "total_signals": 55821,
-    "marked_deletion": 429,
-    "acceptance_rate": 63.0,
-    "extraction_success_rate": 99.0,
-    "avg_signals_per_doc": 72.87
+    "extracted": 1462,
+    "failed_extraction": 324,
+    "vectorized": 849,
+    "approved": 849,
+    "rejected": 474,
+    "dq_rejected": 151,
+    "llm_rejected": 462,
+    "dq_passed": 1311,
+    "signals_done": 774,
+    "total_signals": 56486,
+    "marked_deletion": 474,
+    "acceptance_rate": 65.0,
+    "dq_pass_rate": 90.0,
+    "extraction_success_rate": 82.0,
+    "avg_signals_per_doc": 72.98
   },
   "by_source_type": [
     {
-      "source_type": "mp3",
-      "content_type": "unknown",
-      "count": 5,
-      "approved": 0,
-      "rejected": 5,
-      "signals_extracted": 0
-    },
-    {
-      "source_type": "xml",
       "content_type": "text",
-      "count": 1,
-      "approved": 0,
-      "rejected": 1,
-      "signals_extracted": 0
+      "count": 1169,
+      "approved": 585,
+      "llm_rejected": 281,
+      "dq_rejected": 90,
+      "extraction_failed": 213
     },
     {
-      "source_type": "html",
-      "content_type": "text",
-      "count": 5,
-      "approved": 5,
-      "rejected": 0,
-      "signals_extracted": 5
-    },
-    {
-      "source_type": "audio",
-      "content_type": "audio",
-      "count": 54,
-      "approved": 41,
-      "rejected": 13,
-      "signals_extracted": 52
-    },
-    {
-      "source_type": "pdf",
       "content_type": "pdf",
       "count": 139,
       "approved": 55,
-      "rejected": 84,
-      "signals_extracted": 57
+      "llm_rejected": 82,
+      "dq_rejected": 0,
+      "extraction_failed": 2
     },
     {
-      "source_type": "html",
       "content_type": "html",
-      "count": 235,
-      "approved": 156,
-      "rejected": 79,
-      "signals_extracted": 175
+      "count": 418,
+      "approved": 168,
+      "llm_rejected": 80,
+      "dq_rejected": 61,
+      "extraction_failed": 109
     },
     {
-      "source_type": "pdf",
-      "content_type": "text",
-      "count": 725,
-      "approved": 479,
-      "rejected": 246,
-      "signals_extracted": 477
-    },
-    {
-      "source_type": "mp3",
-      "content_type": "audio",
-      "count": 1,
+      "content_type": "unknown",
+      "count": 5,
       "approved": 0,
-      "rejected": 1,
-      "signals_extracted": 0
+      "llm_rejected": 5,
+      "dq_rejected": 0,
+      "extraction_failed": 0
+    },
+    {
+      "content_type": "audio",
+      "count": 55,
+      "approved": 41,
+      "llm_rejected": 14,
+      "dq_rejected": 0,
+      "extraction_failed": 0
     }
   ],
   "rejection_reasons": [
     {
       "screening_reason": "[quality_gate] low_diversity (3%)",
-      "count": 45
+      "count": 49
     },
     {
       "screening_reason": "[quality_gate] low_diversity (6%)",
-      "count": 38
+      "count": 48
     },
     {
       "screening_reason": "[quality_gate] low_diversity (4%)",
-      "count": 37
-    },
-    {
-      "screening_reason": "[quality_gate] low_diversity (8%)",
-      "count": 36
+      "count": 44
     },
     {
       "screening_reason": "[quality_gate] low_diversity (5%)",
-      "count": 32
+      "count": 39
     },
     {
       "screening_reason": "[quality_gate] low_diversity (7%)",
-      "count": 31
+      "count": 39
+    },
+    {
+      "screening_reason": "[quality_gate] low_diversity (8%)",
+      "count": 37
     },
     {
       "screening_reason": "[quality_gate] low_diversity (2%)",
-      "count": 31
+      "count": 35
     },
     {
       "screening_reason": "[quality_gate] low_diversity (9%)",
-      "count": 23
+      "count": 25
     },
     {
       "screening_reason": "[quality_gate] low_diversity (10%)",
-      "count": 20
+      "count": 21
     },
     {
       "screening_reason": "The content excerpt is empty, providing no substantive information for signal extraction.",
@@ -143,6 +123,10 @@
       "count": 4
     },
     {
+      "screening_reason": "[quality_gate] too_short (221 chars < 500)",
+      "count": 2
+    },
+    {
       "screening_reason": "[quality_gate] too_short (207 chars < 500)",
       "count": 2
     },
@@ -151,38 +135,34 @@
       "count": 2
     },
     {
-      "screening_reason": "[quality_gate] too_short (221 chars < 500)",
-      "count": 2
-    },
-    {
-      "screening_reason": "The content excerpt consists solely of website navigation, contact information, and boilerplate text, containing no substantive factual information relevant to manufacturing, industrial automation, or AI for signal extraction.",
+      "screening_reason": "The content excerpt is predominantly website boilerplate and navigation, lacking specific factual information about manufacturing, industrial automation, or regulatory developments to extract structured signals.",
       "count": 1
     },
     {
-      "screening_reason": "The content is predominantly a login wall and boilerplate text, providing no substantive factual information about the named products or technologies to justify signal extraction.",
+      "screening_reason": "The content excerpt is predominantly a list of generic document titles and Scribd metadata, lacking specific named entities, technical details, or concrete events.",
       "count": 1
     }
   ],
   "funnel": [
     {
       "stage": "Downloaded",
-      "count": 1165
+      "count": 1786
     },
     {
       "stage": "Extracted",
-      "count": 1153
+      "count": 1462
     },
     {
-      "stage": "Screened",
-      "count": 1165
+      "stage": "DQ Passed",
+      "count": 1311
     },
     {
       "stage": "Approved",
-      "count": 736
+      "count": 849
     },
     {
-      "stage": "Signals Extracted",
-      "count": 766
+      "stage": "Docs Vectorized",
+      "count": 849
     }
   ]
 }

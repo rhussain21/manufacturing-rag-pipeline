@@ -21,7 +21,6 @@ import pandas as pd
 import numpy as np
 import plotly.express as px
 import plotly.graph_objects as go
-from plotly.subplots import make_subplots
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
@@ -31,7 +30,7 @@ LOCAL_DATA_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'dashb
 REMOTE_DATA_URL = os.getenv('DATA_URL', '')
 
 st.set_page_config(
-    page_title="Manufacturing RAG System",
+    page_title="Private RAG Evaluation Dashboard",
     page_icon="🏭",
     layout="wide",
     initial_sidebar_state="collapsed",
@@ -221,9 +220,19 @@ st.markdown(f"""<style>
         border: 1px solid {BDR};
         border-radius: 8px;
         padding: 14px 18px;
+        height: 104px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 4px;
     }}
     .metric-card .metric-value {{
         font-size: 1.7rem; font-weight: 700; color: {TXT_DARK} !important;
+        line-height: 1.15;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
     }}
     .metric-card .metric-label {{
         font-size: 0.72rem; font-weight: 600; color: {TXT2} !important;
@@ -306,6 +315,34 @@ st.markdown(f"""<style>
     /* ── Links ── */
     a {{ color: {GRN} !important; }}
     a:hover {{ color: {GRN_LT} !important; }}
+
+    /* ── Tab explainer card — "what / why / watch for", 3 cols desktop, stacked mobile ── */
+    .tab-explainer {{
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 18px;
+        background: {CARD_BG};
+        border: 1px solid {BDR};
+        border-radius: 10px;
+        padding: 14px 22px;
+        margin: 2px 0 22px 0;
+    }}
+    .tab-explainer-label {{
+        font-size: 0.68rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.07em;
+        color: {GRN} !important;
+        margin-bottom: 3px;
+    }}
+    .tab-explainer-text {{
+        font-size: 0.82rem;
+        line-height: 1.5;
+        color: {TXT_DARK} !important;
+    }}
+    @media (max-width: 900px) {{
+        .tab-explainer {{ grid-template-columns: 1fr; }}
+    }}
 </style>""", unsafe_allow_html=True)
 
 # ── Color scales ──────────────────────────────────────────────────────────
@@ -347,6 +384,10 @@ _REJECTION_MAP = [
     ('timeout',           'Processing Error'),
 ]
 
+def _safe_div_pct(a, b) -> float:
+    return (a / b * 100) if b else 0.0
+
+
 def _categorize_rejection(reason: str) -> str:
     r = str(reason).lower().strip()
     for key, cat in _REJECTION_MAP:
@@ -385,12 +426,11 @@ def load_json(filename: str) -> dict:
 def load_all() -> dict:
     return {
         'pipeline':  load_json('pipeline_stats.json'),
-        'signals':   load_json('signal_stats.json'),
         'temporal':  load_json('temporal_data.json'),
-        'explorer':  load_json('signal_explorer.json'),
         'logs':      load_json('system_logs.json'),
         'discovery': load_json('discovery_stats.json'),
         'corpus':    load_json('corpus_quality.json'),
+        'topic_map': load_json('topic_map.json'),
     }
 
 
@@ -406,27 +446,85 @@ def so(text):
     st.markdown(f'<div class="section-so">{text}</div>', unsafe_allow_html=True)
 
 
-def mc(label, value, color="g"):
+def mc(label, value, color="g", small=False):
     bg = GRN_PALE if color == "g" else ('#fce4ec' if color == "r" else '#fff3e0')
+    value_style = "font-size:1.05rem;" if small else ""
     st.markdown(f"""<div class="metric-card" style="background:{bg};">
-        <div class="metric-value">{value}</div>
+        <div class="metric-value" style="{value_style}">{value}</div>
         <div class="metric-label">{label}</div>
     </div>""", unsafe_allow_html=True)
+
+
+# Reusable per-tab explainer config — one place to edit copy, one renderer for all tabs.
+TAB_EXPLAINERS = {
+    "Pipeline Overview": {
+        "what": "The full document pipeline from intake to searchable knowledge base.",
+        "why": "It reveals whether documents are flowing through the system cleanly or getting stuck before they become useful.",
+        "watch_for": "Ingestion failures, unapproved documents, missing metadata, or large drops between stages.",
+    },
+    "Dataset Quality": {
+        "what": "What is actually inside the searchable corpus — topics, formats, sources, duplication, and coverage.",
+        "why": "Retrieval quality depends on corpus quality. A RAG system cannot answer well if the underlying documents are thin, redundant, or poorly distributed.",
+        "watch_for": "Coverage gaps, duplicate-heavy topics, overrepresented sources, or important document types missing from the vector index.",
+    },
+    "Retrieval Quality": {
+        "what": "How well the system retrieves the right supporting evidence for labeled test questions.",
+        "why": "This is the core quality measure for RAG. It checks whether the system finds useful evidence before an LLM ever generates an answer.",
+        "watch_for": "Low recall, weak MRR, unresolved queries, or test questions where the right document exists but is not being retrieved.",
+    },
+    "System Logs": {
+        "what": "Operational events from ingestion, processing, embedding, retrieval, and evaluation runs.",
+        "why": "Logs make the pipeline auditable and help explain why metrics changed.",
+        "watch_for": "Failed jobs, skipped files, parsing errors, embedding failures, or sudden changes after a pipeline update.",
+    },
+    "Project Information": {
+        "what": "The architecture, design choices, and implementation details behind the dashboard.",
+        "why": "It gives clients or employers enough context to understand what was built, why certain tradeoffs were made, and how the system could generalize to other private document environments.",
+        "watch_for": "Deployment model, data flow, privacy assumptions, evaluation design, and next-step roadmap.",
+    },
+}
+
+
+def tab_explainer(tab_name: str):
+    """Compact 'what am I looking at' card for the top of a tab — same neutral card
+    style every time, regardless of tab, so it never reads as a warning/error state."""
+    info = TAB_EXPLAINERS.get(tab_name)
+    if not info:
+        return
+    st.markdown(f"""<div class="tab-explainer">
+        <div>
+            <div class="tab-explainer-label">What this shows</div>
+            <div class="tab-explainer-text">{info['what']}</div>
+        </div>
+        <div>
+            <div class="tab-explainer-label">Why it matters</div>
+            <div class="tab-explainer-text">{info['why']}</div>
+        </div>
+        <div>
+            <div class="tab-explainer-label">Watch for</div>
+            <div class="tab-explainer-text">{info['watch_for']}</div>
+        </div>
+    </div>""", unsafe_allow_html=True)
+
+
+# Standard sizes so every chart's axes and legend read at the same scale.
+AXIS_FONT_SIZE = 12
+LEGEND_FONT_SIZE = 12
 
 
 def _lay(height=400, **kw):
     """Build a Plotly layout dict with black fonts and transparent background.
     Pass xaxis/yaxis/coloraxis inside kw — they will be merged, not duplicated."""
     _ax = dict(
-        tickfont=dict(color='#000000'),
-        title=dict(font=dict(color='#000000')),
+        tickfont=dict(color='#000000', size=AXIS_FONT_SIZE),
+        title=dict(font=dict(color='#000000', size=AXIS_FONT_SIZE)),
         gridcolor=GRID,
         zerolinecolor=GRID,
     )
     _colorax = dict(
         colorbar=dict(
-            tickfont=dict(color='#000000'),
-            title=dict(font=dict(color='#000000')),
+            tickfont=dict(color='#000000', size=AXIS_FONT_SIZE),
+            title=dict(font=dict(color='#000000', size=AXIS_FONT_SIZE)),
         )
     )
     base = dict(
@@ -439,7 +537,7 @@ def _lay(height=400, **kw):
             orientation='h',
             x=0.5, xanchor='center',
             y=-0.22, yanchor='top',
-            font=dict(color='#000000', size=12),
+            font=dict(color='#000000', size=LEGEND_FONT_SIZE),
             bgcolor='rgba(0,0,0,0)',
         ),
         xaxis=dict(**_ax),
@@ -457,6 +555,27 @@ def _lay(height=400, **kw):
 
 
 # ══════════════════════════════════════════════════════════════════════════
+# TAB: Project Information  (light — premise + version history, no live data)
+# ══════════════════════════════════════════════════════════════════════════
+
+_VERSION_HISTORY = [
+    ("v1", "Built the ingestion pipeline and produced the first quality-gated corpus."),
+    ("v2", "Benchmarked retrieval quality against a hand-labeled test set."),
+    ("v3", "Measured whether better retrieval actually produces better answers."),
+    ("v4", "Improved chunking and repaired corpus quality issues."),
+    ("v5", "Fixed an eval bug, tested HyDE/reranking, adopted a smarter PDF extractor, cut low-value features."),
+]
+
+
+def tab_project_info(_data):
+    tab_explainer("Project Information")
+
+    sl("PROJECT VERSION HISTORY")
+    for ver, desc in _VERSION_HISTORY:
+        st.markdown(f"**{ver}** — {desc}")
+
+
+# ══════════════════════════════════════════════════════════════════════════
 # TAB: Overview  (merged with Pipeline)
 # ══════════════════════════════════════════════════════════════════════════
 
@@ -464,69 +583,129 @@ def tab_overview(data):
     ps = data.get('pipeline', {})
     t = ps.get('totals', {})
 
-    # ── Top-level KPIs ────────────────────────────────────────────────────
-    c = st.columns(6)
-    with c[0]: mc("DOCUMENTS", t.get('content', 0))
-    with c[1]: mc("APPROVED", t.get('approved', 0))
-    with c[2]: mc("ACCEPTANCE RATE", f"{t.get('acceptance_rate', 0):.0f}%")
-    with c[3]: mc("SIGNALS EXTRACTED", f"{t.get('total_signals', 0):,}")
-    with c[4]: mc("AVG SIGNALS / DOC", f"{t.get('avg_signals_per_doc', 0):.1f}")
-    with c[5]: mc("EXTRACTION SUCCESS", f"{t.get('extraction_success_rate', 0):.0f}%")
+    tab_explainer("Pipeline Overview")
 
-    # ── Funnel + Corpus composition ───────────────────────────────────────
+    # ── Top-level KPIs ────────────────────────────────────────────────────
+    # Each rate uses the denominator for the stage it actually measures, not a blanket
+    # docs-ingested denominator — e.g. DQ Rejection Rate is of docs that reached the DQ
+    # gate (Extracted), not of all 1,786 ever downloaded.
+    extraction_pct = t.get('extraction_success_rate', 0)
+    dq_rejection_pct = _safe_div_pct(t.get('dq_rejected', 0), t.get('extracted', 0))
+    llm_rejection_pct = _safe_div_pct(t.get('llm_rejected', 0), t.get('dq_passed', 0))
+
+    c = st.columns(5)
+    with c[0]: mc("DOCS INGESTED", t.get('content', 0))
+    with c[1]: mc("DOCS VECTORIZED", t.get('vectorized', 0))
+    with c[2]: mc("EXTRACTION SUCCESS RATE", f"{extraction_pct:.0f}%")
+    with c[3]: mc("DQ REJECTION RATE", f"{dq_rejection_pct:.0f}%", "r")
+    with c[4]: mc("LLM REJECTION RATE", f"{llm_rejection_pct:.0f}%", "r")
+
+    # ── Sankey — same pipeline, as flows instead of a narrowing funnel ─────
+    sl("PIPELINE FLOW")
+    so("How documents move through each stage — the surviving path runs along the top, and each drop-off "
+       "(extraction failure, DQ rejection, LLM rejection) peels off below the stage where it happens.")
+
+    total_dl = t.get('content', 0) or 1
+    node_names = [
+        'Downloaded', 'Extracted', 'Extraction Failed', 'DQ Passed', 'DQ Rejected',
+        'Approved', 'LLM Rejected', 'Docs Vectorized',
+    ]
+    node_counts = [
+        t.get('content', 0), t.get('extracted', 0), t.get('failed_extraction', 0),
+        t.get('dq_passed', 0), t.get('dq_rejected', 0), t.get('approved', 0),
+        t.get('llm_rejected', 0), t.get('vectorized', 0),
+    ]
+    idx = {name: i for i, name in enumerate(node_names)}
+    labels = [f"{n}<br>{c:,} ({_safe_div_pct(c, total_dl):.0f}%)" for n, c in zip(node_names, node_counts)]
+
+    # Fixed layout: the surviving chain (Downloaded -> ... -> Docs Vectorized) pinned along
+    # the top (low y); each drop-off node sits below the stage it branches from.
+    node_x = [0.001, 0.24, 0.24, 0.49, 0.49, 0.74, 0.74, 0.999]
+    node_y = [0.05, 0.05, 0.55, 0.05, 0.45, 0.05, 0.35, 0.05]
+    node_colors = ['#4e79a7', '#59a14f', '#9c755f', '#59a14f', '#e15759',
+                   '#59a14f', '#e15759', '#59a14f']
+
+    links = [
+        ('Downloaded', 'Extracted', t.get('extracted', 0), 'good'),
+        ('Downloaded', 'Extraction Failed', t.get('failed_extraction', 0), 'bad'),
+        ('Extracted', 'DQ Passed', t.get('dq_passed', 0), 'good'),
+        ('Extracted', 'DQ Rejected', t.get('dq_rejected', 0), 'bad'),
+        ('DQ Passed', 'Approved', t.get('approved', 0), 'good'),
+        ('DQ Passed', 'LLM Rejected', t.get('llm_rejected', 0), 'bad'),
+        ('Approved', 'Docs Vectorized', t.get('vectorized', 0), 'good'),
+    ]
+    link_color = {'good': 'rgba(89,161,79,0.35)', 'bad': 'rgba(225,87,89,0.35)'}
+    link_pct = [_safe_div_pct(v, total_dl) for _, _, v, _ in links]
+    link_labels = [f"{v:,} ({p:.0f}% of downloaded)" for (_, _, v, _), p in zip(links, link_pct)]
+
+    fig_sankey = go.Figure(go.Sankey(
+        orientation='h',
+        arrangement='fixed',
+        node=dict(
+            label=labels, color=node_colors, x=node_x, y=node_y,
+            pad=28, thickness=20,
+            line=dict(color=BDR, width=1),
+        ),
+        link=dict(
+            source=[idx[s] for s, _, _, _ in links],
+            target=[idx[tgt] for _, tgt, _, _ in links],
+            value=[v for _, _, v, _ in links],
+            color=[link_color[kind] for _, _, _, kind in links],
+            customdata=link_labels,
+            hovertemplate='%{source.label} → %{target.label}<br>%{customdata}<extra></extra>',
+        ),
+        textfont=dict(color='#000000', size=12),
+    ))
+    fig_sankey.update_layout(**_lay(height=280, margin=dict(l=10, r=10, t=15, b=10)))
+    st.plotly_chart(fig_sankey, use_container_width=True)
+
+    by_type = ps.get('by_source_type', [])
+
+    # ── Corpus composition + Drop-off by format ────────────────────────────
     cl, cr = st.columns(2)
     with cl:
-        sl("ACCEPTANCE FUNNEL")
-        so("How many discovered documents survive each pipeline stage — drop-offs reveal where quality gates are working.")
-        funnel = ps.get('funnel', [])
-        if funnel:
-            fig = go.Figure(go.Funnel(
-                y=[s['stage'] for s in funnel],
-                x=[s['count'] for s in funnel],
-                textinfo='value+percent initial',
-                textfont=dict(color='#000000'),
-                marker=dict(color=['#4e79a7', '#59a14f', '#76b7b2', '#f28e2b', '#b07aa1']),
-                connector=dict(line=dict(width=1, color=BDR)),
-            ))
-            fig.update_layout(**_lay(height=340))
+        sl("CORPUS COMPOSITION")
+        so("Where approved content is coming from — a balanced mix reduces over-reliance on any single source type.")
+        if by_type:
+            agg = pd.DataFrame(by_type).groupby('content_type')['count'].sum().reset_index()
+            fig = px.pie(agg, values='count', names='content_type',
+                         color_discrete_sequence=MULTI, hole=0.45)
+            fig.update_layout(**_lay(height=380, showlegend=True,
+                                     legend=dict(orientation='h', y=-0.15, font=dict(size=LEGEND_FONT_SIZE)),
+                                     legend_title_text=''))
+            fig.update_traces(textinfo='percent+label', textposition='outside', textfont_size=11,
+                              texttemplate='%{label}<br>%{percent:.0%}')
             st.plotly_chart(fig, use_container_width=True)
 
     with cr:
-        sl("CORPUS COMPOSITION")
-        so("Where approved content is coming from — a balanced mix reduces over-reliance on any single source type.")
-        by_type = ps.get('by_source_type', [])
+        sl("DROP-OFF BY FORMAT")
+        so("Where each format actually loses documents on the way to the final corpus — sorted by survival rate, worst first.")
         if by_type:
-            agg = pd.DataFrame(by_type).groupby('source_type')['count'].sum().reset_index()
-            fig = px.pie(agg, values='count', names='source_type',
-                         color_discrete_sequence=MULTI, hole=0.45)
-            fig.update_layout(**_lay(height=340, showlegend=True,
-                                     legend=dict(orientation='h', y=-0.15, font=dict(size=11))))
-            fig.update_traces(textinfo='percent+label', textposition='outside', textfont_size=11)
+            dof_df = pd.DataFrame(by_type).copy()
+            dof_df['survival_rate'] = dof_df.apply(lambda r: _safe_div_pct(r['approved'], r['count']), axis=1)
+            dof_df = dof_df.sort_values('survival_rate', ascending=True)
+            for col in ['approved', 'llm_rejected', 'dq_rejected', 'extraction_failed']:
+                dof_df[f'{col}_pct'] = dof_df.apply(lambda r, c=col: _safe_div_pct(r[c], r['count']), axis=1)
+
+            fig = go.Figure()
+            for col, name, color in [
+                ('approved', 'Approved', '#59a14f'),
+                ('llm_rejected', 'LLM Rejected', '#f28e2b'),
+                ('dq_rejected', 'DQ Rejected', '#e15759'),
+                ('extraction_failed', 'Extraction Failed', '#9c755f'),
+            ]:
+                fig.add_trace(go.Bar(
+                    y=dof_df['content_type'], x=dof_df[f'{col}_pct'], name=name,
+                    orientation='h', marker_color=color,
+                    text=[f"{v:,.0f} ({p:.0f}%)" for v, p in zip(dof_df[col], dof_df[f'{col}_pct'])],
+                    textposition='inside', textfont=dict(color='#ffffff', size=10),
+                ))
+            fig.update_layout(**_lay(
+                height=max(380, len(dof_df) * 48), barmode='stack',
+                xaxis=dict(title='% of documents', range=[0, 100]), yaxis=dict(title=''),
+                legend=dict(),
+            ))
             st.plotly_chart(fig, use_container_width=True)
-
-    # ── Source type detail table (under Acceptance Funnel) ───────────────
-    sl("SOURCE TYPE BREAKDOWN")
-    so("Volume and quality split by content format and origin — identifies which content types yield the most signals.")
-    by_type = ps.get('by_source_type', [])
-    if by_type:
-        btdf = pd.DataFrame(by_type)
-        display = btdf.rename(columns={
-            'source_type': 'Source', 'content_type': 'Format',
-            'count': 'Total', 'approved': 'Approved',
-            'rejected': 'Rejected', 'signals_extracted': 'Signals Done',
-        })
-        st.dataframe(display, use_container_width=True, hide_index=True)
-
-    # ── Pipeline status row ───────────────────────────────────────────────
-    sl("PIPELINE STATUS")
-    so("Current processing state across the full document set — shows how far each document has progressed.")
-    c2 = st.columns(6)
-    with c2[0]: mc("EXTRACTED", t.get('extracted', 0))
-    with c2[1]: mc("VECTORIZED", t.get('vectorized', 0))
-    with c2[2]: mc("SIGNALS DONE", t.get('signals_done', 0))
-    with c2[3]: mc("PENDING", t.get('pending', 0))
-    with c2[4]: mc("FAILED EXTRACTION", t.get('failed_extraction', 0), "r")
-    with c2[5]: mc("REJECTED", t.get('rejected', 0), "r")
 
     # ── Rejection reasons (categorized) + Errors ──────────────────────────
     reasons = ps.get('rejection_reasons', [])
@@ -557,18 +736,11 @@ def tab_overview(data):
             fig.update_traces(textposition='outside', textfont_color='#000000')
             fig.update_layout(**_lay(height=max(240, len(errors_7d) * 40),
                                      yaxis=dict(autorange='reversed', title=''),
-                                     xaxis=dict(title='Error Count')))
+                                     xaxis=dict(title='Error Count'),
+                                     legend_title_text=''))
             st.plotly_chart(fig, use_container_width=True)
         else:
             st.caption("No errors in the last 7 days.")
-
-    # ── Raw rejection reasons table (full width) ──────────────────────────
-    if reasons:
-        sl("RAW REJECTION REASONS")
-        so("All individual rejection reason strings from the screener — useful for diagnosing gate calibration issues.")
-        raw_df = pd.DataFrame(reasons).rename(
-            columns={'screening_reason': 'Reason', 'count': 'Count'})
-        st.dataframe(raw_df, use_container_width=True, hide_index=True)
 
 
 # ══════════════════════════════════════════════════════════════════════════
@@ -576,58 +748,7 @@ def tab_overview(data):
 # ══════════════════════════════════════════════════════════════════════════
 
 def tab_sources(data):
-    sd = data.get('signals', {})
     cq = data.get('corpus', {})
-
-    sy = sd.get('source_yield', [])
-    if sy:
-        sdf = pd.DataFrame(sy)
-        sdf['signals_per_doc'] = (sdf['signal_count'] / sdf['doc_count']).round(1)
-        sdf['avg_confidence'] = sdf['avg_confidence'].round(2)
-
-        c = st.columns(3)
-        with c[0]: mc("HIGHEST YIELD", sdf.iloc[0]['source_name'] if len(sdf) else "N/A")
-        with c[1]:
-            bq = sdf.loc[sdf['avg_confidence'].idxmax()] if len(sdf) else {}
-            mc("HIGHEST QUALITY", bq.get('source_name', 'N/A'))
-        with c[2]:
-            bd = sdf.loc[sdf['signals_per_doc'].idxmax()] if len(sdf) else {}
-            mc("HIGHEST SIGNAL DENSITY", bd.get('source_name', 'N/A'))
-
-        sl("SIGNAL YIELD BY SOURCE")
-        so("Which sources produce the most actionable signals — high bars with high confidence dots are your most valuable data assets.")
-        fig = make_subplots(specs=[[{"secondary_y": True}]])
-        fig.add_trace(go.Bar(
-            x=sdf['source_name'], y=sdf['signal_count'],
-            name='Total Signals', marker_color='#4e79a7', opacity=0.9,
-            text=sdf['signal_count'], textposition='outside',
-            textfont=dict(color='#000000', size=11),
-        ), secondary_y=False)
-        fig.add_trace(go.Scatter(
-            x=sdf['source_name'], y=sdf['avg_confidence'],
-            name='Avg Confidence', mode='markers+lines',
-            marker=dict(color='#e15759', size=10, symbol='diamond'),
-            line=dict(color='#e15759', width=2, dash='dot'),
-        ), secondary_y=True)
-        fig.update_layout(**_lay(height=460,
-                                  legend=dict(font=dict(size=12))))
-        fig.update_xaxes(tickangle=-35, tickfont=dict(size=12))
-        fig.update_yaxes(title_text="Signal Count", tickfont=dict(color='#000000', size=12),
-                         title_font=dict(color='#000000'), secondary_y=False)
-        fig.update_yaxes(title_text="Avg Confidence", range=[0, 1],
-                         tickfont=dict(color='#000000', size=12),
-                         title_font=dict(color='#000000'), secondary_y=True)
-        st.plotly_chart(fig, use_container_width=True)
-
-        st.dataframe(
-            sdf[['source_name', 'source_type', 'doc_count', 'signal_count',
-                 'signals_per_doc', 'avg_confidence']].rename(columns={
-                'source_name': 'Source', 'source_type': 'Type', 'doc_count': 'Docs',
-                'signal_count': 'Signals', 'signals_per_doc': 'Signals/Doc',
-                'avg_confidence': 'Avg Conf.',
-            }),
-            use_container_width=True, hide_index=True,
-        )
 
     # Top sources — approved vs rejected stacked + acceptance rate
     sl("TOP SOURCES — VOLUME & ACCEPTANCE")
@@ -635,46 +756,37 @@ def tab_sources(data):
     ts = cq.get('top_sources', [])
     if ts:
         tsdf = pd.DataFrame(ts).head(20)
-        tsdf['accept_pct'] = (tsdf['approved'] / tsdf['count'] * 100).round(1)
+        tsdf['accept_pct'] = (tsdf['approved'] / tsdf['count'] * 100).round(0)
         tsdf['rejected_count'] = tsdf['count'] - tsdf['approved']
-        tsdf = tsdf.sort_values('count', ascending=True)
+        tsdf['rejected_pct'] = 100 - tsdf['accept_pct']
+        tsdf = tsdf.sort_values('accept_pct', ascending=True)
 
         fig = go.Figure()
         fig.add_trace(go.Bar(
-            y=tsdf['source_name'], x=tsdf['approved'],
+            y=tsdf['source_name'], x=tsdf['accept_pct'],
             name='Approved', orientation='h',
             marker_color='#59a14f', opacity=0.9,
-            text=tsdf['approved'], textposition='inside',
+            text=[f"{a:.0f} ({p:.0f}%)" for a, p in zip(tsdf['approved'], tsdf['accept_pct'])],
+            textposition='inside',
             textfont=dict(color='#ffffff', size=11),
         ))
         fig.add_trace(go.Bar(
-            y=tsdf['source_name'], x=tsdf['rejected_count'],
+            y=tsdf['source_name'], x=tsdf['rejected_pct'],
             name='Rejected', orientation='h',
             marker_color='#e15759', opacity=0.9,
-            text=[f"{p}% acc." for p in tsdf['accept_pct']],
-            textposition='outside',
-            textfont=dict(color='#000000', size=10),
+            text=[f"{r:.0f} ({p:.0f}%)" for r, p in zip(tsdf['rejected_count'], tsdf['rejected_pct'])],
+            textposition='inside',
+            textfont=dict(color='#ffffff', size=11),
         ))
         fig.update_layout(**_lay(
             height=max(480, len(tsdf) * 36),
             barmode='stack',
             legend=dict(),
-            xaxis=dict(title='Documents', tickfont=dict(color='#000000', size=12)),
-            yaxis=dict(title='', tickfont=dict(color='#000000', size=11)),
+            xaxis=dict(title='% of documents', range=[0, 100]),
+            yaxis=dict(title=''),
         ))
         st.plotly_chart(fig, use_container_width=True)
-        st.caption("Green = approved docs, Red = rejected. Accept % shown after each bar.")
 
-        sl("SOURCE ACCEPTANCE RATE RANKING")
-        so("Sources sorted by selectivity — high-volume, high-acceptance sources are your most reliable data feeds.")
-        rank_df = tsdf[['source_name', 'source_type', 'count', 'approved',
-                         'rejected_count', 'accept_pct']].sort_values(
-            'accept_pct', ascending=False).rename(columns={
-            'source_name': 'Source', 'source_type': 'Type', 'count': 'Total',
-            'approved': 'Approved', 'rejected_count': 'Rejected',
-            'accept_pct': 'Accept %',
-        })
-        st.dataframe(rank_df, use_container_width=True, hide_index=True)
     else:
         st.caption("No top sources data available.")
 
@@ -696,7 +808,8 @@ def tab_trends(data):
             df['date'] = pd.to_datetime(df['date'])
             fig = px.bar(df, x='date', y='count', color='source_type',
                          barmode='stack', color_discrete_sequence=MULTI)
-            fig.update_layout(**_lay(height=310, xaxis=dict(title=''), yaxis=dict(title='Documents')))
+            fig.update_layout(**_lay(height=310, xaxis=dict(title=''), yaxis=dict(title='Documents'),
+                                     legend_title_text=''))
             st.plotly_chart(fig, use_container_width=True)
 
     with cr:
@@ -713,437 +826,124 @@ def tab_trends(data):
                                      yaxis=dict(title='Cumulative')))
             st.plotly_chart(fig, use_container_width=True)
 
-    cl2, cr2 = st.columns(2)
-    with cl2:
-        sl("SCREENING OVER TIME")
-        so("Approval vs. rejection balance as the pipeline matures — rising approval rate means the LLM gate is better calibrated.")
-        sc = tmp.get('screening_timeline', [])
-        if sc:
-            scdf = pd.DataFrame(sc)
-            scdf['date'] = pd.to_datetime(scdf['date'])
-            fig = go.Figure()
-            fig.add_trace(go.Bar(x=scdf['date'], y=scdf['approved'],
-                                 name='Approved', marker_color='#59a14f'))
-            fig.add_trace(go.Bar(x=scdf['date'], y=scdf['rejected'],
-                                 name='Rejected', marker_color='#e15759'))
-            fig.update_layout(**_lay(barmode='stack', height=270,
-                                     legend=dict(),
-                                     xaxis=dict(title=''), yaxis=dict(title='Count')))
-            st.plotly_chart(fig, use_container_width=True)
-
-    with cr2:
-        sl("SIGNAL TYPES OVER TIME")
-        so("Which signal categories are growing — reflects what the domain is actually publishing about.")
-        st_data = tmp.get('signal_timeline', [])
-        if st_data:
-            stdf = pd.DataFrame(st_data)
-            stdf['date'] = pd.to_datetime(stdf['date'])
-            fig = px.area(stdf, x='date', y='count', color='signal_type',
-                          color_discrete_sequence=MULTI)
-            fig.update_layout(**_lay(height=270, xaxis=dict(title=''),
-                                     yaxis=dict(title='Signals')))
-            st.plotly_chart(fig, use_container_width=True)
+    sl("SCREENING OVER TIME")
+    so("Approval vs. rejection balance as the pipeline matures — rising approval rate means the LLM gate is better calibrated.")
+    sc = tmp.get('screening_timeline', [])
+    if sc:
+        scdf = pd.DataFrame(sc)
+        scdf['date'] = pd.to_datetime(scdf['date'])
+        fig = go.Figure()
+        fig.add_trace(go.Bar(x=scdf['date'], y=scdf['approved'],
+                             name='Approved', marker_color='#59a14f'))
+        fig.add_trace(go.Bar(x=scdf['date'], y=scdf['rejected'],
+                             name='Rejected', marker_color='#e15759'))
+        fig.update_layout(**_lay(barmode='stack', height=300,
+                                 legend=dict(),
+                                 xaxis=dict(title=''), yaxis=dict(title='Count')))
+        st.plotly_chart(fig, use_container_width=True)
 
 
 # ══════════════════════════════════════════════════════════════════════════
-# TAB: View Data  (was Explorer)
+# TAB: Corpus Map  (doc-level topic clusters from embeddings + eval queries
+# projected into the same space, colored by retrieval hit/miss)
 # ══════════════════════════════════════════════════════════════════════════
 
-def tab_view_data(data):
-    sl("SIGNAL EXPLORER")
-    so("Browse and filter the raw signal extraction output — use this to spot patterns, gaps, or suspect extractions.")
-    exp = data.get('explorer', {}).get('signals', [])
-    if exp:
-        edf = pd.DataFrame(exp)
+def tab_corpus_map(data):
+    tm = data.get('topic_map', {})
+    docs = tm.get('docs', [])
+    clusters = tm.get('clusters', [])
 
-        all_types = sorted(edf['signal_type'].dropna().unique().tolist())
-        all_inds  = sorted(edf['industry'].dropna().unique().tolist())
+    tab_explainer("Dataset Quality")
 
-        c1, c2, c3 = st.columns(3)
-        with c1:
-            sel_type = st.multiselect(
-                "Signal Type", all_types, default=all_types,
-                help="Deselect to filter. All selected = show all.",
-            )
-        with c2:
-            sel_ind = st.multiselect(
-                "Industry", all_inds, default=all_inds,
-                help="Deselect to filter. All selected = show all.",
-            )
-        with c3:
-            min_conf = st.slider("Min Confidence", 0.0, 1.0, 0.0, 0.05)
+    if not docs:
+        st.caption("No topic map data available — run workflows/export_topic_map.py "
+                   "(needs the project's ML env: lancedb/sentence-transformers/umap-learn).")
+        return
 
-        filtered = edf.copy()
-        # treat empty selection same as "all selected"
-        if sel_type and set(sel_type) != set(all_types):
-            filtered = filtered[filtered['signal_type'].isin(sel_type)]
-        if sel_ind and set(sel_ind) != set(all_inds):
-            filtered = filtered[filtered['industry'].isin(sel_ind)]
-        filtered = filtered[filtered['confidence'] >= min_conf]
+    doc_df = pd.DataFrame(docs)
+    cl_df = pd.DataFrame(clusters).sort_values('doc_count', ascending=False)
+    largest = cl_df.iloc[0]
+    n_formats = doc_df['content_type'].nunique()
 
-        st.caption(f"Showing {len(filtered):,} of {len(edf):,} signals")
+    n_near_dup = int(doc_df['is_near_dup'].sum()) if 'is_near_dup' in doc_df.columns else 0
 
-        cols = ['signal_type', 'entity', 'description', 'industry', 'impact_level',
-                'confidence', 'source_title', 'source_type']
-        display_cols = [c for c in cols if c in filtered.columns]
-        # fixed height so the container doesn't resize with the table
-        st.dataframe(
-            filtered[display_cols].head(300),
-            use_container_width=True,
-            hide_index=True,
-            height=520,
-        )
-    else:
-        st.caption("No signal data available.")
+    c = st.columns(5)
+    with c[0]: mc("DOCS IN VECTOR INDEX", f"{len(doc_df):,}")
+    with c[1]: mc("TOPIC CLUSTERS", len(clusters))
+    with c[2]: mc("LARGEST TOPIC", largest['label'], small=True)
+    with c[3]: mc("FORMATS SPANNED", n_formats)
+    with c[4]: mc("LIKELY DUPLICATES", f"{n_near_dup}/{len(doc_df)}", "r" if n_near_dup else "g")
 
+    sl("CORPUS TOPIC MAP")
+    so("Each point is a document, positioned by semantic similarity (UMAP over mean-pooled chunk embeddings) "
+       "and colored by an auto-discovered topic cluster — no manual tagging, just what the embeddings found in common.")
 
-# ══════════════════════════════════════════════════════════════════════════
-# TAB: Signal Analysis  (Intelligence + 3D Analytics merged)
-# ══════════════════════════════════════════════════════════════════════════
+    n_clusters = len(clusters)
+    palette = MULTI if n_clusters <= len(MULTI) else (MULTI * (n_clusters // len(MULTI) + 1))
 
-def tab_signal_analysis(data):
-    sd = data.get('signals', {})
-    exp = data.get('explorer', {}).get('signals', [])
+    fig = px.scatter(
+        doc_df, x='x', y='y', color='cluster_label',
+        color_discrete_sequence=palette,
+        hover_data={'title': True, 'content_type': True, 'x': False, 'y': False, 'cluster_label': False},
+        opacity=0.75,
+    )
+    fig.update_traces(marker=dict(size=7, line=dict(width=0)))
+    fig.update_layout(**_lay(
+        height=620,
+        xaxis=dict(title='', showticklabels=False, zeroline=False),
+        yaxis=dict(title='', showticklabels=False, zeroline=False),
+        legend_title_text='',
+    ))
+    st.plotly_chart(fig, use_container_width=True)  # hover is essential here — 846 points can't all be direct-labeled
 
-    # ── Extraction Quality EDA ────────────────────────────────────────────
-    sl("EXTRACTION QUALITY OVERVIEW")
-    so("Diagnostic metrics on whether signal extraction is producing meaningful, specific output — or just generic noise.")
-
-    if exp:
-        sdf = pd.DataFrame(exp)
-        total_signals = len(sdf)
-        unique_entities = sdf['entity'].nunique() if 'entity' in sdf.columns else 0
-        entity_ratio = round(unique_entities / total_signals * 100, 1) if total_signals else 0
-
-        short_ents = 0
-        multi_type_count = 0
-        multi_type_ents = pd.DataFrame()
-        top5_pct = 0
-        dominant_type_pct = 0
-        dominant_type_name = 'N/A'
-
-        if 'entity' in sdf.columns:
-            short_ents = sdf[sdf['entity'].str.len() <= 3]['entity'].nunique()
-        if 'entity' in sdf.columns and 'signal_type' in sdf.columns:
-            ent_types = sdf.groupby('entity')['signal_type'].nunique().reset_index()
-            ent_types.columns = ['entity', 'type_count']
-            multi_type_ents = ent_types[ent_types['type_count'] > 1]
-            multi_type_count = len(multi_type_ents)
-        if 'entity' in sdf.columns:
-            top5_counts = sdf['entity'].value_counts().head(5).sum()
-            top5_pct = round(top5_counts / total_signals * 100, 1) if total_signals else 0
-        if 'signal_type' in sdf.columns:
-            dominant_type_pct = round(
-                sdf['signal_type'].value_counts().iloc[0] / total_signals * 100, 1
-            ) if total_signals else 0
-            dominant_type_name = sdf['signal_type'].value_counts().index[0] if total_signals else 'N/A'
-
-        c = st.columns(6)
-        with c[0]: mc("UNIQUE ENTITIES", f"{unique_entities}")
-        with c[1]: mc("ENTITY RATIO", f"{entity_ratio}%")
-        with c[2]: mc("MULTI-TYPE ENTITIES", f"{multi_type_count}")
-        with c[3]: mc("SHORT ENTITIES (≤3)", f"{short_ents}", "r" if short_ents > 5 else "g")
-        with c[4]: mc("TOP-5 DOMINANCE", f"{top5_pct}%", "r" if top5_pct > 40 else "g")
-        with c[5]: mc("DOMINANT TYPE %", f"{dominant_type_pct}%")
-
-        st.caption(
-            f"Entity Ratio = unique entities ÷ total signals. "
-            f"Low ratio = heavy repetition. "
-            f"Dominant type: {dominant_type_name} ({dominant_type_pct}%)."
-        )
-
-        cl_eda, cr_eda = st.columns(2)
-        with cl_eda:
-            sl("ENTITIES SPANNING MULTIPLE SIGNAL TYPES")
-            so("Entities appearing across multiple categories are either genuinely cross-domain actors or signs of over-extraction.")
-            if len(multi_type_ents) > 0:
-                ent_detail = sdf.groupby(['entity', 'signal_type']).size().reset_index(name='count')
-                multi_detail = ent_detail[ent_detail['entity'].isin(multi_type_ents['entity'])]
-                pivot_multi = multi_detail.pivot_table(
-                    index='entity', columns='signal_type', values='count', fill_value=0)
-                pivot_multi['total'] = pivot_multi.sum(axis=1)
-                pivot_multi = pivot_multi.sort_values('total', ascending=False).head(20)
-                display_pivot = pivot_multi.drop('total', axis=1)
-                fig = px.imshow(display_pivot, color_continuous_scale=VIBRANT_SCALE, aspect='auto')
-                fig.update_layout(**_lay(height=min(400, max(200, len(display_pivot) * 25))))
-                st.plotly_chart(fig, use_container_width=True)
-                st.caption(f"{multi_type_count} entities appear under 2+ signal types.")
-            else:
-                st.caption("No entities span multiple signal types.")
-
-        with cr_eda:
-            sl("ENTITY LENGTH DISTRIBUTION")
-            so("Short entity names (1–3 chars) are usually too generic to be useful — most entities should be 4+ characters.")
-            if 'entity' in sdf.columns:
-                ent_lens = sdf.drop_duplicates('entity')['entity'].str.len()
-                len_bins = pd.cut(ent_lens, bins=[0, 3, 8, 15, 30, 200],
-                                  labels=['1-3 (too short?)', '4-8 (single word)',
-                                          '9-15 (typical)', '16-30 (detailed)', '30+ (very long)'])
-                len_dist = len_bins.value_counts().reset_index()
-                len_dist.columns = ['length_range', 'count']
-                fig = px.bar(len_dist, x='length_range', y='count',
-                             color_discrete_sequence=['#4e79a7'])
-                fig.update_layout(**_lay(height=270, xaxis=dict(title='Entity Name Length'),
-                                         yaxis=dict(title='Unique Entities')))
-                st.plotly_chart(fig, use_container_width=True)
-
-        sl("MOST REPEATED ENTITIES")
-        so("High mention counts from few unique sources may indicate over-extraction from a single document or press release.")
-        if 'entity' in sdf.columns:
-            repeat = sdf.groupby('entity').agg(
-                mentions=('entity', 'size'),
-                signal_types=('signal_type', lambda x: ', '.join(sorted(x.unique()))),
-                avg_confidence=('confidence', 'mean'),
-                unique_sources=('source_title', 'nunique'),
-            ).reset_index().sort_values('mentions', ascending=False).head(30)
-            repeat['avg_confidence'] = repeat['avg_confidence'].round(2)
-            repeat.columns = ['Entity', 'Mentions', 'Signal Types', 'Avg Conf.', 'Unique Sources']
-            st.dataframe(repeat, use_container_width=True, hide_index=True)
-
-        sl("ENTITY COMPLEXITY BY SIGNAL TYPE")
-        so("Multi-word entities carry more specific meaning — a high proportion of single-word entities signals a prompt tuning opportunity.")
-        if 'entity' in sdf.columns and 'signal_type' in sdf.columns:
-            sdf_ent = sdf.copy()
-            sdf_ent['word_count'] = sdf_ent['entity'].str.split().str.len()
-            sdf_ent['complexity'] = pd.cut(
-                sdf_ent['word_count'], bins=[0, 1, 2, 100],
-                labels=['Single word', '2 words', '3+ words'])
-            complexity_by_type = sdf_ent.groupby(
-                ['signal_type', 'complexity']).size().reset_index(name='count')
-            fig = px.bar(complexity_by_type, x='signal_type', y='count', color='complexity',
-                         barmode='group',
-                         color_discrete_sequence=['#e15759', '#f28e2b', '#59a14f'])
-            fig.update_layout(**_lay(height=300, xaxis=dict(title='Signal Type'),
-                                     yaxis=dict(title='Count'),
-                                     legend=dict()))
-            st.plotly_chart(fig, use_container_width=True)
-    else:
-        st.caption("No signal explorer data available for EDA analysis.")
-
-    st.divider()
-
-    # ── Signal type metrics + distributions ───────────────────────────────
-    st_types = sd.get('signal_types', [])
-    if st_types:
-        c = st.columns(min(len(st_types), 6))
-        for i, s in enumerate(st_types[:6]):
-            with c[i]:
-                mc(s['signal_type'], f"{s['count']:,}")
-
-    a, b = st.columns(2)
-    with a:
-        sl("CONFIDENCE DISTRIBUTION")
-        so("How certain the model is about its own extractions — a left-skewed distribution suggests the extraction prompt needs tightening.")
-        cd = sd.get('confidence_distribution', [])
-        if cd:
-            fig = px.bar(pd.DataFrame(cd), x='bucket', y='count',
-                         color_discrete_sequence=['#4e79a7'])
-            fig.update_layout(**_lay(height=250, xaxis=dict(title='Confidence Bucket'),
-                                     yaxis=dict(title='Count')))
-            st.plotly_chart(fig, use_container_width=True)
-
-    with b:
-        sl("IMPACT LEVEL")
-        so("Proportion of signals tagged as high, medium, or low business impact — too many 'low' signals may indicate weak domain coverage.")
-        imp = sd.get('impact_distribution', [])
-        if imp:
-            fig = px.pie(pd.DataFrame(imp), values='count', names='impact_level',
-                         color_discrete_sequence=MULTI, hole=0.4)
-            fig.update_layout(**_lay(height=330))
-            st.plotly_chart(fig, use_container_width=True)
-
-    cl, cr = st.columns(2)
+    cl, cr = st.columns([3, 2])
     with cl:
-        sl("TOP ENTITIES")
-        so("The most frequently mentioned entities across the corpus — these are the key players and technologies in your domain.")
-        te = sd.get('top_entities', [])
-        if te:
-            edf2 = pd.DataFrame(te[:25])
-            fig = px.bar(edf2, x='count', y='entity', orientation='h',
-                         color='signal_type', color_discrete_sequence=MULTI,
-                         hover_data=['avg_confidence'])
-            fig.update_layout(**_lay(height=max(340, min(len(edf2) * 20, 560)),
-                                     yaxis=dict(autorange='reversed', title='')))
-            st.plotly_chart(fig, use_container_width=True)
+        sl("FORMATS WITHIN EACH TOPIC")
+        so("The same topic pulls together PDFs, web pages, and other formats — proof the grouping is by meaning, not file type.")
+        fmt_df = doc_df.groupby(['cluster_label', 'content_type']).size().reset_index(name='count')
+        fmt_df = fmt_df.merge(cl_df[['label', 'doc_count']], left_on='cluster_label', right_on='label')
+        fmt_df = fmt_df.sort_values('doc_count', ascending=True)
+        fig2 = px.bar(fmt_df, x='count', y='cluster_label', color='content_type',
+                      orientation='h', color_discrete_sequence=MULTI)
+        fig2.update_layout(**_lay(
+            height=max(360, len(clusters) * 34), barmode='stack',
+            xaxis=dict(title='Documents'), yaxis=dict(title=''),
+            legend_title_text='',
+        ))
+        st.plotly_chart(fig2, use_container_width=True)
 
     with cr:
-        sl("BY INDUSTRY")
-        so("Signal volume and quality broken down by industrial vertical — reveals which sub-sectors your corpus covers most deeply.")
-        ind = sd.get('industry_distribution', [])
-        if ind:
-            idf = pd.DataFrame(ind)
-            fig = px.bar(idf.head(15), x='count', y='industry', orientation='h',
-                         color='avg_confidence', color_continuous_scale=VIBRANT_SCALE)
-            fig.update_layout(**_lay(height=max(270, min(len(idf.head(15)) * 30, 460)),
-                                     yaxis=dict(autorange='reversed', title=''),
-                                     coloraxis_colorbar=dict(title='Conf.')))
-            st.plotly_chart(fig, use_container_width=True)
-
-    te = sd.get('top_entities', [])
-    if te and len(te) >= 5:
-        sl("ENTITY × SIGNAL TYPE HEATMAP")
-        so("Which entities appear across which signal categories — bright rows indicate cross-domain actors worth investigating.")
-        edf3 = pd.DataFrame(te[:50])
-        pivot = edf3.pivot_table(index='entity', columns='signal_type',
-                                 values='count', fill_value=0)
-        pivot['_t'] = pivot.sum(axis=1)
-        pivot = pivot.sort_values('_t', ascending=False).drop('_t', axis=1).head(20)
-        fig = px.imshow(pivot, color_continuous_scale=VIBRANT_SCALE, aspect='auto')
-        fig.update_layout(**_lay(height=470))
-        st.plotly_chart(fig, use_container_width=True)
-
-    if te and len(te) >= 3:
-        sl("ENTITY TREEMAP")
-        so("Visual proportion of signal volume by type and entity — large tiles dominate the corpus and may warrant closer scrutiny.")
-        edf4 = pd.DataFrame(te[:40])
-        fig = px.treemap(edf4, path=['signal_type', 'entity'], values='count',
-                         color='avg_confidence', color_continuous_scale=VIBRANT_SCALE)
-        fig.update_layout(**_lay(height=470))
-        st.plotly_chart(fig, use_container_width=True)
-
-    # ── Entity Co-occurrence Network (3D) ─────────────────────────────────
-    sl("ENTITY CO-OCCURRENCE NETWORK (3D)")
-    so("Which entities appear together in the same documents — clusters reveal partnerships, shared tech stacks, and market relationships.")
-    cooc = sd.get('entity_cooccurrence', [])
-    if cooc and len(cooc) >= 3:
-        ents = set()
-        for edge in cooc[:60]:
-            ents.add(edge['entity_a']); ents.add(edge['entity_b'])
-        ents = list(ents)
-        np.random.seed(42)
-        coords = np.random.randn(len(ents), 3) * 2.5
-        pos = {e: coords[i] for i, e in enumerate(ents)}
-
-        ex, ey, ez = [], [], []
-        for edge in cooc[:60]:
-            a, b = edge['entity_a'], edge['entity_b']
-            if a in pos and b in pos:
-                p1, p2 = pos[a], pos[b]
-                ex.extend([p1[0], p2[0], None])
-                ey.extend([p1[1], p2[1], None])
-                ez.extend([p1[2], p2[2], None])
-
-        mention_cnt = Counter()
-        te_raw = sd.get('top_entities', [])
-        if te_raw:
-            for row in te_raw:
-                mention_cnt[row['entity']] += row['count']
-        ecnt = Counter()
-        for edge in cooc[:60]:
-            ecnt[edge['entity_a']] += edge['count']
-            ecnt[edge['entity_b']] += edge['count']
-
-        max_mentions = max(mention_cnt.values()) if mention_cnt else 1
-        nsz = [max(5, min(35, (mention_cnt.get(e, ecnt.get(e, 1)) / max_mentions) * 35))
-               for e in ents]
-        nclr = [mention_cnt.get(e, ecnt.get(e, 1)) for e in ents]
-
-        fig = go.Figure()
-        fig.add_trace(go.Scatter3d(x=ex, y=ey, z=ez, mode='lines',
-                                   line=dict(width=1, color='rgba(0,0,0,0.35)'),
-                                   hoverinfo='none', showlegend=False))
-        fig.add_trace(go.Scatter3d(
-            x=[pos[e][0] for e in ents], y=[pos[e][1] for e in ents],
-            z=[pos[e][2] for e in ents], mode='markers+text',
-            marker=dict(size=nsz, color=nclr, colorscale=WARM_COOL, opacity=0.9,
-                        line=dict(width=0.5, color='#333333'),
-                        colorbar=dict(
-                            title=dict(text='Mentions', font=dict(color='#000000')),
-                            tickfont=dict(color='#000000'))),
-            text=ents, textposition='top center', textfont=dict(size=9, color='#000000'),
-            hovertext=[f"{e}: {mention_cnt.get(e, ecnt.get(e, 0))} mentions" for e in ents],
-            hoverinfo='text', showlegend=False))
-        fig.update_layout(**_lay(height=600,
-            scene=dict(xaxis=dict(showgrid=False, zeroline=False, visible=False),
-                       yaxis=dict(showgrid=False, zeroline=False, visible=False),
-                       zaxis=dict(showgrid=False, zeroline=False, visible=False),
-                       bgcolor='rgba(0,0,0,0)')))
-        st.plotly_chart(fig, use_container_width=True)
-        st.caption("Drag to rotate. Node size and color reflect total mention count.")
-    else:
-        st.caption("Not enough co-occurrence data for 3D network.")
+        sl("CLUSTER SIZES")
+        so("Table view — useful when colors get hard to tell apart at a glance.")
+        table_df = cl_df.rename(columns={'label': 'Topic', 'doc_count': 'Documents'})[['Topic', 'Documents']]
+        st.dataframe(table_df, use_container_width=True, hide_index=True, height=max(360, len(clusters) * 34))
 
     st.divider()
+    sl("REDUNDANCY BY TOPIC")
+    dup_pct_threshold = tm.get('near_dup_threshold')
+    threshold_note = f" (nearest-neighbor cosine similarity ≥ {dup_pct_threshold:.3f}, this corpus's own 95th percentile)" if dup_pct_threshold else ""
+    so(f"Share of documents in each topic that are likely near-duplicates of another document{threshold_note} — "
+       f"this is where a file share is bloated with copies, not where the knowledge itself is thin.")
+    dup_cl_df = cl_df.sort_values('near_dup_pct', ascending=True)
+    fig3 = px.bar(dup_cl_df, x='near_dup_pct', y='label', orientation='h',
+                  color_discrete_sequence=['#e15759'],
+                  text=dup_cl_df['near_dup_pct'].map(lambda v: f"{v:.0f}%"))
+    fig3.update_traces(textposition='outside', textfont=dict(color='#000000', size=10))
+    fig3.update_layout(**_lay(
+        height=max(320, len(clusters) * 32),
+        xaxis=dict(title='% of docs flagged as likely duplicates', range=[0, max(dup_cl_df['near_dup_pct'].max() * 1.3, 10)]),
+        yaxis=dict(title=''),
+    ))
+    st.plotly_chart(fig3, use_container_width=True)
 
-    # ── Source × Confidence × Volume (3D scatter) ─────────────────────────
-    sl("SOURCE × CONFIDENCE × SIGNAL VOLUME (3D)")
-    so("Which sources are both prolific and high-confidence — top-right-back corner is where your best data assets live.")
-    sy = sd.get('source_yield', [])
-    if sy:
-        sdf2 = pd.DataFrame(sy)
-        fig = go.Figure(go.Scatter3d(
-            x=sdf2['doc_count'], y=sdf2['avg_confidence'], z=sdf2['signal_count'],
-            mode='markers+text',
-            marker=dict(size=8, color=sdf2['avg_confidence'],
-                        colorscale=WARM_COOL, opacity=0.9,
-                        line=dict(width=0.5, color='#333333'),
-                        colorbar=dict(
-                            title=dict(text='Confidence', font=dict(color='#000000')),
-                            tickfont=dict(color='#000000'))),
-            text=sdf2['source_name'], textposition='top center',
-            textfont=dict(size=8, color='#000000'),
-            hovertext=[f"{r['source_name']}: {r['signal_count']} signals, {r['doc_count']} docs"
-                       for _, r in sdf2.iterrows()],
-            hoverinfo='text',
-        ))
-        fig.update_layout(**_lay(height=600,
-            scene=dict(
-                xaxis=dict(title='Documents', showgrid=True, gridcolor='#ddd'),
-                yaxis=dict(title='Avg Confidence', showgrid=True, gridcolor='#ddd'),
-                zaxis=dict(title='Signal Count', showgrid=True, gridcolor='#ddd'),
-                bgcolor='rgba(0,0,0,0)',
-            )))
-        st.plotly_chart(fig, use_container_width=True)
-
-    sl("SIGNAL DENSITY (SIGNALS PER 1,000 WORDS)")
-    so("Documents with high signal density pack more actionable content per word — low-density documents may be too verbose or off-topic.")
-    density = sd.get('signal_density', [])
-    if density:
-        ddf = pd.DataFrame(density)
-        if 'word_count' in ddf.columns and 'signal_density' in ddf.columns:
-            fig = px.scatter(ddf, x='word_count', y='signal_density', color='source_type',
-                             size='signal_count', hover_data=['title', 'source_name'],
-                             color_discrete_sequence=MULTI)
-            fig.update_layout(**_lay(height=370, xaxis=dict(title='Word Count'),
-                                     yaxis=dict(title='Signals / 1,000 words')))
-            st.plotly_chart(fig, use_container_width=True)
-
-    sl("ENTITY CLUSTER (3D)")
-    so("Entity distribution by signal volume and extraction confidence — isolated high-confidence nodes are your most reliably extracted facts.")
-    te2 = sd.get('top_entities', [])
-    if te2 and len(te2) >= 5:
-        edf5 = pd.DataFrame(te2[:40])
-        np.random.seed(99)
-        n = len(edf5)
-        edf5['x'] = np.random.randn(n) * 3
-        edf5['y'] = np.random.randn(n) * 3
-        edf5['z'] = np.random.randn(n) * 3
-
-        fig = go.Figure(go.Scatter3d(
-            x=edf5['x'], y=edf5['y'], z=edf5['z'],
-            mode='markers+text',
-            marker=dict(size=np.clip(edf5['count'] / edf5['count'].max() * 25, 5, 30),
-                        color=edf5['avg_confidence'],
-                        colorscale=WARM_COOL, opacity=0.85,
-                        line=dict(width=0.5, color='#333333'),
-                        colorbar=dict(
-                            title=dict(text='Confidence', font=dict(color='#000000')),
-                            tickfont=dict(color='#000000'))),
-            text=edf5['entity'], textposition='top center',
-            textfont=dict(size=8, color='#000000'),
-            hovertext=[f"{r['entity']} ({r['signal_type']}): {r['count']} mentions"
-                       for _, r in edf5.iterrows()],
-            hoverinfo='text',
-        ))
-        fig.update_layout(**_lay(height=600,
-            scene=dict(
-                xaxis=dict(showgrid=False, zeroline=False, visible=False),
-                yaxis=dict(showgrid=False, zeroline=False, visible=False),
-                zaxis=dict(showgrid=False, zeroline=False, visible=False),
-                bgcolor='rgba(0,0,0,0)',
-            )))
-        st.plotly_chart(fig, use_container_width=True)
-        st.caption("Entity positions are randomized. Size = mention count, color = avg confidence.")
+    dup_pairs = tm.get('duplicate_pairs', [])
+    if dup_pairs:
+        sl("LIKELY DUPLICATE PAIRS")
+        so("The most similar document pairs corpus-wide — same content re-hosted, re-titled, or reissued across years/formats.")
+        pairs_df = pd.DataFrame(dup_pairs)[['title_a', 'title_b', 'similarity']].rename(
+            columns={'title_a': 'Document A', 'title_b': 'Document B', 'similarity': 'Similarity'})
+        pairs_df['Similarity'] = pairs_df['Similarity'].round(4)
+        st.dataframe(pairs_df, use_container_width=True, hide_index=True)
 
 
 # ══════════════════════════════════════════════════════════════════════════
@@ -1153,6 +953,8 @@ def tab_signal_analysis(data):
 def tab_system_logs(data):
     disc = data.get('discovery', {})
     logs_data = data.get('logs', {})
+
+    tab_explainer("System Logs")
 
     sl("DISCOVERY RUNS")
     so("How many candidates were found and screened in each cycle — declining found-to-approved ratio means noisier discovery queries.")
@@ -1224,14 +1026,30 @@ def tab_system_logs(data):
 
 
 # ══════════════════════════════════════════════════════════════════════════
-# TAB: Retrieval Quality  (v2 evaluation snapshot — hardcoded from Notebook 3)
+# TAB: Retrieval Quality  (v5 corrected + HyDE — hardcoded from Notebook 3,
+# updated after the chunk-vs-document aggregation bug fix and the HyDE/pool-size
+# experiment series; recall curve, query-type, and chunking ablation below are
+# still the earlier v2 snapshot and have not been recomputed on the corrected
+# pipeline yet)
 # ══════════════════════════════════════════════════════════════════════════
 
-# v2 final metrics (Notebook 3, 31 labeled queries, nomic-embed-text-v1.5, 78,467 chunks)
+# v5 corrected metrics (Notebook 3, 31 labeled queries — 27 resolved, nomic-embed-text-v1.5, 92,705 chunks)
 _RQ_CONFIGS = [
-    {'config': 'Dense Only',        'mrr': 0.307, 'recall5': 0.257, 'recall10': 0.385},
-    {'config': 'Hybrid (RRF)',      'mrr': 0.363, 'recall5': 0.253, 'recall10': 0.291},
-    {'config': 'Hybrid + Reranker', 'mrr': 0.374, 'recall5': 0.220, 'recall10': 0.273},
+    {'config': 'Dense',                    'mrr': 0.399, 'recall5': 0.317, 'recall10': 0.403},
+    {'config': 'Hybrid (BM25+RRF)',        'mrr': 0.442, 'recall5': 0.350, 'recall10': 0.453},
+    {'config': 'Reranked',                 'mrr': 0.426, 'recall5': 0.337, 'recall10': 0.473},
+    {'config': 'HyDE + Dense',             'mrr': 0.416, 'recall5': 0.367, 'recall10': 0.475},
+    {'config': 'HyDE + Hybrid',            'mrr': 0.489, 'recall5': 0.335, 'recall10': 0.438},
+    {'config': 'HyDE + Hybrid + Reranked', 'mrr': 0.381, 'recall5': 0.293, 'recall10': 0.420},
+]
+
+# MRR at each project milestone — for the progression chart below.
+# Only MRR is tracked across every milestone (Recall@5 wasn't recorded pre-v5).
+_RQ_TIMELINE = [
+    {'label': 'v2 baseline', 'sub': 'dense only',            'mrr': 0.307, 'milestone': None},
+    {'label': 'v2',          'sub': '+ hybrid + reranker',   'mrr': 0.374, 'milestone': 'Hybrid + reranker added'},
+    {'label': 'v4',          'sub': '+ contextual chunking', 'mrr': 0.412, 'milestone': 'Contextual chunking added'},
+    {'label': 'v5',          'sub': 'HyDE + hybrid',         'mrr': 0.489, 'milestone': 'HyDE added'},
 ]
 _RQ_RECALL_CURVE = [
     {'k': 1,  'recall': 0.110},
@@ -1258,63 +1076,94 @@ _ABLATION = [
 
 
 def tab_retrieval_quality(_data):
-    st.caption("v2 evaluation snapshot · 31 labeled queries · nomic-embed-text-v1.5 · 78,467 chunks @ max_chars=600")
+    tab_explainer("Retrieval Quality")
 
     # ── KPI cards ─────────────────────────────────────────────────────────
     c = st.columns(5)
     with c[0]: mc("CORPUS DOCS", "736")
-    with c[1]: mc("CHUNKS", "78,467")
+    with c[1]: mc("CHUNKS", "92,705")
     with c[2]: mc("LABELED QUERIES", "31")
-    with c[3]: mc("BEST MRR", "0.374")
-    with c[4]: mc("BEST RECALL@10", "0.385")
+    with c[3]: mc("BEST MRR", "0.489")
+    with c[4]: mc("BEST RECALL@10", "0.475")
 
     # ── Config comparison bar chart ────────────────────────────────────────
     sl("RETRIEVAL CONFIGURATION COMPARISON")
-    so("Dense retrieval wins on recall; Hybrid+Reranker wins on MRR. BM25 hybrid hurts recall on narrow-domain vocabulary.")
+    so("HyDE + Hybrid wins MRR (0.489, best overall); HyDE + Dense wins Recall@10 (0.475). Reranking on top of HyDE hurts both — a query/candidate phrasing mismatch.")
 
     cfg_df = pd.DataFrame(_RQ_CONFIGS)
     labels = cfg_df['config'].tolist()
-    x = np.arange(len(labels))
-    w = 0.25
 
-    fig = go.Figure()
-    for i, (col, metric, name) in enumerate([
-        ('#4C72B0', 'mrr',      'MRR'),
-        ('#55A868', 'recall5',  'Recall@5'),
-        ('#C44E52', 'recall10', 'Recall@10'),
-    ]):
-        vals = cfg_df[metric].tolist()
-        fig.add_trace(go.Bar(
-            name=name,
-            x=[f"{l}<br><sub>{name}</sub>" for l in labels],
-            y=vals,
-            marker_color=col, opacity=0.88,
-            text=[f'{v:.3f}' for v in vals],
-            textposition='outside',
-            textfont=dict(color='#000000', size=10),
-            width=0.22,
-            offset=(i - 1) * 0.23,
-        ))
+    best_mrr_idx = int(cfg_df['mrr'].idxmax())
 
-    # Rebuild as grouped
     fig2 = go.Figure()
     colors = ['#4C72B0', '#55A868', '#C44E52']
     metrics_list = [('mrr', 'MRR'), ('recall5', 'Recall@5'), ('recall10', 'Recall@10')]
     for col, (metric, name) in zip(colors, metrics_list):
         vals = cfg_df[metric].tolist()
+        is_mrr = metric == 'mrr'
         fig2.add_trace(go.Bar(
             name=name, x=labels, y=vals,
-            marker_color=col, opacity=0.88,
+            marker=dict(
+                color=col, opacity=0.88,
+                line=dict(
+                    color=['#000000' if (is_mrr and i == best_mrr_idx) else 'rgba(0,0,0,0)' for i in range(len(vals))],
+                    width=[3 if (is_mrr and i == best_mrr_idx) else 0 for i in range(len(vals))],
+                ),
+            ),
             text=[f'{v:.3f}' for v in vals],
             textposition='outside',
-            textfont=dict(color='#000000', size=10),
+            textfont=dict(
+                color=['#000000'] * len(vals) if not is_mrr else
+                      ['#000000' if i != best_mrr_idx else '#000000' for i in range(len(vals))],
+                size=[10 if not (is_mrr and i == best_mrr_idx) else 12 for i in range(len(vals))],
+            ),
         ))
+    fig2.add_annotation(
+        x=labels[best_mrr_idx], y=cfg_df['mrr'].iloc[best_mrr_idx],
+        text='★ best MRR', showarrow=True, arrowhead=0, ax=0, ay=-32,
+        font=dict(color='#000000', size=11), bgcolor='#FFFFFF', bordercolor='#000000', borderwidth=1,
+    )
     fig2.update_layout(**_lay(
-        height=420, barmode='group',
+        height=460, barmode='group',
+        xaxis=dict(tickangle=-15),
         yaxis=dict(range=[0, 0.65], title='Score'),
-        legend=dict(font=dict(size=12)),
+        margin=dict(l=40, r=20, t=50, b=110),
     ))
-    st.plotly_chart(fig2, use_container_width=True)
+    st.plotly_chart(fig2, use_container_width=True, config={'staticPlot': True})
+
+    # ── MRR progression over project milestones ────────────────────────────
+    sl("MRR PROGRESSION OVER PROJECT MILESTONES")
+    so("Best recorded MRR at each stage, annotated with the feature that drove the change. Single metric — Recall@5 wasn't tracked before v5.")
+
+    tl_df = pd.DataFrame(_RQ_TIMELINE)
+    fig_tl = go.Figure()
+    fig_tl.add_trace(go.Scatter(
+        x=tl_df['label'], y=tl_df['mrr'],
+        mode='lines+markers+text',
+        line=dict(color='#4C72B0', width=2.5),
+        marker=dict(size=10, color='#4C72B0', line=dict(color='#FFFFFF', width=2)),
+        text=[f'{v:.3f}' for v in tl_df['mrr']],
+        textposition='top center',
+        textfont=dict(color='#000000', size=11),
+    ))
+    _TL_YMIN, _TL_YMAX = 0.28, 0.54
+    for row in _RQ_TIMELINE:  # raw list, not the DataFrame — avoids None→NaN coercion in a mixed-type column
+        if row['milestone']:
+            fig_tl.add_shape(
+                type='line', x0=row['label'], x1=row['label'], y0=_TL_YMIN, y1=_TL_YMAX,
+                line=dict(color='#C44E52', width=1.5, dash='dash'),
+            )
+            fig_tl.add_annotation(
+                x=row['label'], y=_TL_YMAX, text=row['milestone'], showarrow=False,
+                yshift=12, font=dict(color='#C44E52', size=10),
+            )
+    fig_tl.update_layout(**_lay(
+        height=380,
+        xaxis=dict(title=''),
+        yaxis=dict(title='MRR', range=[_TL_YMIN, _TL_YMAX]),
+        showlegend=False,
+    ))
+    st.plotly_chart(fig_tl, use_container_width=True, config={'staticPlot': True})
 
     # ── Recall curve + by query type ──────────────────────────────────────
     cl, cr = st.columns(2)
@@ -1389,8 +1238,15 @@ def tab_retrieval_quality(_data):
             yaxis=dict(title='Score', range=[0, 1]),
             legend=dict(),
         ))
-        fig.add_vline(x=1, line_dash='dash', line_color='#C44E52', line_width=2,
-                      annotation_text='winner', annotation_font_color='#C44E52')
+        # Winner = highest Recall@5, tie-broken by lowest std_chars (more consistent chunk size).
+        # Uses the string category label directly with add_shape/add_annotation — add_vline's
+        # numeric x on a categorical (string-labeled) axis doesn't reliably land on the right bar.
+        _winner_row = max(_ABLATION, key=lambda r: (r['recall5'], -r['std_chars']))
+        _winner_label = str(_winner_row['max_chars'])
+        fig.add_shape(type='line', x0=_winner_label, x1=_winner_label, y0=0, y1=1,
+                      line=dict(color='#C44E52', width=2, dash='dash'))
+        fig.add_annotation(x=_winner_label, y=1, text='winner', showarrow=False,
+                           yshift=10, font=dict(color='#C44E52', size=11))
         st.plotly_chart(fig, use_container_width=True)
 
     with cr2:
@@ -1426,12 +1282,15 @@ def tab_retrieval_quality(_data):
 def main():
     st.markdown(f"""
     <div class="dash-inner">
-      <div style="text-align:center; padding:26px 52px 20px 52px; background:{INNER_BG}; margin:0;">
-        <h1 style="color:{TXT_DARK}; margin:0 0 6px 0; font-size:1.65rem; font-weight:700; letter-spacing:-0.02em;">
-          Manufacturing RAG System — Dataset & Pipeline Dashboard
+      <div style="text-align:center; padding:18px 40px 16px 40px; background:{INNER_BG}; margin:0;">
+        <h1 style="color:{TXT_DARK}; margin:0 0 5px 0; font-size:1.4rem; font-weight:700; letter-spacing:-0.02em;">
+          Private RAG Evaluation Dashboard
         </h1>
-        <p style="color:{TXT2}; margin:0; font-size:0.84rem; line-height:1.5;">
-          System health and retrieval quality dashboard — tracks pipeline throughput, corpus composition, and how well the knowledge base supports RAG applications.
+        <p style="color:{TXT_DARK}; margin:0 0 4px 0; font-size:0.86rem; line-height:1.4; white-space:nowrap;">
+          An end-to-end view of how well a private document intelligence pipeline ingests, prepares, retrieves, and validates evidence from internal knowledge.
+        </p>
+        <p style="color:{TXT2}; margin:0; font-size:0.74rem; line-height:1.4; white-space:nowrap;">
+          Manufacturing is used as the demo domain because it reflects a common enterprise problem: legacy PDFs, manuals, SOPs, and engineering documents that often need to stay inside private or controlled environments.
         </p>
       </div>
     </div>
@@ -1441,20 +1300,19 @@ def main():
     exported_at = data.get('pipeline', {}).get('exported_at', '')
 
     tabs = st.tabs([
-        "Overview",
-        "Sources",
-        "Signal Analysis",
+        "Pipeline Overview",
+        "Dataset Quality",
         "Retrieval Quality",
-        "View Data",
         "System Logs",
     ])
 
     with tabs[0]: tab_overview(data)
-    with tabs[1]: tab_sources(data)
-    with tabs[2]: tab_signal_analysis(data)
-    with tabs[3]: tab_retrieval_quality(data)
-    with tabs[4]: tab_view_data(data)
-    with tabs[5]: tab_system_logs(data)
+    with tabs[1]:
+        tab_corpus_map(data)
+        st.divider()
+        tab_sources(data)
+    with tabs[2]: tab_retrieval_quality(data)
+    with tabs[3]: tab_system_logs(data)
 
     if exported_at:
         st.caption(f"Data snapshot: {exported_at[:19]}")

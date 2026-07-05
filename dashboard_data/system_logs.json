@@ -1,6 +1,1536 @@
 {
-  "exported_at": "2026-05-21T06:02:46.526872",
+  "exported_at": "2026-07-05T04:19:42.327377",
   "recent_logs": [
+    {
+      "timestamp": "2026-06-06 05:18:33",
+      "level": "INFO",
+      "source": "processing",
+      "action": "signals_complete",
+      "message": "5 items processed, 344 signals extracted",
+      "details_json": "{\"success\": 5, \"signals\": 344}",
+      "run_id": "20260606_045519_9b9f00"
+    },
+    {
+      "timestamp": "2026-06-06 05:18:33",
+      "level": "INFO",
+      "source": "processing",
+      "action": "run_end",
+      "message": "Run completed: 20260606_045519_9b9f00. Extracted 158, 113 approved, 45 rejected, 344 signals",
+      "details_json": null,
+      "run_id": "20260606_045519_9b9f00"
+    },
+    {
+      "timestamp": "2026-06-06 05:18:33",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signals",
+      "message": "Extracted 91 signals from Vijeo Citect Installation and Configuration Guide",
+      "details_json": "{\"chunks\": 13, \"processed\": 129}",
+      "run_id": "20260606_045519_9b9f00"
+    },
+    {
+      "timestamp": "2026-06-06 05:16:33",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"30\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"30\", \"extraction_class\": \"product_launch\"}",
+      "run_id": "20260606_045519_9b9f00"
+    },
+    {
+      "timestamp": "2026-06-06 05:16:33",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped bare number: \"7.40\"",
+      "details_json": "{\"reason\": \"bare_number\", \"entity\": \"7.40\", \"extraction_class\": \"product_launch\"}",
+      "run_id": "20260606_045519_9b9f00"
+    },
+    {
+      "timestamp": "2026-06-06 05:16:33",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped bare number: \"7.40\"",
+      "details_json": "{\"reason\": \"bare_number\", \"entity\": \"7.40\", \"extraction_class\": \"product_launch\"}",
+      "run_id": "20260606_045519_9b9f00"
+    },
+    {
+      "timestamp": "2026-06-06 05:15:52",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signals",
+      "message": "Extracted 214 signals from [PDF] PacDrive 3: - The future of motion-centric m",
+      "details_json": "{\"chunks\": 14, \"processed\": 272}",
+      "run_id": "20260606_045519_9b9f00"
+    },
+    {
+      "timestamp": "2026-06-06 05:15:39",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"25%\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"25%\", \"extraction_class\": \"performance_claim\"}",
+      "run_id": "20260606_045519_9b9f00"
+    },
+    {
+      "timestamp": "2026-06-06 05:15:39",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"40%\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"40%\", \"extraction_class\": \"performance_claim\"}",
+      "run_id": "20260606_045519_9b9f00"
+    },
+    {
+      "timestamp": "2026-06-06 05:15:08",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"100\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"100\", \"extraction_class\": \"performance_claim\"}",
+      "run_id": "20260606_045519_9b9f00"
+    },
+    {
+      "timestamp": "2026-06-06 05:15:08",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"500\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"500\", \"extraction_class\": \"performance_claim\"}",
+      "run_id": "20260606_045519_9b9f00"
+    },
+    {
+      "timestamp": "2026-06-06 05:15:08",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"250\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"250\", \"extraction_class\": \"performance_claim\"}",
+      "run_id": "20260606_045519_9b9f00"
+    },
+    {
+      "timestamp": "2026-06-06 05:15:08",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"35\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"35\", \"extraction_class\": \"performance_claim\"}",
+      "run_id": "20260606_045519_9b9f00"
+    },
+    {
+      "timestamp": "2026-06-06 05:15:08",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"50\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"50\", \"extraction_class\": \"performance_claim\"}",
+      "run_id": "20260606_045519_9b9f00"
+    },
+    {
+      "timestamp": "2026-06-06 05:15:08",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"150\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"150\", \"extraction_class\": \"performance_claim\"}",
+      "run_id": "20260606_045519_9b9f00"
+    },
+    {
+      "timestamp": "2026-06-06 05:15:08",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"5\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"5\", \"extraction_class\": \"performance_claim\"}",
+      "run_id": "20260606_045519_9b9f00"
+    },
+    {
+      "timestamp": "2026-06-06 05:15:08",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"8\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"8\", \"extraction_class\": \"performance_claim\"}",
+      "run_id": "20260606_045519_9b9f00"
+    },
+    {
+      "timestamp": "2026-06-06 05:15:08",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"137\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"137\", \"extraction_class\": \"performance_claim\"}",
+      "run_id": "20260606_045519_9b9f00"
+    },
+    {
+      "timestamp": "2026-06-06 05:15:08",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"2/5\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"2/5\", \"extraction_class\": \"performance_claim\"}",
+      "run_id": "20260606_045519_9b9f00"
+    },
+    {
+      "timestamp": "2026-06-06 05:15:08",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"5\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"5\", \"extraction_class\": \"performance_claim\"}",
+      "run_id": "20260606_045519_9b9f00"
+    },
+    {
+      "timestamp": "2026-06-06 05:15:08",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"50\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"50\", \"extraction_class\": \"performance_claim\"}",
+      "run_id": "20260606_045519_9b9f00"
+    },
+    {
+      "timestamp": "2026-06-06 05:15:08",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"50\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"50\", \"extraction_class\": \"performance_claim\"}",
+      "run_id": "20260606_045519_9b9f00"
+    },
+    {
+      "timestamp": "2026-06-06 05:15:08",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"2\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"2\", \"extraction_class\": \"performance_claim\"}",
+      "run_id": "20260606_045519_9b9f00"
+    },
+    {
+      "timestamp": "2026-06-06 05:15:08",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"100\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"100\", \"extraction_class\": \"performance_claim\"}",
+      "run_id": "20260606_045519_9b9f00"
+    },
+    {
+      "timestamp": "2026-06-06 05:15:08",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"1\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"1\", \"extraction_class\": \"performance_claim\"}",
+      "run_id": "20260606_045519_9b9f00"
+    },
+    {
+      "timestamp": "2026-06-06 05:15:08",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"18\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"18\", \"extraction_class\": \"performance_claim\"}",
+      "run_id": "20260606_045519_9b9f00"
+    },
+    {
+      "timestamp": "2026-06-06 05:15:08",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"300\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"300\", \"extraction_class\": \"performance_claim\"}",
+      "run_id": "20260606_045519_9b9f00"
+    },
+    {
+      "timestamp": "2026-06-06 05:14:23",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"70%\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"70%\", \"extraction_class\": \"performance_claim\"}",
+      "run_id": "20260606_045519_9b9f00"
+    },
+    {
+      "timestamp": "2026-06-06 05:14:23",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"90%\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"90%\", \"extraction_class\": \"performance_claim\"}",
+      "run_id": "20260606_045519_9b9f00"
+    },
+    {
+      "timestamp": "2026-06-06 05:14:23",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"90%\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"90%\", \"extraction_class\": \"performance_claim\"}",
+      "run_id": "20260606_045519_9b9f00"
+    },
+    {
+      "timestamp": "2026-06-06 05:14:23",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"50%\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"50%\", \"extraction_class\": \"performance_claim\"}",
+      "run_id": "20260606_045519_9b9f00"
+    },
+    {
+      "timestamp": "2026-06-06 05:14:23",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"50%\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"50%\", \"extraction_class\": \"performance_claim\"}",
+      "run_id": "20260606_045519_9b9f00"
+    },
+    {
+      "timestamp": "2026-06-06 05:14:23",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"70%\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"70%\", \"extraction_class\": \"performance_claim\"}",
+      "run_id": "20260606_045519_9b9f00"
+    },
+    {
+      "timestamp": "2026-06-06 05:14:00",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"25\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"25\", \"extraction_class\": \"performance_claim\"}",
+      "run_id": "20260606_045519_9b9f00"
+    },
+    {
+      "timestamp": "2026-06-06 05:14:00",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"50\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"50\", \"extraction_class\": \"performance_claim\"}",
+      "run_id": "20260606_045519_9b9f00"
+    },
+    {
+      "timestamp": "2026-06-06 05:14:00",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"84\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"84\", \"extraction_class\": \"performance_claim\"}",
+      "run_id": "20260606_045519_9b9f00"
+    },
+    {
+      "timestamp": "2026-06-06 05:14:00",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"42\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"42\", \"extraction_class\": \"performance_claim\"}",
+      "run_id": "20260606_045519_9b9f00"
+    },
+    {
+      "timestamp": "2026-06-06 05:14:00",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"25\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"25\", \"extraction_class\": \"performance_claim\"}",
+      "run_id": "20260606_045519_9b9f00"
+    },
+    {
+      "timestamp": "2026-06-06 05:13:37",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"99\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"99\", \"extraction_class\": \"performance_claim\"}",
+      "run_id": "20260606_045519_9b9f00"
+    },
+    {
+      "timestamp": "2026-06-06 05:13:37",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"250\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"250\", \"extraction_class\": \"performance_claim\"}",
+      "run_id": "20260606_045519_9b9f00"
+    },
+    {
+      "timestamp": "2026-06-06 05:13:37",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"16\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"16\", \"extraction_class\": \"performance_claim\"}",
+      "run_id": "20260606_045519_9b9f00"
+    },
+    {
+      "timestamp": "2026-06-06 05:13:37",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"250\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"250\", \"extraction_class\": \"performance_claim\"}",
+      "run_id": "20260606_045519_9b9f00"
+    },
+    {
+      "timestamp": "2026-06-06 05:13:37",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"8\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"8\", \"extraction_class\": \"performance_claim\"}",
+      "run_id": "20260606_045519_9b9f00"
+    },
+    {
+      "timestamp": "2026-06-06 05:13:37",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"8\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"8\", \"extraction_class\": \"performance_claim\"}",
+      "run_id": "20260606_045519_9b9f00"
+    },
+    {
+      "timestamp": "2026-06-06 05:13:37",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"4\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"4\", \"extraction_class\": \"performance_claim\"}",
+      "run_id": "20260606_045519_9b9f00"
+    },
+    {
+      "timestamp": "2026-06-06 05:13:37",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"5\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"5\", \"extraction_class\": \"performance_claim\"}",
+      "run_id": "20260606_045519_9b9f00"
+    },
+    {
+      "timestamp": "2026-06-06 05:13:37",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"254\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"254\", \"extraction_class\": \"performance_claim\"}",
+      "run_id": "20260606_045519_9b9f00"
+    },
+    {
+      "timestamp": "2026-06-06 05:13:22",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"254\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"254\", \"extraction_class\": \"performance_claim\"}",
+      "run_id": "20260606_045519_9b9f00"
+    },
+    {
+      "timestamp": "2026-06-06 05:13:22",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"32\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"32\", \"extraction_class\": \"performance_claim\"}",
+      "run_id": "20260606_045519_9b9f00"
+    },
+    {
+      "timestamp": "2026-06-06 05:11:17",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signals",
+      "message": "Extracted 6 signals from Industrial Network Protection Guide Schneider",
+      "details_json": "{\"chunks\": 3, \"processed\": 13}",
+      "run_id": "20260606_045519_9b9f00"
+    },
+    {
+      "timestamp": "2026-06-06 05:10:48",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signals",
+      "message": "Extracted 22 signals from [PDF] Ready configuration of machines into an exis",
+      "details_json": "{\"chunks\": 7, \"processed\": 25}",
+      "run_id": "20260606_045519_9b9f00"
+    },
+    {
+      "timestamp": "2026-06-06 05:09:04",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signals",
+      "message": "Extracted 11 signals from Beckhoff ADS Symbolic v.4.14 - Driver Help",
+      "details_json": "{\"chunks\": 3, \"processed\": 11}",
+      "run_id": "20260606_045519_9b9f00"
+    },
+    {
+      "timestamp": "2026-06-06 05:08:54",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped bare number: \"4.01\"",
+      "details_json": "{\"reason\": \"bare_number\", \"entity\": \"4.01\", \"extraction_class\": \"product_launch\"}",
+      "run_id": "20260606_045519_9b9f00"
+    },
+    {
+      "timestamp": "2026-06-06 05:08:54",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped bare number: \"4.13\"",
+      "details_json": "{\"reason\": \"bare_number\", \"entity\": \"4.13\", \"extraction_class\": \"product_launch\"}",
+      "run_id": "20260606_045519_9b9f00"
+    },
+    {
+      "timestamp": "2026-06-06 05:08:54",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped bare number: \"4.13\"",
+      "details_json": "{\"reason\": \"bare_number\", \"entity\": \"4.13\", \"extraction_class\": \"product_launch\"}",
+      "run_id": "20260606_045519_9b9f00"
+    },
+    {
+      "timestamp": "2026-06-06 05:08:54",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped bare number: \"4.13\"",
+      "details_json": "{\"reason\": \"bare_number\", \"entity\": \"4.13\", \"extraction_class\": \"product_launch\"}",
+      "run_id": "20260606_045519_9b9f00"
+    },
+    {
+      "timestamp": "2026-06-06 05:08:54",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped bare number: \"4.02\"",
+      "details_json": "{\"reason\": \"bare_number\", \"entity\": \"4.02\", \"extraction_class\": \"product_launch\"}",
+      "run_id": "20260606_045519_9b9f00"
+    },
+    {
+      "timestamp": "2026-06-06 05:08:54",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped bare number: \"4.00\"",
+      "details_json": "{\"reason\": \"bare_number\", \"entity\": \"4.00\", \"extraction_class\": \"product_launch\"}",
+      "run_id": "20260606_045519_9b9f00"
+    },
+    {
+      "timestamp": "2026-06-06 05:08:54",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped bare number: \"4.14\"",
+      "details_json": "{\"reason\": \"bare_number\", \"entity\": \"4.14\", \"extraction_class\": \"product_launch\"}",
+      "run_id": "20260606_045519_9b9f00"
+    },
+    {
+      "timestamp": "2026-06-06 05:08:54",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped bare number: \"4.14\"",
+      "details_json": "{\"reason\": \"bare_number\", \"entity\": \"4.14\", \"extraction_class\": \"product_launch\"}",
+      "run_id": "20260606_045519_9b9f00"
+    },
+    {
+      "timestamp": "2026-06-06 05:08:38",
+      "level": "INFO",
+      "source": "processing",
+      "action": "screening_complete",
+      "message": "113 approved, 45 rejected, 0 errors",
+      "details_json": "{\"approved\": 113, \"rejected\": 45, \"errors\": 0}",
+      "run_id": "20260606_045519_9b9f00"
+    },
+    {
+      "timestamp": "2026-06-06 05:08:35",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "quality_gate_reject",
+      "message": "Quality gate rejected: low_diversity (5%)",
+      "details_json": "{\"reason\": \"low_diversity (5%)\", \"transcript_length\": 361147}",
+      "run_id": "20260606_045519_9b9f00"
+    },
+    {
+      "timestamp": "2026-06-06 05:08:27",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "quality_gate_reject",
+      "message": "Quality gate rejected: low_diversity (6%)",
+      "details_json": "{\"reason\": \"low_diversity (6%)\", \"transcript_length\": 279715}",
+      "run_id": "20260606_045519_9b9f00"
+    },
+    {
+      "timestamp": "2026-06-06 05:08:23",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "quality_gate_reject",
+      "message": "Quality gate rejected: low_diversity (4%)",
+      "details_json": "{\"reason\": \"low_diversity (4%)\", \"transcript_length\": 647164}",
+      "run_id": "20260606_045519_9b9f00"
+    },
+    {
+      "timestamp": "2026-06-06 05:08:23",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "quality_gate_reject",
+      "message": "Quality gate rejected: low_diversity (7%)",
+      "details_json": "{\"reason\": \"low_diversity (7%)\", \"transcript_length\": 246215}",
+      "run_id": "20260606_045519_9b9f00"
+    },
+    {
+      "timestamp": "2026-06-06 05:08:23",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "quality_gate_reject",
+      "message": "Quality gate rejected: low_diversity (6%)",
+      "details_json": "{\"reason\": \"low_diversity (6%)\", \"transcript_length\": 308240}",
+      "run_id": "20260606_045519_9b9f00"
+    },
+    {
+      "timestamp": "2026-06-06 05:08:20",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "quality_gate_reject",
+      "message": "Quality gate rejected: low_diversity (4%)",
+      "details_json": "{\"reason\": \"low_diversity (4%)\", \"transcript_length\": 447525}",
+      "run_id": "20260606_045519_9b9f00"
+    },
+    {
+      "timestamp": "2026-06-06 05:08:16",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "quality_gate_reject",
+      "message": "Quality gate rejected: low_diversity (7%)",
+      "details_json": "{\"reason\": \"low_diversity (7%)\", \"transcript_length\": 473655}",
+      "run_id": "20260606_045519_9b9f00"
+    },
+    {
+      "timestamp": "2026-06-06 05:07:02",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "quality_gate_reject",
+      "message": "Quality gate rejected: low_diversity (9%)",
+      "details_json": "{\"reason\": \"low_diversity (9%)\", \"transcript_length\": 351415}",
+      "run_id": "20260606_045519_9b9f00"
+    },
+    {
+      "timestamp": "2026-06-06 05:06:48",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "quality_gate_reject",
+      "message": "Quality gate rejected: low_diversity (7%)",
+      "details_json": "{\"reason\": \"low_diversity (7%)\", \"transcript_length\": 137066}",
+      "run_id": "20260606_045519_9b9f00"
+    },
+    {
+      "timestamp": "2026-06-06 05:06:41",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "quality_gate_reject",
+      "message": "Quality gate rejected: low_diversity (6%)",
+      "details_json": "{\"reason\": \"low_diversity (6%)\", \"transcript_length\": 304923}",
+      "run_id": "20260606_045519_9b9f00"
+    },
+    {
+      "timestamp": "2026-06-06 05:06:41",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "quality_gate_reject",
+      "message": "Quality gate rejected: low_diversity (7%)",
+      "details_json": "{\"reason\": \"low_diversity (7%)\", \"transcript_length\": 284998}",
+      "run_id": "20260606_045519_9b9f00"
+    },
+    {
+      "timestamp": "2026-06-06 05:06:37",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "quality_gate_reject",
+      "message": "Quality gate rejected: low_diversity (8%)",
+      "details_json": "{\"reason\": \"low_diversity (8%)\", \"transcript_length\": 192057}",
+      "run_id": "20260606_045519_9b9f00"
+    },
+    {
+      "timestamp": "2026-06-06 05:05:58",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "quality_gate_reject",
+      "message": "Quality gate rejected: low_diversity (4%)",
+      "details_json": "{\"reason\": \"low_diversity (4%)\", \"transcript_length\": 672252}",
+      "run_id": "20260606_045519_9b9f00"
+    },
+    {
+      "timestamp": "2026-06-06 05:05:57",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "quality_gate_reject",
+      "message": "Quality gate rejected: low_diversity (6%)",
+      "details_json": "{\"reason\": \"low_diversity (6%)\", \"transcript_length\": 284699}",
+      "run_id": "20260606_045519_9b9f00"
+    },
+    {
+      "timestamp": "2026-06-06 05:05:53",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "quality_gate_reject",
+      "message": "Quality gate rejected: low_diversity (2%)",
+      "details_json": "{\"reason\": \"low_diversity (2%)\", \"transcript_length\": 1229540}",
+      "run_id": "20260606_045519_9b9f00"
+    },
+    {
+      "timestamp": "2026-06-06 05:05:53",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "quality_gate_reject",
+      "message": "Quality gate rejected: low_diversity (3%)",
+      "details_json": "{\"reason\": \"low_diversity (3%)\", \"transcript_length\": 779135}",
+      "run_id": "20260606_045519_9b9f00"
+    },
+    {
+      "timestamp": "2026-06-06 05:05:53",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "quality_gate_reject",
+      "message": "Quality gate rejected: low_diversity (3%)",
+      "details_json": "{\"reason\": \"low_diversity (3%)\", \"transcript_length\": 714564}",
+      "run_id": "20260606_045519_9b9f00"
+    },
+    {
+      "timestamp": "2026-06-06 05:05:34",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "quality_gate_reject",
+      "message": "Quality gate rejected: low_diversity (4%)",
+      "details_json": "{\"reason\": \"low_diversity (4%)\", \"transcript_length\": 448919}",
+      "run_id": "20260606_045519_9b9f00"
+    },
+    {
+      "timestamp": "2026-06-06 05:04:48",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "quality_gate_reject",
+      "message": "Quality gate rejected: low_diversity (5%)",
+      "details_json": "{\"reason\": \"low_diversity (5%)\", \"transcript_length\": 378134}",
+      "run_id": "20260606_045519_9b9f00"
+    },
+    {
+      "timestamp": "2026-06-06 05:04:48",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "quality_gate_reject",
+      "message": "Quality gate rejected: low_diversity (4%)",
+      "details_json": "{\"reason\": \"low_diversity (4%)\", \"transcript_length\": 574341}",
+      "run_id": "20260606_045519_9b9f00"
+    },
+    {
+      "timestamp": "2026-06-06 05:04:40",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "quality_gate_reject",
+      "message": "Quality gate rejected: low_diversity (5%)",
+      "details_json": "{\"reason\": \"low_diversity (5%)\", \"transcript_length\": 395752}",
+      "run_id": "20260606_045519_9b9f00"
+    },
+    {
+      "timestamp": "2026-06-06 05:04:32",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "quality_gate_reject",
+      "message": "Quality gate rejected: low_diversity (6%)",
+      "details_json": "{\"reason\": \"low_diversity (6%)\", \"transcript_length\": 310129}",
+      "run_id": "20260606_045519_9b9f00"
+    },
+    {
+      "timestamp": "2026-06-06 05:04:32",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "quality_gate_reject",
+      "message": "Quality gate rejected: low_diversity (4%)",
+      "details_json": "{\"reason\": \"low_diversity (4%)\", \"transcript_length\": 285635}",
+      "run_id": "20260606_045519_9b9f00"
+    },
+    {
+      "timestamp": "2026-06-06 05:03:53",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "quality_gate_reject",
+      "message": "Quality gate rejected: low_diversity (6%)",
+      "details_json": "{\"reason\": \"low_diversity (6%)\", \"transcript_length\": 340125}",
+      "run_id": "20260606_045519_9b9f00"
+    },
+    {
+      "timestamp": "2026-06-06 05:03:41",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "quality_gate_reject",
+      "message": "Quality gate rejected: low_diversity (7%)",
+      "details_json": "{\"reason\": \"low_diversity (7%)\", \"transcript_length\": 248964}",
+      "run_id": "20260606_045519_9b9f00"
+    },
+    {
+      "timestamp": "2026-06-06 05:03:41",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "quality_gate_reject",
+      "message": "Quality gate rejected: low_diversity (6%)",
+      "details_json": "{\"reason\": \"low_diversity (6%)\", \"transcript_length\": 148844}",
+      "run_id": "20260606_045519_9b9f00"
+    },
+    {
+      "timestamp": "2026-06-06 05:03:31",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "quality_gate_reject",
+      "message": "Quality gate rejected: low_diversity (10%)",
+      "details_json": "{\"reason\": \"low_diversity (10%)\", \"transcript_length\": 139995}",
+      "run_id": "20260606_045519_9b9f00"
+    },
+    {
+      "timestamp": "2026-06-06 05:03:15",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "quality_gate_reject",
+      "message": "Quality gate rejected: low_diversity (9%)",
+      "details_json": "{\"reason\": \"low_diversity (9%)\", \"transcript_length\": 194236}",
+      "run_id": "20260606_045519_9b9f00"
+    },
+    {
+      "timestamp": "2026-06-06 05:03:03",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "quality_gate_reject",
+      "message": "Quality gate rejected: low_diversity (2%)",
+      "details_json": "{\"reason\": \"low_diversity (2%)\", \"transcript_length\": 2536680}",
+      "run_id": "20260606_045519_9b9f00"
+    },
+    {
+      "timestamp": "2026-06-06 05:02:34",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "quality_gate_reject",
+      "message": "Quality gate rejected: low_diversity (2%)",
+      "details_json": "{\"reason\": \"low_diversity (2%)\", \"transcript_length\": 1984813}",
+      "run_id": "20260606_045519_9b9f00"
+    },
+    {
+      "timestamp": "2026-06-06 05:02:34",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "quality_gate_reject",
+      "message": "Quality gate rejected: low_diversity (4%)",
+      "details_json": "{\"reason\": \"low_diversity (4%)\", \"transcript_length\": 803393}",
+      "run_id": "20260606_045519_9b9f00"
+    },
+    {
+      "timestamp": "2026-06-06 05:02:16",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "quality_gate_reject",
+      "message": "Quality gate rejected: low_diversity (5%)",
+      "details_json": "{\"reason\": \"low_diversity (5%)\", \"transcript_length\": 163341}",
+      "run_id": "20260606_045519_9b9f00"
+    },
+    {
+      "timestamp": "2026-06-06 05:02:11",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "quality_gate_reject",
+      "message": "Quality gate rejected: low_diversity (7%)",
+      "details_json": "{\"reason\": \"low_diversity (7%)\", \"transcript_length\": 320475}",
+      "run_id": "20260606_045519_9b9f00"
+    },
+    {
+      "timestamp": "2026-06-06 05:01:52",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "quality_gate_reject",
+      "message": "Quality gate rejected: low_diversity (5%)",
+      "details_json": "{\"reason\": \"low_diversity (5%)\", \"transcript_length\": 309056}",
+      "run_id": "20260606_045519_9b9f00"
+    },
+    {
+      "timestamp": "2026-06-06 05:01:52",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "quality_gate_reject",
+      "message": "Quality gate rejected: low_diversity (6%)",
+      "details_json": "{\"reason\": \"low_diversity (6%)\", \"transcript_length\": 384694}",
+      "run_id": "20260606_045519_9b9f00"
+    },
+    {
+      "timestamp": "2026-06-06 05:01:52",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "quality_gate_reject",
+      "message": "Quality gate rejected: low_diversity (7%)",
+      "details_json": "{\"reason\": \"low_diversity (7%)\", \"transcript_length\": 307824}",
+      "run_id": "20260606_045519_9b9f00"
+    },
+    {
+      "timestamp": "2026-06-06 05:01:52",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "quality_gate_reject",
+      "message": "Quality gate rejected: low_diversity (5%)",
+      "details_json": "{\"reason\": \"low_diversity (5%)\", \"transcript_length\": 256626}",
+      "run_id": "20260606_045519_9b9f00"
+    },
+    {
+      "timestamp": "2026-06-06 05:01:41",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "quality_gate_reject",
+      "message": "Quality gate rejected: low_diversity (6%)",
+      "details_json": "{\"reason\": \"low_diversity (6%)\", \"transcript_length\": 525751}",
+      "run_id": "20260606_045519_9b9f00"
+    },
+    {
+      "timestamp": "2026-06-06 05:01:41",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "quality_gate_reject",
+      "message": "Quality gate rejected: low_diversity (6%)",
+      "details_json": "{\"reason\": \"low_diversity (6%)\", \"transcript_length\": 181264}",
+      "run_id": "20260606_045519_9b9f00"
+    },
+    {
+      "timestamp": "2026-06-06 05:01:41",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "quality_gate_reject",
+      "message": "Quality gate rejected: low_diversity (7%)",
+      "details_json": "{\"reason\": \"low_diversity (7%)\", \"transcript_length\": 237269}",
+      "run_id": "20260606_045519_9b9f00"
+    },
+    {
+      "timestamp": "2026-06-06 05:01:41",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "quality_gate_reject",
+      "message": "Quality gate rejected: low_diversity (5%)",
+      "details_json": "{\"reason\": \"low_diversity (5%)\", \"transcript_length\": 578603}",
+      "run_id": "20260606_045519_9b9f00"
+    },
+    {
+      "timestamp": "2026-06-06 05:01:41",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "quality_gate_reject",
+      "message": "Quality gate rejected: low_diversity (3%)",
+      "details_json": "{\"reason\": \"low_diversity (3%)\", \"transcript_length\": 429412}",
+      "run_id": "20260606_045519_9b9f00"
+    },
+    {
+      "timestamp": "2026-06-06 05:01:41",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "quality_gate_reject",
+      "message": "Quality gate rejected: low_diversity (3%)",
+      "details_json": "{\"reason\": \"low_diversity (3%)\", \"transcript_length\": 1283096}",
+      "run_id": "20260606_045519_9b9f00"
+    },
+    {
+      "timestamp": "2026-06-06 05:01:34",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "quality_gate_reject",
+      "message": "Quality gate rejected: low_diversity (2%)",
+      "details_json": "{\"reason\": \"low_diversity (2%)\", \"transcript_length\": 1491039}",
+      "run_id": "20260606_045519_9b9f00"
+    },
+    {
+      "timestamp": "2026-06-06 05:01:30",
+      "level": "INFO",
+      "source": "processing",
+      "action": "extraction_complete",
+      "message": "Extracted 158 items",
+      "details_json": "{\"count\": 158, \"by_type\": {\"text\": 210, \"html\": 63}}",
+      "run_id": "20260606_045519_9b9f00"
+    },
+    {
+      "timestamp": "2026-06-06 04:55:19",
+      "level": "INFO",
+      "source": "processing",
+      "action": "run_start",
+      "message": "Run started: 20260606_045519_9b9f00",
+      "details_json": null,
+      "run_id": "20260606_045519_9b9f00"
+    },
+    {
+      "timestamp": "2026-06-06 04:47:12",
+      "level": "INFO",
+      "source": "processing",
+      "action": "run_start",
+      "message": "Run started: 20260606_044712_b26180",
+      "details_json": null,
+      "run_id": "20260606_044712_b26180"
+    },
+    {
+      "timestamp": "2026-05-31 23:38:06",
+      "level": "INFO",
+      "source": "processing",
+      "action": "signals_complete",
+      "message": "3 items processed, 321 signals extracted",
+      "details_json": "{\"success\": 3, \"signals\": 321}",
+      "run_id": "20260531_231718_af5f0d"
+    },
+    {
+      "timestamp": "2026-05-31 23:38:06",
+      "level": "INFO",
+      "source": "processing",
+      "action": "run_end",
+      "message": "Run completed: 20260531_231718_af5f0d. Extracted 0, 0 approved, 0 rejected, 321 signals",
+      "details_json": null,
+      "run_id": "20260531_231718_af5f0d"
+    },
+    {
+      "timestamp": "2026-05-31 23:38:06",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signals",
+      "message": "Extracted 278 signals from [PDF] Machines with intelligence - ABB",
+      "details_json": "{\"chunks\": 24, \"processed\": 318}",
+      "run_id": "20260531_231718_af5f0d"
+    },
+    {
+      "timestamp": "2026-05-31 23:37:45",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"ABB\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"ABB\", \"extraction_class\": \"performance_claim\"}",
+      "run_id": "20260531_231718_af5f0d"
+    },
+    {
+      "timestamp": "2026-05-31 23:37:24",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"ABB\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"ABB\", \"extraction_class\": \"product_launch\"}",
+      "run_id": "20260531_231718_af5f0d"
+    },
+    {
+      "timestamp": "2026-05-31 23:36:38",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"ABB\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"ABB\", \"extraction_class\": \"product_launch\"}",
+      "run_id": "20260531_231718_af5f0d"
+    },
+    {
+      "timestamp": "2026-05-31 23:36:11",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"eMP\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"eMP\", \"extraction_class\": \"adoption\"}",
+      "run_id": "20260531_231718_af5f0d"
+    },
+    {
+      "timestamp": "2026-05-31 23:36:11",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"eMP\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"eMP\", \"extraction_class\": \"adoption\"}",
+      "run_id": "20260531_231718_af5f0d"
+    },
+    {
+      "timestamp": "2026-05-31 23:36:11",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"ABB\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"ABB\", \"extraction_class\": \"adoption\"}",
+      "run_id": "20260531_231718_af5f0d"
+    },
+    {
+      "timestamp": "2026-05-31 23:36:11",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"ABB\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"ABB\", \"extraction_class\": \"adoption\"}",
+      "run_id": "20260531_231718_af5f0d"
+    },
+    {
+      "timestamp": "2026-05-31 23:36:11",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"PSA\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"PSA\", \"extraction_class\": \"adoption\"}",
+      "run_id": "20260531_231718_af5f0d"
+    },
+    {
+      "timestamp": "2026-05-31 23:36:11",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"ABB\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"ABB\", \"extraction_class\": \"adoption\"}",
+      "run_id": "20260531_231718_af5f0d"
+    },
+    {
+      "timestamp": "2026-05-31 23:36:11",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"ABB\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"ABB\", \"extraction_class\": \"partnership\"}",
+      "run_id": "20260531_231718_af5f0d"
+    },
+    {
+      "timestamp": "2026-05-31 23:35:58",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"ABB\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"ABB\", \"extraction_class\": \"partnership\"}",
+      "run_id": "20260531_231718_af5f0d"
+    },
+    {
+      "timestamp": "2026-05-31 23:35:58",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"ABB\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"ABB\", \"extraction_class\": \"partnership\"}",
+      "run_id": "20260531_231718_af5f0d"
+    },
+    {
+      "timestamp": "2026-05-31 23:35:58",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"ATM\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"ATM\", \"extraction_class\": \"regulation\"}",
+      "run_id": "20260531_231718_af5f0d"
+    },
+    {
+      "timestamp": "2026-05-31 23:35:58",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"ABB\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"ABB\", \"extraction_class\": \"partnership\"}",
+      "run_id": "20260531_231718_af5f0d"
+    },
+    {
+      "timestamp": "2026-05-31 23:35:58",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"ABB\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"ABB\", \"extraction_class\": \"adoption\"}",
+      "run_id": "20260531_231718_af5f0d"
+    },
+    {
+      "timestamp": "2026-05-31 23:35:38",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"ABB\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"ABB\", \"extraction_class\": \"partnership\"}",
+      "run_id": "20260531_231718_af5f0d"
+    },
+    {
+      "timestamp": "2026-05-31 23:35:24",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"ABB\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"ABB\", \"extraction_class\": \"adoption\"}",
+      "run_id": "20260531_231718_af5f0d"
+    },
+    {
+      "timestamp": "2026-05-31 23:35:24",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"ABB\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"ABB\", \"extraction_class\": \"partnership\"}",
+      "run_id": "20260531_231718_af5f0d"
+    },
+    {
+      "timestamp": "2026-05-31 23:35:10",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"ABB\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"ABB\", \"extraction_class\": \"adoption\"}",
+      "run_id": "20260531_231718_af5f0d"
+    },
+    {
+      "timestamp": "2026-05-31 23:34:43",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"ABB\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"ABB\", \"extraction_class\": \"adoption\"}",
+      "run_id": "20260531_231718_af5f0d"
+    },
+    {
+      "timestamp": "2026-05-31 23:34:29",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"70%\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"70%\", \"extraction_class\": \"performance_claim\"}",
+      "run_id": "20260531_231718_af5f0d"
+    },
+    {
+      "timestamp": "2026-05-31 23:34:29",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"10%\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"10%\", \"extraction_class\": \"performance_claim\"}",
+      "run_id": "20260531_231718_af5f0d"
+    },
+    {
+      "timestamp": "2026-05-31 23:34:29",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"30%\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"30%\", \"extraction_class\": \"performance_claim\"}",
+      "run_id": "20260531_231718_af5f0d"
+    },
+    {
+      "timestamp": "2026-05-31 23:34:01",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"ABB\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"ABB\", \"extraction_class\": \"adoption\"}",
+      "run_id": "20260531_231718_af5f0d"
+    },
+    {
+      "timestamp": "2026-05-31 23:33:23",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"ABB\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"ABB\", \"extraction_class\": \"partnership\"}",
+      "run_id": "20260531_231718_af5f0d"
+    },
+    {
+      "timestamp": "2026-05-31 23:33:05",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"ABB\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"ABB\", \"extraction_class\": \"product_launch\"}",
+      "run_id": "20260531_231718_af5f0d"
+    },
+    {
+      "timestamp": "2026-05-31 23:33:05",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"ABB\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"ABB\", \"extraction_class\": \"adoption\"}",
+      "run_id": "20260531_231718_af5f0d"
+    },
+    {
+      "timestamp": "2026-05-31 23:33:05",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"ABB\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"ABB\", \"extraction_class\": \"performance_claim\"}",
+      "run_id": "20260531_231718_af5f0d"
+    },
+    {
+      "timestamp": "2026-05-31 23:33:05",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"ABB\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"ABB\", \"extraction_class\": \"adoption\"}",
+      "run_id": "20260531_231718_af5f0d"
+    },
+    {
+      "timestamp": "2026-05-31 23:32:55",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"IBM\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"IBM\", \"extraction_class\": \"product_launch\"}",
+      "run_id": "20260531_231718_af5f0d"
+    },
+    {
+      "timestamp": "2026-05-31 23:32:29",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"ABB\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"ABB\", \"extraction_class\": \"product_launch\"}",
+      "run_id": "20260531_231718_af5f0d"
+    },
+    {
+      "timestamp": "2026-05-31 23:32:29",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"B&R\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"B&R\", \"extraction_class\": \"partnership\"}",
+      "run_id": "20260531_231718_af5f0d"
+    },
+    {
+      "timestamp": "2026-05-31 23:32:29",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"ABB\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"ABB\", \"extraction_class\": \"partnership\"}",
+      "run_id": "20260531_231718_af5f0d"
+    },
+    {
+      "timestamp": "2026-05-31 23:31:57",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"ABB\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"ABB\", \"extraction_class\": \"partnership\"}",
+      "run_id": "20260531_231718_af5f0d"
+    },
+    {
+      "timestamp": "2026-05-31 23:31:57",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"ABB\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"ABB\", \"extraction_class\": \"investment\"}",
+      "run_id": "20260531_231718_af5f0d"
+    },
+    {
+      "timestamp": "2026-05-31 23:31:57",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"ABB\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"ABB\", \"extraction_class\": \"partnership\"}",
+      "run_id": "20260531_231718_af5f0d"
+    },
+    {
+      "timestamp": "2026-05-31 23:31:57",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"ABB\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"ABB\", \"extraction_class\": \"adoption\"}",
+      "run_id": "20260531_231718_af5f0d"
+    },
+    {
+      "timestamp": "2026-05-31 23:31:57",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"ABB\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"ABB\", \"extraction_class\": \"product_launch\"}",
+      "run_id": "20260531_231718_af5f0d"
+    },
+    {
+      "timestamp": "2026-05-31 23:31:39",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"ABB\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"ABB\", \"extraction_class\": \"partnership\"}",
+      "run_id": "20260531_231718_af5f0d"
+    },
+    {
+      "timestamp": "2026-05-31 23:31:39",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"ABB\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"ABB\", \"extraction_class\": \"product_launch\"}",
+      "run_id": "20260531_231718_af5f0d"
+    },
+    {
+      "timestamp": "2026-05-31 23:31:39",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"ABB\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"ABB\", \"extraction_class\": \"adoption\"}",
+      "run_id": "20260531_231718_af5f0d"
+    },
+    {
+      "timestamp": "2026-05-31 23:31:39",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"AI\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"AI\", \"extraction_class\": \"performance_claim\"}",
+      "run_id": "20260531_231718_af5f0d"
+    },
+    {
+      "timestamp": "2026-05-31 23:31:39",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"ABB\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"ABB\", \"extraction_class\": \"product_launch\"}",
+      "run_id": "20260531_231718_af5f0d"
+    },
+    {
+      "timestamp": "2026-05-31 23:31:39",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"ABB\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"ABB\", \"extraction_class\": \"investment\"}",
+      "run_id": "20260531_231718_af5f0d"
+    },
+    {
+      "timestamp": "2026-05-31 23:31:26",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signals",
+      "message": "Extracted 21 signals from [PDF] User manual XSOFT-CODESYS-2 - Eaton",
+      "details_json": "{\"chunks\": 12, \"processed\": 41}",
+      "run_id": "20260531_231718_af5f0d"
+    },
+    {
+      "timestamp": "2026-05-31 23:31:14",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"8ms\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"8ms\", \"extraction_class\": \"performance_claim\"}",
+      "run_id": "20260531_231718_af5f0d"
+    },
+    {
+      "timestamp": "2026-05-31 23:30:09",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"1\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"1\", \"extraction_class\": \"performance_claim\"}",
+      "run_id": "20260531_231718_af5f0d"
+    },
+    {
+      "timestamp": "2026-05-31 23:30:09",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"1\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"1\", \"extraction_class\": \"performance_claim\"}",
+      "run_id": "20260531_231718_af5f0d"
+    },
+    {
+      "timestamp": "2026-05-31 23:29:39",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signals",
+      "message": "Extracted 22 signals from [PDF] User Manual INBACMIT001I100 - HMS Networks",
+      "details_json": "{\"chunks\": 14, \"processed\": 49}",
+      "run_id": "20260531_231718_af5f0d"
+    },
+    {
+      "timestamp": "2026-05-31 23:27:01",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"28\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"28\", \"extraction_class\": \"performance_claim\"}",
+      "run_id": "20260531_231718_af5f0d"
+    },
+    {
+      "timestamp": "2026-05-31 23:26:24",
+      "level": "INFO",
+      "source": "processing",
+      "action": "extraction_complete",
+      "message": "Extracted 0 items",
+      "details_json": "{\"count\": 0, \"by_type\": {\"html\": 183, \"text\": 438}}",
+      "run_id": "20260531_231718_af5f0d"
+    },
+    {
+      "timestamp": "2026-05-31 23:17:18",
+      "level": "INFO",
+      "source": "processing",
+      "action": "run_start",
+      "message": "Run started: 20260531_231718_af5f0d",
+      "details_json": null,
+      "run_id": "20260531_231718_af5f0d"
+    },
+    {
+      "timestamp": "2026-05-31 22:08:41",
+      "level": "INFO",
+      "source": "ingestion",
+      "action": "download_complete",
+      "message": "Downloaded 1175 items",
+      "details_json": "{\"count\": 1175}",
+      "run_id": "20260531_202714_92371f"
+    },
+    {
+      "timestamp": "2026-05-31 22:08:41",
+      "level": "INFO",
+      "source": "ingestion",
+      "action": "run_end",
+      "message": "Run completed: 20260531_202714_92371f. 1175 approved, 1175 downloaded",
+      "details_json": null,
+      "run_id": "20260531_202714_92371f"
+    },
+    {
+      "timestamp": "2026-05-31 20:59:19",
+      "level": "INFO",
+      "source": "discovery",
+      "action": "run_complete",
+      "message": "1175 approved, 130 rejected, 295 deduped from 1600 raw",
+      "details_json": "{\"run_id\": \"153d42d8\", \"queries\": 200, \"raw\": 1600, \"approved\": 1175, \"rejected\": 130, \"deduped\": 295, \"errors\": 0}",
+      "run_id": "20260531_202714_92371f"
+    },
+    {
+      "timestamp": "2026-05-31 20:59:19",
+      "level": "INFO",
+      "source": "ingestion",
+      "action": "discovery_complete",
+      "message": "1175 approved from 1600 candidates",
+      "details_json": "{\"queries\": 200, \"found\": 1600, \"approved\": 1175, \"rejected\": 130, \"source_types\": [\"web\"], \"topic\": null}",
+      "run_id": "20260531_202714_92371f"
+    },
+    {
+      "timestamp": "2026-05-31 20:27:14",
+      "level": "INFO",
+      "source": "ingestion",
+      "action": "run_start",
+      "message": "Run started: 20260531_202714_92371f",
+      "details_json": null,
+      "run_id": "20260531_202714_92371f"
+    },
+    {
+      "timestamp": "2026-05-31 20:26:54",
+      "level": "WARNING",
+      "source": "ingestion",
+      "action": "interrupted",
+      "message": "Ingestion interrupted by user",
+      "details_json": null,
+      "run_id": "20260531_202635_201fd2"
+    },
+    {
+      "timestamp": "2026-05-31 20:26:35",
+      "level": "INFO",
+      "source": "ingestion",
+      "action": "run_start",
+      "message": "Run started: 20260531_202635_201fd2",
+      "details_json": null,
+      "run_id": "20260531_202635_201fd2"
+    },
     {
       "timestamp": "2026-04-13 18:21:27",
       "level": "INFO",
@@ -33,8 +1563,8 @@
       "level": "INFO",
       "source": "pipeline",
       "action": "signal_validation_skip",
-      "message": "Skipped short entity: \"31%\"",
-      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"31%\", \"extraction_class\": \"adoption\"}",
+      "message": "Skipped short entity: \"50%\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"50%\", \"extraction_class\": \"performance_claim\"}",
       "run_id": null
     },
     {
@@ -42,8 +1572,8 @@
       "level": "INFO",
       "source": "pipeline",
       "action": "signal_validation_skip",
-      "message": "Skipped short entity: \"50%\"",
-      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"50%\", \"extraction_class\": \"performance_claim\"}",
+      "message": "Skipped short entity: \"31%\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"31%\", \"extraction_class\": \"adoption\"}",
       "run_id": null
     },
     {
@@ -195,8 +1725,8 @@
       "level": "INFO",
       "source": "pipeline",
       "action": "signal_validation_skip",
-      "message": "Skipped short entity: \"TSA\"",
-      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"TSA\", \"extraction_class\": \"regulation\"}",
+      "message": "Skipped short entity: \"NRC\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"NRC\", \"extraction_class\": \"regulation\"}",
       "run_id": null
     },
     {
@@ -204,17 +1734,8 @@
       "level": "INFO",
       "source": "pipeline",
       "action": "signal_validation_skip",
-      "message": "Skipped short entity: \"NRC\"",
-      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"NRC\", \"extraction_class\": \"regulation\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 18:07:58",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped short entity: \"ISO\"",
-      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"ISO\", \"extraction_class\": \"partnership\"}",
+      "message": "Skipped short entity: \"TSA\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"TSA\", \"extraction_class\": \"regulation\"}",
       "run_id": null
     },
     {
@@ -224,6 +1745,15 @@
       "action": "signal_validation_skip",
       "message": "Skipped short entity: \"API\"",
       "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"API\", \"extraction_class\": \"regulation\"}",
+      "run_id": null
+    },
+    {
+      "timestamp": "2026-04-13 18:07:58",
+      "level": "INFO",
+      "source": "pipeline",
+      "action": "signal_validation_skip",
+      "message": "Skipped short entity: \"ISO\"",
+      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"ISO\", \"extraction_class\": \"partnership\"}",
       "run_id": null
     },
     {
@@ -270,1539 +1800,49 @@
       "message": "Skipped short entity: \"75%\"",
       "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"75%\", \"extraction_class\": \"performance_claim\"}",
       "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 17:53:10",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped short entity: \"27%\"",
-      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"27%\", \"extraction_class\": \"performance_claim\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 17:52:48",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped short entity: \"0\"",
-      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"0\", \"extraction_class\": \"performance_claim\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 17:52:48",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped short entity: \"2\"",
-      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"2\", \"extraction_class\": \"performance_claim\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 17:52:48",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped short entity: \"0\"",
-      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"0\", \"extraction_class\": \"performance_claim\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 17:52:47",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped short entity: \"12\"",
-      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"12\", \"extraction_class\": \"performance_claim\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 17:52:47",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped short entity: \"0\"",
-      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"0\", \"extraction_class\": \"performance_claim\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 17:52:26",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped short entity: \"27%\"",
-      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"27%\", \"extraction_class\": \"performance_claim\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 17:52:26",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped short entity: \"75%\"",
-      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"75%\", \"extraction_class\": \"performance_claim\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 17:47:20",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signals",
-      "message": "Extracted 25 signals from Technical Guide to ISA/IEC-62443 Industrial Cybers",
-      "details_json": "{\"chunks\": 4, \"processed\": 45}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 17:45:14",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signals",
-      "message": "Extracted 5 signals from What is Industrial Cybersecurity? A BlackBear Comp",
-      "details_json": "{\"chunks\": 2, \"processed\": 5}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 17:44:22",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signals",
-      "message": "Extracted 36 signals from [PDF] The Evolution of Industrial Cybersecurity an",
-      "details_json": "{\"chunks\": 8, \"processed\": 40}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 17:36:13",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped short entity: \"36%\"",
-      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"36%\", \"extraction_class\": \"performance_claim\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 17:35:20",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped short entity: \"80%\"",
-      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"80%\", \"extraction_class\": \"performance_claim\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 17:35:20",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped generic token: \"organizations\"",
-      "details_json": "{\"reason\": \"generic_token\", \"entity\": \"organizations\", \"extraction_class\": \"adoption\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 17:35:01",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped generic token: \"companies\"",
-      "details_json": "{\"reason\": \"generic_token\", \"entity\": \"companies\", \"extraction_class\": \"performance_claim\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 17:34:55",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signals",
-      "message": "Extracted 41 signals from [PDF] UC Berkeley Machine Guarding and Equipment S",
-      "details_json": "{\"chunks\": 9, \"processed\": 54}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 17:27:08",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signals",
-      "message": "Extracted 35 signals from ANSI B11 Standards (Safety of Machinery)",
-      "details_json": "{\"chunks\": 2, \"processed\": 37}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 17:26:52",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signals",
-      "message": "Extracted 14 signals from [PDF] Machine Safety Fundamentals - Banner Enginee",
-      "details_json": "{\"chunks\": 2, \"processed\": 15}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 17:26:26",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signals",
-      "message": "Extracted 2 signals from Machine Safety Fundamentals - Banner Engineering",
-      "details_json": "{\"chunks\": 3, \"processed\": 2}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 17:22:07",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped short entity: \"70%\"",
-      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"70%\", \"extraction_class\": \"performance_claim\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 17:22:07",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signals",
-      "message": "Extracted 22 signals from Evolution of Industrial Networking and Best Practi",
-      "details_json": "{\"chunks\": 2, \"processed\": 24}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 17:21:31",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signals",
-      "message": "Extracted 50 signals from [PDF] Introduction to Industrial Networks",
-      "details_json": "{\"chunks\": 7, \"processed\": 55}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 17:21:15",
-      "level": "ERROR",
-      "source": "pipeline",
-      "action": "signal_chunk_error",
-      "message": "LangExtract error [quota_exceeded] chunk 6/7: [PDF] Introduction to Industrial Networks",
-      "details_json": "{\"error_category\": \"quota_exceeded\", \"error_type\": \"InferenceRuntimeError\", \"error_message\": \"Parallel inference error: Gemini API error: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'Resource exhausted. Please try again later. Please refer to https://cloud.google.com/vertex-ai/generative-ai/docs/error-code-429 for more details.', 'status': 'RESOURCE_EXHAUSTED'}}\", \"traceback\": \"    ^^^^^^^^^^^^^\\n  File \\\"/usr/local/lib/python3.12/dist-packages/langextract/providers/gemini.py\\\", line 326, in infer\\n    raise exceptions.InferenceRuntimeError(\\nlangextract.core.exceptions.InferenceRuntimeError: Parallel inference error: Gemini API error: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'Resource exhausted. Please try again later. Please refer to https://cloud.google.com/vertex-ai/generative-ai/docs/error-code-429 for more details.', 'status': 'RESOURCE_EXHAUSTED'}}\\n\", \"chunk_index\": 5, \"total_chunks\": 7, \"chunk_length\": 8000, \"model_id\": \"gemini-2.5-flash\", \"recoverable\": true}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 17:11:17",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped short entity: \"FDT\"",
-      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"FDT\", \"extraction_class\": \"performance_claim\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 17:11:17",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped short entity: \"FDT\"",
-      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"FDT\", \"extraction_class\": \"adoption\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 17:11:17",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped short entity: \"OPC\"",
-      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"OPC\", \"extraction_class\": \"product_launch\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 17:11:17",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped short entity: \"OPC\"",
-      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"OPC\", \"extraction_class\": \"performance_claim\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 17:06:41",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signals",
-      "message": "Extracted 30 signals from Industrial Connectivity and Networking 101",
-      "details_json": "{\"chunks\": 9, \"processed\": 31}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 16:59:16",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signals",
-      "message": "Extracted 21 signals from Chapter 2 Industrial Networking and TCP/IP",
-      "details_json": "{\"chunks\": 12, \"processed\": 21}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 16:56:46",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signals",
-      "message": "Extracted 3 signals from PLC Program Organization Best Practices: Documenta",
-      "details_json": "{\"chunks\": 8, \"processed\": 4}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 16:50:33",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signals",
-      "message": "Extracted 13 signals from [PDF] X20PS2110",
-      "details_json": "{\"chunks\": 2, \"processed\": 13}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 16:48:47",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped short entity: \"KC\"",
-      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"KC\", \"extraction_class\": \"regulation\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 16:48:47",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped short entity: \"CE\"",
-      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"CE\", \"extraction_class\": \"regulation\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 16:48:22",
-      "level": "ERROR",
-      "source": "pipeline",
-      "action": "signal_chunk_error",
-      "message": "LangExtract error [InferenceRuntimeError] chunk 11/24: [PDF] Machines with intelligence - ABB",
-      "details_json": "{\"error_category\": \"InferenceRuntimeError\", \"error_type\": \"InferenceRuntimeError\", \"error_message\": \"Parallel inference error: Gemini API error: 499 CANCELLED. {'error': {'code': 499, 'message': 'The operation was cancelled.', 'status': 'CANCELLED'}}\", \"traceback\": \"python3.12/dist-packages/langextract/annotation.py\\\", line 378, in _annotate_documents_single_pass\\n    outputs = list(outputs)\\n              ^^^^^^^^^^^^^\\n  File \\\"/usr/local/lib/python3.12/dist-packages/langextract/providers/gemini.py\\\", line 326, in infer\\n    raise exceptions.InferenceRuntimeError(\\nlangextract.core.exceptions.InferenceRuntimeError: Parallel inference error: Gemini API error: 499 CANCELLED. {'error': {'code': 499, 'message': 'The operation was cancelled.', 'status': 'CANCELLED'}}\\n\", \"chunk_index\": 10, \"total_chunks\": 24, \"chunk_length\": 8000, \"model_id\": \"gemini-2.5-flash\", \"recoverable\": false}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 16:48:22",
-      "level": "ERROR",
-      "source": "pipeline",
-      "action": "signal_extraction_failed",
-      "message": "Signal extraction failed [InferenceRuntimeError]: [PDF] Machines with intelligence - ABB",
-      "details_json": "{\"error_category\": \"InferenceRuntimeError\", \"error_type\": \"InferenceRuntimeError\", \"error_message\": \"Parallel inference error: Gemini API error: 499 CANCELLED. {'error': {'code': 499, 'message': 'The operation was cancelled.', 'status': 'CANCELLED'}}\", \"traceback\": \"python3.12/dist-packages/langextract/annotation.py\\\", line 378, in _annotate_documents_single_pass\\n    outputs = list(outputs)\\n              ^^^^^^^^^^^^^\\n  File \\\"/usr/local/lib/python3.12/dist-packages/langextract/providers/gemini.py\\\", line 326, in infer\\n    raise exceptions.InferenceRuntimeError(\\nlangextract.core.exceptions.InferenceRuntimeError: Parallel inference error: Gemini API error: 499 CANCELLED. {'error': {'code': 499, 'message': 'The operation was cancelled.', 'status': 'CANCELLED'}}\\n\", \"content_id\": 860, \"title\": \"[PDF] Machines with intelligence - ABB\", \"transcript_length\": 187099, \"chunks_attempted\": 24, \"signals_before_error\": 95, \"model_id\": \"gemini-2.5-flash\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 16:38:24",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped short entity: \"ABB\"",
-      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"ABB\", \"extraction_class\": \"adoption\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 16:37:40",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped short entity: \"ABB\"",
-      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"ABB\", \"extraction_class\": \"partnership\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 16:37:16",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped short entity: \"ABB\"",
-      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"ABB\", \"extraction_class\": \"adoption\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 16:37:16",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped short entity: \"ABB\"",
-      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"ABB\", \"extraction_class\": \"performance_claim\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 16:37:16",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped short entity: \"ABB\"",
-      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"ABB\", \"extraction_class\": \"adoption\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 16:37:16",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped short entity: \"ABB\"",
-      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"ABB\", \"extraction_class\": \"product_launch\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 16:37:04",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped short entity: \"IBM\"",
-      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"IBM\", \"extraction_class\": \"product_launch\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 16:36:30",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped short entity: \"B&R\"",
-      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"B&R\", \"extraction_class\": \"partnership\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 16:36:30",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped short entity: \"ABB\"",
-      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"ABB\", \"extraction_class\": \"partnership\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 16:36:30",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped short entity: \"ABB\"",
-      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"ABB\", \"extraction_class\": \"product_launch\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 16:35:54",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped short entity: \"ABB\"",
-      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"ABB\", \"extraction_class\": \"partnership\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 16:35:54",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped short entity: \"ABB\"",
-      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"ABB\", \"extraction_class\": \"investment\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 16:35:54",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped short entity: \"ABB\"",
-      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"ABB\", \"extraction_class\": \"adoption\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 16:35:54",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped short entity: \"ABB\"",
-      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"ABB\", \"extraction_class\": \"partnership\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 16:35:54",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped short entity: \"ABB\"",
-      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"ABB\", \"extraction_class\": \"product_launch\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 16:35:34",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped short entity: \"ABB\"",
-      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"ABB\", \"extraction_class\": \"product_launch\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 16:35:34",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped short entity: \"ABB\"",
-      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"ABB\", \"extraction_class\": \"investment\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 16:35:34",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped short entity: \"ABB\"",
-      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"ABB\", \"extraction_class\": \"adoption\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 16:35:34",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped short entity: \"ABB\"",
-      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"ABB\", \"extraction_class\": \"product_launch\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 16:35:34",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped short entity: \"AI\"",
-      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"AI\", \"extraction_class\": \"performance_claim\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 16:35:34",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped short entity: \"ABB\"",
-      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"ABB\", \"extraction_class\": \"partnership\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 16:35:16",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signals",
-      "message": "Extracted 26 signals from [PDF] Industrial edge: From complexity to manageab",
-      "details_json": "{\"chunks\": 3, \"processed\": 29}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 16:34:32",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signals",
-      "message": "Extracted 40 signals from [PDF] Introduction to Integrated Safety",
-      "details_json": "{\"chunks\": 6, \"processed\": 50}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 16:31:35",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped short entity: \"B&R\"",
-      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"B&R\", \"extraction_class\": \"adoption\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 16:31:16",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped short entity: \"43%\"",
-      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"43%\", \"extraction_class\": \"performance_claim\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 16:31:16",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped short entity: \"22%\"",
-      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"22%\", \"extraction_class\": \"performance_claim\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 16:31:16",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped short entity: \"37%\"",
-      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"37%\", \"extraction_class\": \"performance_claim\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 16:30:58",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signals",
-      "message": "Extracted 23 signals from [PDF] License CODESYS Control Standard S \u2014 Product",
-      "details_json": "{\"chunks\": 2, \"processed\": 26}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 16:30:33",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped short entity: \"256\"",
-      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"256\", \"extraction_class\": \"performance_claim\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 16:30:33",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped short entity: \"512\"",
-      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"512\", \"extraction_class\": \"performance_claim\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 16:30:10",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signals",
-      "message": "Extracted 396 signals from [PDF] OPC Unified Architecture",
-      "details_json": "{\"chunks\": 25, \"processed\": 535}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 16:29:13",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped short entity: \"P&G\"",
-      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"P&G\", \"extraction_class\": \"adoption\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 16:29:13",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped short entity: \"P&G\"",
-      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"P&G\", \"extraction_class\": \"performance_claim\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 16:29:13",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped short entity: \"P&G\"",
-      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"P&G\", \"extraction_class\": \"partnership\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 16:29:13",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped short entity: \"P&G\"",
-      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"P&G\", \"extraction_class\": \"adoption\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 16:28:41",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped short entity: \"P&G\"",
-      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"P&G\", \"extraction_class\": \"adoption\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 16:28:41",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped short entity: \"IWS\"",
-      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"IWS\", \"extraction_class\": \"adoption\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 16:28:20",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped short entity: \"PMI\"",
-      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"PMI\", \"extraction_class\": \"partnership\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 16:28:20",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped short entity: \"PMI\"",
-      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"PMI\", \"extraction_class\": \"partnership\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 16:28:20",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped short entity: \"PMI\"",
-      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"PMI\", \"extraction_class\": \"adoption\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 16:28:20",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped short entity: \"PMI\"",
-      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"PMI\", \"extraction_class\": \"adoption\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 16:28:20",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped short entity: \"PMI\"",
-      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"PMI\", \"extraction_class\": \"partnership\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 16:28:20",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped short entity: \"PMI\"",
-      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"PMI\", \"extraction_class\": \"adoption\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 16:28:20",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped short entity: \"PMI\"",
-      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"PMI\", \"extraction_class\": \"adoption\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 16:28:20",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped short entity: \"PMI\"",
-      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"PMI\", \"extraction_class\": \"adoption\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 16:28:02",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped short entity: \"E3\"",
-      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"E3\", \"extraction_class\": \"performance_claim\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 16:25:25",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped short entity: \"30%\"",
-      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"30%\", \"extraction_class\": \"performance_claim\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 16:23:51",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped short entity: \"ABB\"",
-      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"ABB\", \"extraction_class\": \"partnership\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 16:23:51",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped short entity: \"ABB\"",
-      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"ABB\", \"extraction_class\": \"partnership\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 16:23:51",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped short entity: \"AWS\"",
-      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"AWS\", \"extraction_class\": \"partnership\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 16:23:51",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped short entity: \"B&R\"",
-      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"B&R\", \"extraction_class\": \"partnership\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 16:23:51",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped short entity: \"SAP\"",
-      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"SAP\", \"extraction_class\": \"partnership\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 16:23:51",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped short entity: \"AWS\"",
-      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"AWS\", \"extraction_class\": \"partnership\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 16:09:42",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped short entity: \"21+\"",
-      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"21+\", \"extraction_class\": \"performance_claim\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 16:09:42",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped short entity: \"17\"",
-      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"17\", \"extraction_class\": \"performance_claim\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 16:09:42",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped short entity: \"10+\"",
-      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"10+\", \"extraction_class\": \"performance_claim\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 16:08:32",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped short entity: \"CPX\"",
-      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"CPX\", \"extraction_class\": \"product_launch\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 16:08:32",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped short entity: \"SAP\"",
-      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"SAP\", \"extraction_class\": \"partnership\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 16:08:08",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped short entity: \"MxD\"",
-      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"MxD\", \"extraction_class\": \"regulation\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 16:08:08",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped short entity: \"MxD\"",
-      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"MxD\", \"extraction_class\": \"adoption\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 16:07:49",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped short entity: \"DTC\"",
-      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"DTC\", \"extraction_class\": \"adoption\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 16:07:16",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped short entity: \"OPC\"",
-      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"OPC\", \"extraction_class\": \"adoption\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 16:07:16",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped short entity: \"OPC\"",
-      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"OPC\", \"extraction_class\": \"performance_claim\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 16:06:58",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signals",
-      "message": "Extracted 10 signals from [PDF] Overview of implementation principles of art",
-      "details_json": "{\"chunks\": 4, \"processed\": 11}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 16:06:45",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped short entity: \"PLC\"",
-      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"PLC\", \"extraction_class\": \"product_launch\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 16:03:38",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped short entity: \"Git\"",
-      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"Git\", \"extraction_class\": \"product_launch\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 16:03:38",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signals",
-      "message": "Extracted 108 signals from [PDF] The Comprehensive Software Suite for Automat",
-      "details_json": "{\"chunks\": 2, \"processed\": 112}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 16:03:38",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped short entity: \"CNC\"",
-      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"CNC\", \"extraction_class\": \"product_launch\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 16:02:27",
-      "level": "ERROR",
-      "source": "pipeline",
-      "action": "signal_extraction_failed",
-      "message": "Signal extraction failed [InferenceRuntimeError]: [PDF] User manual XSOFT-CODESYS-2 - Eaton",
-      "details_json": "{\"error_category\": \"InferenceRuntimeError\", \"error_type\": \"InferenceRuntimeError\", \"error_message\": \"Parallel inference error: Gemini API error: 499 CANCELLED. {'error': {'code': 499, 'message': 'The operation was cancelled.', 'status': 'CANCELLED'}}\", \"traceback\": \"python3.12/dist-packages/langextract/annotation.py\\\", line 378, in _annotate_documents_single_pass\\n    outputs = list(outputs)\\n              ^^^^^^^^^^^^^\\n  File \\\"/usr/local/lib/python3.12/dist-packages/langextract/providers/gemini.py\\\", line 326, in infer\\n    raise exceptions.InferenceRuntimeError(\\nlangextract.core.exceptions.InferenceRuntimeError: Parallel inference error: Gemini API error: 499 CANCELLED. {'error': {'code': 499, 'message': 'The operation was cancelled.', 'status': 'CANCELLED'}}\\n\", \"content_id\": 834, \"title\": \"[PDF] User manual XSOFT-CODESYS-2 - Eaton\", \"transcript_length\": 89581, \"chunks_attempted\": 12, \"signals_before_error\": 16, \"model_id\": \"gemini-2.5-flash\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 16:02:27",
-      "level": "ERROR",
-      "source": "pipeline",
-      "action": "signal_chunk_error",
-      "message": "LangExtract error [InferenceRuntimeError] chunk 4/12: [PDF] User manual XSOFT-CODESYS-2 - Eaton",
-      "details_json": "{\"error_category\": \"InferenceRuntimeError\", \"error_type\": \"InferenceRuntimeError\", \"error_message\": \"Parallel inference error: Gemini API error: 499 CANCELLED. {'error': {'code': 499, 'message': 'The operation was cancelled.', 'status': 'CANCELLED'}}\", \"traceback\": \"python3.12/dist-packages/langextract/annotation.py\\\", line 378, in _annotate_documents_single_pass\\n    outputs = list(outputs)\\n              ^^^^^^^^^^^^^\\n  File \\\"/usr/local/lib/python3.12/dist-packages/langextract/providers/gemini.py\\\", line 326, in infer\\n    raise exceptions.InferenceRuntimeError(\\nlangextract.core.exceptions.InferenceRuntimeError: Parallel inference error: Gemini API error: 499 CANCELLED. {'error': {'code': 499, 'message': 'The operation was cancelled.', 'status': 'CANCELLED'}}\\n\", \"chunk_index\": 3, \"total_chunks\": 12, \"chunk_length\": 8000, \"model_id\": \"gemini-2.5-flash\", \"recoverable\": false}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 15:52:29",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped short entity: \"1\"",
-      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"1\", \"extraction_class\": \"performance_claim\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 15:52:29",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped short entity: \"1\"",
-      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"1\", \"extraction_class\": \"performance_claim\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 15:51:40",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signals",
-      "message": "Extracted 4 signals from [PDF] CODESYS SoftMotion Axis Groups/CNC Interpola",
-      "details_json": "{\"chunks\": 2, \"processed\": 6}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 15:47:40",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signals",
-      "message": "Extracted 89 signals from [PDF] FA Remote Solutions - Mitsubishi Electric",
-      "details_json": "{\"chunks\": 9, \"processed\": 123}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 15:46:57",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped short entity: \"HMS\"",
-      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"HMS\", \"extraction_class\": \"partnership\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 15:46:57",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped short entity: \"5\"",
-      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"5\", \"extraction_class\": \"performance_claim\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 15:43:59",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped short entity: \"AI\"",
-      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"AI\", \"extraction_class\": \"product_launch\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 15:42:27",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signals",
-      "message": "Extracted 17 signals from [PDF] Mitsubishi Electric Data Science Tool MELSOF",
-      "details_json": "{\"chunks\": 4, \"processed\": 30}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 15:41:30",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped short entity: \"AI\"",
-      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"AI\", \"extraction_class\": \"performance_claim\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 15:41:04",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signals",
-      "message": "Extracted 70 signals from [PDF] Industrial Computer MELIPC Series - Mitsubis",
-      "details_json": "{\"chunks\": 5, \"processed\": 94}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 15:38:51",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signals",
-      "message": "Extracted 202 signals from [PDF] Edgecross-supporting Software Catalog",
-      "details_json": "{\"chunks\": 12, \"processed\": 257}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 15:36:16",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped short entity: \"15\"",
-      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"15\", \"extraction_class\": \"performance_claim\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 15:36:16",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped generic token: \"Data\"",
-      "details_json": "{\"reason\": \"generic_token\", \"entity\": \"Data\", \"extraction_class\": \"performance_claim\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 15:35:17",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped generic token: \"Software\"",
-      "details_json": "{\"reason\": \"generic_token\", \"entity\": \"Software\", \"extraction_class\": \"performance_claim\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 15:35:17",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped generic token: \"Software\"",
-      "details_json": "{\"reason\": \"generic_token\", \"entity\": \"Software\", \"extraction_class\": \"performance_claim\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 15:34:42",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signals",
-      "message": "Extracted 123 signals from [PDF] Mitsubishi Electric Sensorless Servo Global ",
-      "details_json": "{\"chunks\": 6, \"processed\": 140}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 15:33:51",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped short entity: \"34\"",
-      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"34\", \"extraction_class\": \"performance_claim\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 15:33:51",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped short entity: \"34\"",
-      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"34\", \"extraction_class\": \"performance_claim\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 15:33:51",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped short entity: \"28\"",
-      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"28\", \"extraction_class\": \"performance_claim\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 15:33:51",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped short entity: \"40\"",
-      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"40\", \"extraction_class\": \"performance_claim\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 15:33:51",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped short entity: \"28\"",
-      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"28\", \"extraction_class\": \"performance_claim\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 15:33:51",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped short entity: \"490\"",
-      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"490\", \"extraction_class\": \"performance_claim\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 15:33:51",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped short entity: \"109\"",
-      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"109\", \"extraction_class\": \"performance_claim\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 15:33:51",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped short entity: \"8.2\"",
-      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"8.2\", \"extraction_class\": \"performance_claim\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 15:33:51",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped short entity: \"392\"",
-      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"392\", \"extraction_class\": \"performance_claim\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 15:33:51",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped short entity: \"2.9\"",
-      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"2.9\", \"extraction_class\": \"performance_claim\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 15:33:51",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped short entity: \"3.9\"",
-      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"3.9\", \"extraction_class\": \"performance_claim\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 15:33:51",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped short entity: \"196\"",
-      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"196\", \"extraction_class\": \"performance_claim\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 15:33:51",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped short entity: \"200\"",
-      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"200\", \"extraction_class\": \"performance_claim\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 15:33:51",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped short entity: \"6.4\"",
-      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"6.4\", \"extraction_class\": \"performance_claim\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 15:33:51",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped short entity: \"3.9\"",
-      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"3.9\", \"extraction_class\": \"performance_claim\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 15:33:51",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped short entity: \"2.9\"",
-      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"2.9\", \"extraction_class\": \"performance_claim\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 15:33:51",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped short entity: \"4.9\"",
-      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"4.9\", \"extraction_class\": \"performance_claim\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 15:33:51",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped short entity: \"22\"",
-      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"22\", \"extraction_class\": \"performance_claim\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 15:33:51",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped short entity: \"980\"",
-      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"980\", \"extraction_class\": \"performance_claim\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 15:33:51",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped short entity: \"6.7\"",
-      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"6.7\", \"extraction_class\": \"performance_claim\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 15:33:51",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped short entity: \"9.5\"",
-      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"9.5\", \"extraction_class\": \"performance_claim\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 15:33:51",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped short entity: \"200\"",
-      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"200\", \"extraction_class\": \"performance_claim\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 15:33:51",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped short entity: \"294\"",
-      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"294\", \"extraction_class\": \"performance_claim\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 15:32:49",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped short entity: \"90%\"",
-      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"90%\", \"extraction_class\": \"performance_claim\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 15:31:53",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped short entity: \"IE5\"",
-      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"IE5\", \"extraction_class\": \"performance_claim\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 15:31:39",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signals",
-      "message": "Extracted 27 signals from [PDF] Automation Products and Solutions | Power Mo",
-      "details_json": "{\"chunks\": 3, \"processed\": 27}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 15:31:11",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped short entity: \"we\"",
-      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"we\", \"extraction_class\": \"investment\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 15:31:11",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped short entity: \"50%\"",
-      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"50%\", \"extraction_class\": \"performance_claim\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 15:29:13",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signals",
-      "message": "Extracted 46 signals from [PDF] C Controller Applications - Mitsubishi Elect",
-      "details_json": "{\"chunks\": 6, \"processed\": 58}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 15:24:16",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signals",
-      "message": "Extracted 143 signals from [PDF] FA-IT Solution e-F@ctory - Mitsubishi Electr",
-      "details_json": "{\"chunks\": 8, \"processed\": 163}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 15:23:06",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped short entity: \"40%\"",
-      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"40%\", \"extraction_class\": \"performance_claim\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 15:22:23",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped short entity: \"15%\"",
-      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"15%\", \"extraction_class\": \"performance_claim\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 15:22:23",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped short entity: \"15%\"",
-      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"15%\", \"extraction_class\": \"performance_claim\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 15:20:11",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signals",
-      "message": "Extracted 112 signals from [PDF] Industrial Computer MELIPC Series",
-      "details_json": "{\"chunks\": 8, \"processed\": 141}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 15:19:31",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped short entity: \"120\"",
-      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"120\", \"extraction_class\": \"performance_claim\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 15:19:31",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped short entity: \"1G\"",
-      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"1G\", \"extraction_class\": \"performance_claim\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 15:18:54",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped short entity: \"\u2264 \u00b2\"",
-      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"\\u2264 \\u00b2\", \"extraction_class\": \"performance_claim\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 15:18:54",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped short entity: \"\u2264 2\"",
-      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"\\u2264 2\", \"extraction_class\": \"performance_claim\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 15:17:05",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signals",
-      "message": "Extracted 321 signals from [PDF] Programmable Automation Controllers MELSEC M",
-      "details_json": "{\"chunks\": 14, \"processed\": 431}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 15:15:32",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped short entity: \"256\"",
-      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"256\", \"extraction_class\": \"performance_claim\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 15:12:51",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped short entity: \"our\"",
-      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"our\", \"extraction_class\": \"partnership\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 15:12:29",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped short entity: \"1/5\"",
-      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"1/5\", \"extraction_class\": \"performance_claim\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 15:12:07",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped short entity: \"5\"",
-      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"5\", \"extraction_class\": \"performance_claim\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 15:11:38",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signals",
-      "message": "Extracted 65 signals from [PDF] Motion Controller MR-MQ100 Quick-Start Guide",
-      "details_json": "{\"chunks\": 17, \"processed\": 88}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 15:09:12",
-      "level": "ERROR",
-      "source": "pipeline",
-      "action": "signal_chunk_error",
-      "message": "LangExtract error [parse_error] chunk 6/17: [PDF] Motion Controller MR-MQ100 Quick-Start Guide",
-      "details_json": "{\"error_category\": \"parse_error\", \"error_type\": \"ResolverParsingError\", \"error_message\": \"Failed to parse JSON content: Invalid control character at: line 8 column 58 (char 251)\", \"traceback\": \"nts_single_pass(\\n  File \\\"/usr/local/lib/python3.12/dist-packages/langextract/annotation.py\\\", line 388, in _annotate_documents_single_pass\\n    resolved_extractions = resolver.resolve(\\n                           ^^^^^^^^^^^^^^^^^\\n  File \\\"/usr/local/lib/python3.12/dist-packages/langextract/resolver.py\\\", line 271, in resolve\\n    raise ResolverParsingError(str(e)) from e\\nlangextract.resolver.ResolverParsingError: Failed to parse JSON content: Invalid control character at: line 8 column 58 (char 251)\\n\", \"chunk_index\": 5, \"total_chunks\": 17, \"chunk_length\": 8000, \"model_id\": \"gemini-2.5-flash\", \"recoverable\": true}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 15:08:54",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped short entity: \"16\"",
-      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"16\", \"extraction_class\": \"performance_claim\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 15:08:38",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped short entity: \"255\"",
-      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"255\", \"extraction_class\": \"performance_claim\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 15:08:38",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signal_validation_skip",
-      "message": "Skipped short entity: \"255\"",
-      "details_json": "{\"reason\": \"entity_too_short\", \"entity\": \"255\", \"extraction_class\": \"performance_claim\"}",
-      "run_id": null
-    },
-    {
-      "timestamp": "2026-04-13 15:06:38",
-      "level": "INFO",
-      "source": "pipeline",
-      "action": "signals",
-      "message": "Extracted 71 signals from [PDF] ICONICS Automation Software Suite",
-      "details_json": "{\"chunks\": 10, \"processed\": 90}",
-      "run_id": null
     }
   ],
   "runs": [
+    {
+      "run_id": "20260606_045519_9b9f00",
+      "started": "2026-06-06 04:55:19",
+      "ended": "2026-06-06 05:18:33",
+      "events": 107,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "run_id": "20260606_044712_b26180",
+      "started": "2026-06-06 04:47:12",
+      "ended": "2026-06-06 04:47:12",
+      "events": 1,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "run_id": "20260531_231718_af5f0d",
+      "started": "2026-05-31 23:17:18",
+      "ended": "2026-05-31 23:38:06",
+      "events": 55,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "run_id": "20260531_202714_92371f",
+      "started": "2026-05-31 20:27:14",
+      "ended": "2026-05-31 22:08:41",
+      "events": 5,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "run_id": "20260531_202635_201fd2",
+      "started": "2026-05-31 20:26:35",
+      "ended": "2026-05-31 20:26:54",
+      "events": 2,
+      "errors": 0,
+      "warnings": 1
+    },
     {
       "run_id": "20260412_202142_b697af",
       "started": "2026-04-12 20:21:42",

@@ -1,15 +1,15 @@
 {
-  "exported_at": "2026-05-21T06:02:46.480373",
+  "exported_at": "2026-07-05T04:19:42.285572",
   "content_timeline": [
-    {
-      "date": "2026-02-02",
-      "source_type": "pdf",
-      "count": 8
-    },
     {
       "date": "2026-02-02",
       "source_type": "audio",
       "count": 17
+    },
+    {
+      "date": "2026-02-02",
+      "source_type": "pdf",
+      "count": 8
     },
     {
       "date": "2026-02-22",
@@ -33,23 +33,23 @@
     },
     {
       "date": "2026-03-21",
-      "source_type": "audio",
-      "count": 16
-    },
-    {
-      "date": "2026-03-21",
       "source_type": "pdf",
       "count": 97
     },
     {
       "date": "2026-03-21",
-      "source_type": "html",
-      "count": 43
+      "source_type": "audio",
+      "count": 16
     },
     {
       "date": "2026-03-21",
       "source_type": "mp3",
       "count": 6
+    },
+    {
+      "date": "2026-03-21",
+      "source_type": "html",
+      "count": 43
     },
     {
       "date": "2026-03-22",
@@ -68,30 +68,40 @@
     },
     {
       "date": "2026-03-27",
+      "source_type": "pdf",
+      "count": 353
+    },
+    {
+      "date": "2026-03-27",
       "source_type": "xml",
       "count": 1
     },
     {
-      "date": "2026-03-27",
+      "date": "2026-05-31",
       "source_type": "pdf",
-      "count": 353
+      "count": 437
+    },
+    {
+      "date": "2026-05-31",
+      "source_type": "html",
+      "count": 183
+    },
+    {
+      "date": "2026-05-31",
+      "source_type": "unknown",
+      "count": 1
     }
   ],
   "signal_timeline": [
     {
       "date": "2026-03-10",
-      "signal_type": "industry",
-      "count": 1291
-    },
-    {
-      "date": "2026-03-10",
-      "signal_type": "metric",
-      "count": 2473
-    },
-    {
-      "date": "2026-03-10",
       "signal_type": "event",
       "count": 943
+    },
+    {
+      "date": "2026-03-10",
+      "signal_type": "company",
+      "count": 795
     },
     {
       "date": "2026-03-10",
@@ -100,18 +110,13 @@
     },
     {
       "date": "2026-03-10",
-      "signal_type": "company",
-      "count": 795
+      "signal_type": "metric",
+      "count": 2473
     },
     {
-      "date": "2026-03-21",
-      "signal_type": "technology",
-      "count": 5074
-    },
-    {
-      "date": "2026-03-21",
-      "signal_type": "company",
-      "count": 709
+      "date": "2026-03-10",
+      "signal_type": "industry",
+      "count": 1291
     },
     {
       "date": "2026-03-21",
@@ -129,9 +134,19 @@
       "count": 986
     },
     {
-      "date": "2026-03-22",
+      "date": "2026-03-21",
+      "signal_type": "company",
+      "count": 709
+    },
+    {
+      "date": "2026-03-21",
       "signal_type": "technology",
-      "count": 690
+      "count": 5074
+    },
+    {
+      "date": "2026-03-22",
+      "signal_type": "company",
+      "count": 141
     },
     {
       "date": "2026-03-22",
@@ -145,28 +160,18 @@
     },
     {
       "date": "2026-03-22",
-      "signal_type": "event",
-      "count": 48
+      "signal_type": "technology",
+      "count": 690
     },
     {
       "date": "2026-03-22",
-      "signal_type": "company",
-      "count": 141
+      "signal_type": "event",
+      "count": 48
     },
     {
       "date": "2026-03-24",
       "signal_type": "company",
       "count": 124
-    },
-    {
-      "date": "2026-03-24",
-      "signal_type": "industry",
-      "count": 180
-    },
-    {
-      "date": "2026-03-24",
-      "signal_type": "event",
-      "count": 107
     },
     {
       "date": "2026-03-24",
@@ -179,9 +184,19 @@
       "count": 380
     },
     {
-      "date": "2026-03-28",
+      "date": "2026-03-24",
+      "signal_type": "industry",
+      "count": 180
+    },
+    {
+      "date": "2026-03-24",
       "signal_type": "event",
-      "count": 613
+      "count": 107
+    },
+    {
+      "date": "2026-03-28",
+      "signal_type": "technology",
+      "count": 4675
     },
     {
       "date": "2026-03-28",
@@ -190,8 +205,8 @@
     },
     {
       "date": "2026-03-28",
-      "signal_type": "metric",
-      "count": 1170
+      "signal_type": "event",
+      "count": 613
     },
     {
       "date": "2026-03-28",
@@ -200,18 +215,8 @@
     },
     {
       "date": "2026-03-28",
-      "signal_type": "technology",
-      "count": 4675
-    },
-    {
-      "date": "2026-04-11",
-      "signal_type": "investment",
-      "count": 6
-    },
-    {
-      "date": "2026-04-11",
-      "signal_type": "product_launch",
-      "count": 20
+      "signal_type": "metric",
+      "count": 1170
     },
     {
       "date": "2026-04-11",
@@ -220,8 +225,8 @@
     },
     {
       "date": "2026-04-11",
-      "signal_type": "performance_claim",
-      "count": 5
+      "signal_type": "adoption",
+      "count": 31
     },
     {
       "date": "2026-04-11",
@@ -230,28 +235,23 @@
     },
     {
       "date": "2026-04-11",
-      "signal_type": "adoption",
-      "count": 31
+      "signal_type": "performance_claim",
+      "count": 5
+    },
+    {
+      "date": "2026-04-11",
+      "signal_type": "product_launch",
+      "count": 20
+    },
+    {
+      "date": "2026-04-11",
+      "signal_type": "investment",
+      "count": 6
     },
     {
       "date": "2026-04-12",
-      "signal_type": "market_trend",
-      "count": 21
-    },
-    {
-      "date": "2026-04-12",
-      "signal_type": "regulation",
-      "count": 2462
-    },
-    {
-      "date": "2026-04-12",
-      "signal_type": "adoption",
-      "count": 1183
-    },
-    {
-      "date": "2026-04-12",
-      "signal_type": "research",
-      "count": 30
+      "signal_type": "product_launch",
+      "count": 5056
     },
     {
       "date": "2026-04-12",
@@ -270,23 +270,38 @@
     },
     {
       "date": "2026-04-12",
+      "signal_type": "adoption",
+      "count": 1183
+    },
+    {
+      "date": "2026-04-12",
+      "signal_type": "market_trend",
+      "count": 21
+    },
+    {
+      "date": "2026-04-12",
       "signal_type": "workforce",
       "count": 12
     },
     {
       "date": "2026-04-12",
-      "signal_type": "product_launch",
-      "count": 5056
+      "signal_type": "research",
+      "count": 30
     },
     {
-      "date": "2026-04-13",
-      "signal_type": "performance_claim",
-      "count": 4239
+      "date": "2026-04-12",
+      "signal_type": "regulation",
+      "count": 2462
     },
     {
       "date": "2026-04-13",
       "signal_type": "investment",
       "count": 70
+    },
+    {
+      "date": "2026-04-13",
+      "signal_type": "adoption",
+      "count": 883
     },
     {
       "date": "2026-04-13",
@@ -300,13 +315,68 @@
     },
     {
       "date": "2026-04-13",
-      "signal_type": "adoption",
-      "count": 883
+      "signal_type": "performance_claim",
+      "count": 4239
     },
     {
       "date": "2026-04-13",
       "signal_type": "partnership",
       "count": 578
+    },
+    {
+      "date": "2026-05-31",
+      "signal_type": "performance_claim",
+      "count": 150
+    },
+    {
+      "date": "2026-05-31",
+      "signal_type": "investment",
+      "count": 6
+    },
+    {
+      "date": "2026-05-31",
+      "signal_type": "regulation",
+      "count": 29
+    },
+    {
+      "date": "2026-05-31",
+      "signal_type": "partnership",
+      "count": 24
+    },
+    {
+      "date": "2026-05-31",
+      "signal_type": "adoption",
+      "count": 35
+    },
+    {
+      "date": "2026-05-31",
+      "signal_type": "product_launch",
+      "count": 77
+    },
+    {
+      "date": "2026-06-05",
+      "signal_type": "adoption",
+      "count": 10
+    },
+    {
+      "date": "2026-06-05",
+      "signal_type": "partnership",
+      "count": 11
+    },
+    {
+      "date": "2026-06-05",
+      "signal_type": "regulation",
+      "count": 22
+    },
+    {
+      "date": "2026-06-05",
+      "signal_type": "performance_claim",
+      "count": 129
+    },
+    {
+      "date": "2026-06-05",
+      "signal_type": "product_launch",
+      "count": 172
     }
   ],
   "screening_timeline": [
@@ -334,6 +404,11 @@
       "date": "2026-04-12",
       "approved": 0,
       "rejected": 364
+    },
+    {
+      "date": "2026-06-06",
+      "approved": 113,
+      "rejected": 45
     }
   ],
   "cumulative_content": [
@@ -368,6 +443,10 @@
     {
       "date": "2026-03-27",
       "count": 546
+    },
+    {
+      "date": "2026-05-31",
+      "count": 621
     }
   ]
 }

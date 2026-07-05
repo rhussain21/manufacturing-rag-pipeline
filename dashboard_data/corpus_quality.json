@@ -1,21 +1,21 @@
 {
-  "exported_at": "2026-05-21T06:02:46.468560",
+  "exported_at": "2026-07-05T04:19:42.273244",
   "type_breakdown": [
     {
       "content_type": "text",
       "source_type": "pdf",
-      "count": 725,
-      "avg_size_mb": 6.703613777710446,
-      "extracted": 716,
-      "approved": 479
+      "count": 1162,
+      "avg_size_mb": 6.454130798533379,
+      "extracted": 951,
+      "approved": 580
     },
     {
       "content_type": "html",
       "source_type": "html",
-      "count": 235,
-      "avg_size_mb": 0.3262553173176786,
-      "extracted": 235,
-      "approved": 156
+      "count": 418,
+      "avg_size_mb": 0.2064832525336714,
+      "extracted": 309,
+      "approved": 168
     },
     {
       "content_type": "pdf",
@@ -34,14 +34,6 @@
       "approved": 41
     },
     {
-      "content_type": "text",
-      "source_type": "html",
-      "count": 5,
-      "avg_size_mb": 0.13599999994039536,
-      "extracted": 5,
-      "approved": 5
-    },
-    {
       "content_type": "unknown",
       "source_type": "mp3",
       "count": 5,
@@ -51,9 +43,25 @@
     },
     {
       "content_type": "text",
+      "source_type": "html",
+      "count": 5,
+      "avg_size_mb": 0.13599999994039536,
+      "extracted": 5,
+      "approved": 5
+    },
+    {
+      "content_type": "text",
       "source_type": "xml",
       "count": 1,
       "avg_size_mb": 0.05000000074505806,
+      "extracted": 0,
+      "approved": 0
+    },
+    {
+      "content_type": "text",
+      "source_type": "unknown",
+      "count": 1,
+      "avg_size_mb": 1.090000033378601,
       "extracted": 0,
       "approved": 0
     },
@@ -70,79 +78,93 @@
     {
       "extraction_hardware": "cpu",
       "transcription_model": "N/A",
-      "count": 904
+      "count": 1062
     }
   ],
   "top_sources": [
     {
       "source_name": "literature.rockwellautomation.com",
       "source_type": "pdf",
-      "count": 87,
-      "approved": 47,
-      "rejected": 40
+      "count": 125,
+      "approved": 56,
+      "rejected": 42
     },
     {
       "source_name": "support.industry.siemens.com",
       "source_type": "pdf",
-      "count": 59,
-      "approved": 21,
-      "rejected": 38
-    },
-    {
-      "source_name": "download.beckhoff.com",
-      "source_type": "pdf",
-      "count": 56,
-      "approved": 30,
-      "rejected": 26
+      "count": 88,
+      "approved": 23,
+      "rejected": 49
     },
     {
       "source_name": "library.e.abb.com",
       "source_type": "pdf",
-      "count": 48,
-      "approved": 38,
-      "rejected": 10
+      "count": 83,
+      "approved": 47,
+      "rejected": 11
+    },
+    {
+      "source_name": "download.beckhoff.com",
+      "source_type": "pdf",
+      "count": 80,
+      "approved": 41,
+      "rejected": 31
     },
     {
       "source_name": "www.mitsubishielectric.com",
       "source_type": "pdf",
-      "count": 31,
-      "approved": 12,
-      "rejected": 19
-    },
-    {
-      "source_name": "cache.industry.siemens.com",
-      "source_type": "pdf",
-      "count": 27,
-      "approved": 5,
+      "count": 47,
+      "approved": 18,
       "rejected": 22
-    },
-    {
-      "source_name": "search.abb.com",
-      "source_type": "pdf",
-      "count": 26,
-      "approved": 21,
-      "rejected": 5
     },
     {
       "source_name": "www.youtube.com",
       "source_type": "html",
-      "count": 23,
+      "count": 47,
       "approved": 0,
       "rejected": 23
     },
     {
-      "source_name": "files.omron.eu",
+      "source_name": "search.abb.com",
       "source_type": "pdf",
-      "count": 18,
-      "approved": 7,
-      "rejected": 11
+      "count": 45,
+      "approved": 25,
+      "rejected": 6
+    },
+    {
+      "source_name": "cache.industry.siemens.com",
+      "source_type": "pdf",
+      "count": 38,
+      "approved": 5,
+      "rejected": 25
     },
     {
       "source_name": "assets.new.siemens.com",
       "source_type": "pdf",
-      "count": 16,
-      "approved": 16,
+      "count": 26,
+      "approved": 19,
+      "rejected": 1
+    },
+    {
+      "source_name": "files.omron.eu",
+      "source_type": "pdf",
+      "count": 25,
+      "approved": 8,
+      "rejected": 13
+    },
+    {
+      "source_name": "www.rockwellautomation.com",
+      "source_type": "html",
+      "count": 24,
+      "approved": 11,
       "rejected": 0
+    },
+    {
+      "source_name": "www.scribd.com",
+      "source_type": "html",
+      "count": 17,
+      "approved": 7,
+      "rejected": 4
     },
     {
       "source_name": "Manufacturing Hub",
@@ -152,6 +174,13 @@
       "rejected": 2
     },
     {
+      "source_name": "docs.rs-online.com",
+      "source_type": "pdf",
+      "count": 14,
+      "approved": 4,
+      "rejected": 7
+    },
+    {
       "source_name": "The Robot Industry Podcast",
       "source_type": "audio",
       "count": 14,
@@ -159,39 +188,60 @@
       "rejected": 3
     },
     {
-      "source_name": "docs.rs-online.com",
+      "source_name": "www.beckhoff.com",
       "source_type": "pdf",
-      "count": 11,
-      "approved": 4,
-      "rejected": 7
+      "count": 14,
+      "approved": 13,
+      "rejected": 0
     },
     {
-      "source_name": "www.rockwellautomation.com",
-      "source_type": "html",
-      "count": 11,
-      "approved": 11,
+      "source_name": "www.mitsubishifa.co.th",
+      "source_type": "pdf",
+      "count": 14,
+      "approved": 7,
+      "rejected": 3
+    },
+    {
+      "source_name": "store.codesys.com",
+      "source_type": "pdf",
+      "count": 13,
+      "approved": 9,
       "rejected": 0
+    },
+    {
+      "source_name": "support.industry.siemens.com",
+      "source_type": "html",
+      "count": 13,
+      "approved": 0,
+      "rejected": 8
     },
     {
       "source_name": "www.fanucamerica.com",
       "source_type": "pdf",
-      "count": 11,
+      "count": 12,
       "approved": 8,
       "rejected": 3
     },
     {
-      "source_name": "www.beckhoff.com",
+      "source_name": "icdn.tradew.com",
       "source_type": "pdf",
       "count": 10,
-      "approved": 10,
-      "rejected": 0
+      "approved": 1,
+      "rejected": 3
     },
     {
-      "source_name": "www.scribd.com",
+      "source_name": "industrialmonitordirect.com",
       "source_type": "html",
       "count": 10,
-      "approved": 7,
-      "rejected": 3
+      "approved": 5,
+      "rejected": 2
+    },
+    {
+      "source_name": "docs.tia.siemens.cloud",
+      "source_type": "html",
+      "count": 10,
+      "approved": 4,
+      "rejected": 2
     },
     {
       "source_name": "Manufacturing Hub",
@@ -201,11 +251,11 @@
       "rejected": 3
     },
     {
-      "source_name": "support.industry.siemens.com",
-      "source_type": "html",
-      "count": 8,
-      "approved": 0,
-      "rejected": 8
+      "source_name": "edata.omron.com.au",
+      "source_type": "pdf",
+      "count": 9,
+      "approved": 2,
+      "rejected": 5
     },
     {
       "source_name": "Making Chips Podcast for Manufacturing Leaders",
@@ -215,11 +265,11 @@
       "rejected": 2
     },
     {
-      "source_name": "store.codesys.com",
+      "source_name": "filfar.by",
       "source_type": "pdf",
       "count": 8,
-      "approved": 8,
-      "rejected": 0
+      "approved": 5,
+      "rejected": 2
     },
     {
       "source_name": "Advanced Manufacturing Now",
@@ -231,96 +281,54 @@
     {
       "source_name": "d2uars7xkdmztq.cloudfront.net",
       "source_type": "pdf",
-      "count": 7,
+      "count": 8,
       "approved": 4,
       "rejected": 3
-    },
-    {
-      "source_name": "industrialmonitordirect.com",
-      "source_type": "html",
-      "count": 7,
-      "approved": 5,
-      "rejected": 2
-    },
-    {
-      "source_name": "edata.omron.com.au",
-      "source_type": "pdf",
-      "count": 7,
-      "approved": 2,
-      "rejected": 5
     },
     {
       "source_name": "eu-assets.contentstack.com",
       "source_type": "pdf",
-      "count": 7,
-      "approved": 7,
+      "count": 8,
+      "approved": 8,
       "rejected": 0
-    },
-    {
-      "source_name": "Manufacturing Hub",
-      "source_type": "mp3",
-      "count": 6,
-      "approved": 0,
-      "rejected": 6
-    },
-    {
-      "source_name": "www.mroelectric.com",
-      "source_type": "pdf",
-      "count": 6,
-      "approved": 3,
-      "rejected": 3
-    },
-    {
-      "source_name": "www.mitsubishifa.co.th",
-      "source_type": "pdf",
-      "count": 6,
-      "approved": 4,
-      "rejected": 2
-    },
-    {
-      "source_name": "docs.tia.siemens.cloud",
-      "source_type": "html",
-      "count": 6,
-      "approved": 4,
-      "rejected": 2
     }
   ],
   "size_distribution": [
     {
       "size_bucket": "50+ MB",
-      "count": 45
+      "count": 48
     },
     {
       "size_bucket": "1-5 MB",
-      "count": 386
+      "count": 555
     },
     {
       "size_bucket": "20-50 MB",
-      "count": 78
+      "count": 103
     },
     {
       "size_bucket": "< 1 MB",
-      "count": 392
+      "count": 685
     },
     {
       "size_bucket": "5-20 MB",
-      "count": 263
+      "count": 394
     }
   ],
   "language_distribution": [
     {
       "language": "en",
-      "count": 1086
+      "count": 1244
     }
   ],
   "age_distribution": [
     {
       "age_bucket": "Last 90 days",
-      "count": 1140
+      "count": 621
     },
     {
       "age_bucket": "Older",
-      "count": 25
+      "count": 1165
     }
   ]
 }

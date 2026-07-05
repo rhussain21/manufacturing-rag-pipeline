@@ -45,24 +45,46 @@ def _safe_div(a, b, default=0):
 
 
 def export_pipeline_stats(db) -> dict:
-    """Content pipeline funnel metrics + acceptance rates."""
+    """Content pipeline funnel metrics + acceptance rates.
+
+    Screening happens in two gates, and the funnel keeps them separate rather
+    than folding both into one "rejected" bucket:
+      1. Automated Data Quality gate (boilerplate / near-dup / token diversity)
+         -> screening_status = 'dq_rejected'. Happens right after extraction,
+         before any LLM call.
+      2. LLM content screening -> screening_status = 'approved' / 'rejected'.
+         Only run on documents that passed the DQ gate.
+    A doc that fails *extraction* never reaches either gate — that's a
+    separate failure mode (extraction_status = 'failed'), not a screening one.
+    """
     total = db.query("SELECT COUNT(*) as count FROM content")[0]['count']
     pending = db.query("SELECT COUNT(*) as count FROM content WHERE extraction_status = 'pending'")[0]['count']
     extracted = db.query("SELECT COUNT(*) as count FROM content WHERE extraction_status IN ('completed', 'NA')")[0]['count']
     failed_extraction = db.query("SELECT COUNT(*) as count FROM content WHERE extraction_status = 'failed'")[0]['count']
     vectorized = db.query("SELECT COUNT(*) as count FROM content WHERE vectorization_status = 'completed'")[0]['count']
     approved = db.query("SELECT COUNT(*) as count FROM content WHERE screening_status = 'approved'")[0]['count']
+    dq_rejected = db.query("SELECT COUNT(*) as count FROM content WHERE screening_status = 'dq_rejected'")[0]['count']
+    # LLM-rejected, restricted to docs that actually reached screening (excludes the rare
+    # case of a doc rejected by an earlier metadata gate before extraction ran at all).
+    llm_rejected = db.query("""
+        SELECT COUNT(*) as count FROM content
+        WHERE screening_status = 'rejected' AND extraction_status IN ('completed', 'NA')
+    """)[0]['count']
     rejected = db.query("SELECT COUNT(*) as count FROM content WHERE screening_status = 'rejected'")[0]['count']
+    dq_passed = extracted - dq_rejected
     signals_done = db.query("SELECT COUNT(*) as count FROM content WHERE signal_processed = TRUE")[0]['count']
     total_signals = db.query("SELECT COUNT(*) as count FROM signals")[0]['count']
     marked_deletion = db.query("SELECT COUNT(*) as count FROM content WHERE marked_for_deletion = TRUE")[0]['count']
 
+    # Per-format outcome breakdown — which formats actually make it to the final
+    # corpus, and where in the pipeline the others drop out.
     by_type = db.query("""
-        SELECT source_type, content_type, COUNT(*) as count,
+        SELECT content_type, COUNT(*) as count,
                SUM(CASE WHEN screening_status = 'approved' THEN 1 ELSE 0 END) as approved,
-               SUM(CASE WHEN screening_status = 'rejected' THEN 1 ELSE 0 END) as rejected,
-               SUM(CASE WHEN signal_processed = TRUE THEN 1 ELSE 0 END) as signals_extracted
-        FROM content GROUP BY source_type, content_type
+               SUM(CASE WHEN screening_status = 'rejected' AND extraction_status IN ('completed','NA') THEN 1 ELSE 0 END) as llm_rejected,
+               SUM(CASE WHEN screening_status = 'dq_rejected' THEN 1 ELSE 0 END) as dq_rejected,
+               SUM(CASE WHEN extraction_status = 'failed' THEN 1 ELSE 0 END) as extraction_failed
+        FROM content GROUP BY content_type
     """)
 
     # Rejection reasons breakdown
@@ -85,10 +107,17 @@ def export_pipeline_stats(db) -> dict:
             'vectorized': vectorized,
             'approved': approved,
             'rejected': rejected,
+            'dq_rejected': dq_rejected,
+            'llm_rejected': llm_rejected,
+            'dq_passed': dq_passed,
             'signals_done': signals_done,
             'total_signals': total_signals,
             'marked_deletion': marked_deletion,
-            'acceptance_rate': _safe_div(approved, approved + rejected) * 100,
+            # Acceptance/rejection rate is scoped to the LLM screening gate specifically
+            # (docs that passed DQ and reached screening) — not diluted by DQ rejections
+            # or extraction failures, which are separate, earlier drop-off points.
+            'acceptance_rate': _safe_div(approved, approved + llm_rejected) * 100,
+            'dq_pass_rate': _safe_div(dq_passed, extracted) * 100,
             'extraction_success_rate': _safe_div(extracted, extracted + failed_extraction) * 100,
             'avg_signals_per_doc': _safe_div(total_signals, signals_done),
         },
@@ -97,9 +126,9 @@ def export_pipeline_stats(db) -> dict:
         'funnel': [
             {'stage': 'Downloaded', 'count': total},
             {'stage': 'Extracted', 'count': extracted},
-            {'stage': 'Screened', 'count': approved + rejected},
+            {'stage': 'DQ Passed', 'count': dq_passed},
             {'stage': 'Approved', 'count': approved},
-            {'stage': 'Signals Extracted', 'count': signals_done},
+            {'stage': 'Docs Vectorized', 'count': vectorized},
         ],
     }
 

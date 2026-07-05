@@ -1,6 +1,14 @@
 {
-  "exported_at": "2026-05-21T06:02:46.531199",
+  "exported_at": "2026-07-05T04:19:42.332266",
   "discovery_runs": [
+    {
+      "timestamp": "2026-05-31 20:59:19",
+      "queries": 200,
+      "found": 1600,
+      "approved": 1175,
+      "rejected": 130,
+      "deduped": 295
+    },
     {
       "timestamp": "2026-03-27 06:41:25",
       "queries": 200,
@@ -11,6 +19,16 @@
     }
   ],
   "ingestion_logs": [
+    {
+      "timestamp": "2026-05-31 22:08:41",
+      "message": "Downloaded 1175 items",
+      "details_json": "{\"count\": 1175}"
+    },
+    {
+      "timestamp": "2026-05-31 20:59:19",
+      "message": "1175 approved from 1600 candidates",
+      "details_json": "{\"queries\": 200, \"found\": 1600, \"approved\": 1175, \"rejected\": 130, \"source_types\": [\"web\"], \"topic\": null}"
+    },
     {
       "timestamp": "2026-03-27 07:45:51",
       "message": "Downloaded 1197 items",
