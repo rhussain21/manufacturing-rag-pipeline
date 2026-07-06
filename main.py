@@ -1,10 +1,13 @@
 """
 AI Industry Signals - Agent System
 
-LangGraph-based, two personas routed automatically based on the question:
-Technical Document Agent (manufacturing corpus, HyDE + hybrid retrieval)
-and PLC Expert (Structured Text code explanation + best-practices checks
-against the plc_simulation corpus).
+LangGraph-based, three personas routed automatically based on the question:
+Technical Document Agent (manufacturing corpus, HyDE + hybrid retrieval),
+PLC Expert (Structured Text code explanation + best-practices checks
+against the plc_simulation corpus), and Diagnosis Agent (synthetic
+energy/production telemetry, synthetic_data/energy_data.csv). Conversation
+history persists within a session via a SQLite checkpointer, so follow-up
+questions can refer back to prior turns.
 
 Run:
     python main.py                          # interactive chat (loads once, ask multiple questions)
@@ -16,6 +19,7 @@ import argparse
 import contextlib
 import io
 import logging
+import uuid
 import warnings
 
 
@@ -39,8 +43,12 @@ def _setup():
     return build_graph(vdb, llm_client, web_search_tool)
 
 
-def _ask(graph, query: str) -> dict:
-    return graph.invoke({"query": query, "retrieved_docs": [], "web_results": [], "answer": "", "sources": []})
+def _ask(graph, query: str, thread_id: str) -> dict:
+    config = {"configurable": {"thread_id": thread_id}}
+    return graph.invoke(
+        {"query": query, "retrieved_docs": [], "web_results": [], "answer": "", "sources": [], "history": []},
+        config=config,
+    )
 
 
 def _print_answer(query: str, result: dict):
@@ -56,14 +64,16 @@ def _print_answer(query: str, result: dict):
                 print(f"  - [{s['content_id']}] {s['title']}")
             elif "url" in s:
                 print(f"  - (web) {s['title']} — {s.get('url', '')}")
+            elif s["title"].endswith(".csv"):
+                print(f"  - (energy data) {s['title']}")
             else:
                 print(f"  - (plc corpus) {s['title']}")
     print()
 
 
-def _quiet_ask(graph, query: str) -> dict:
+def _quiet_ask(graph, query: str, thread_id: str) -> dict:
     with contextlib.redirect_stdout(io.StringIO()):
-        return _ask(graph, query)
+        return _ask(graph, query, thread_id)
 
 
 def main():
@@ -73,6 +83,7 @@ def main():
     args = parser.parse_args()
     one_shot_query = " ".join(args.query)
     ask = _ask if args.debug else _quiet_ask
+    thread_id = str(uuid.uuid4())
 
     if args.debug:
         graph = _setup()
@@ -83,11 +94,11 @@ def main():
             graph = _setup()
 
     if one_shot_query:
-        result = ask(graph, one_shot_query)
+        result = ask(graph, one_shot_query, thread_id)
         _print_answer(one_shot_query, result)
         return
 
-    print("Technical Document Agent / PLC Expert — ask a question, or 'exit' to quit.")
+    print("Technical Document Agent / PLC Expert / Diagnosis Agent — ask a question, or 'exit' to quit.")
     print()
     while True:
         try:
@@ -99,7 +110,7 @@ def main():
             continue
         if query.lower() in ("exit", "quit"):
             break
-        result = ask(graph, query)
+        result = ask(graph, query, thread_id)
         _print_answer(query, result)
 
 

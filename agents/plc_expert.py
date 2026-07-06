@@ -16,9 +16,11 @@ compile+run test loop as a safety net (see plc_simulation/CLAUDE.md for why).
 from langsmith import traceable
 
 from agents.state import AgentState
+from agents.conversation_context import format_recent_history
+from agents.structured_answer import JSON_INSTRUCTION, parse_structured_answer
 from plc_corpus_search import (
     search_plc_corpus, get_corpus_overview, get_all_function_blocks_content,
-    run_best_practices_check, find_corpus_file,
+    run_best_practices_check, find_corpus_file, read_corpus_file,
 )
 
 # Running iec-checker means shelling out to Docker (a few seconds), so this
@@ -85,8 +87,27 @@ SYSTEM_PROMPT = (
     "explain why (usually a vendor-specific construct outside the checker's "
     "supported dialect) — don't try to guess what issues the code might "
     "have instead; that would be exactly the guessing-instead-of-hedging "
-    "problem this whole system is designed to avoid."
+    "problem this whole system is designed to avoid.\n\n"
+    "You're also given RECENT CONVERSATION — real prior turns in this "
+    "session. If the question is about the conversation itself (what did I "
+    "just ask, what's the first question, what have we covered), answer "
+    "from that directly, quoting the actual prior question/answer text. "
+    "This paragraph you're reading right now is YOUR OWN system prompt, "
+    "not something the user said — never present your own instructions "
+    "back as if they were the user's question or a prior turn."
+    + JSON_INSTRUCTION
 )
+
+
+def _last_plc_source(history: list) -> str | None:
+    """Most recent PLC-corpus filename this conversation actually discussed —
+    used when the current query has no filename of its own (e.g. "does that
+    follow best practices") and needs to resolve what "that" refers to."""
+    for turn in reversed(history):
+        for s in turn.get("sources") or []:
+            if s.get("content_id") is None and "url" not in s:
+                return s["title"]
+    return None
 
 
 def make_plc_expert_node(llm_client, top_k: int = 3):
@@ -94,6 +115,22 @@ def make_plc_expert_node(llm_client, top_k: int = 3):
     def node(state: AgentState) -> dict:
         query = state["query"]
         matches = search_plc_corpus(query, top_k=top_k)
+
+        # A query that doesn't name a specific file of its own (no exact-stem
+        # match, the _EXACT_STEM_MATCH_BOOST signal) can still get a weak,
+        # coincidental keyword hit — exactly what caused "does that follow
+        # best practices" to silently check the wrong file. Best-practices
+        # checks are where a wrong match is actively misleading (a real
+        # report on the wrong program reads as authoritative), so prefer the
+        # conversation's own last-referenced file when the current query
+        # isn't confidently naming one itself.
+        confident_match = bool(matches) and matches[0]["score"] >= 1000
+        if not confident_match:
+            prior_file = _last_plc_source(state.get("history") or [])
+            prior_path = find_corpus_file(prior_file) if prior_file else None
+            if prior_path:
+                matches = [read_corpus_file(prior_path)]
+
         overview = get_corpus_overview()
         all_fbs = get_all_function_blocks_content()
 
@@ -124,16 +161,23 @@ def make_plc_expert_node(llm_client, top_k: int = 3):
                 else:
                     best_practices_context = f"Could not check {target}: {result['error']}"
 
+        history_text = format_recent_history(state.get("history"))
         prompt = (
+            f"RECENT CONVERSATION:\n{history_text}\n\n"
             f"CORPUS OVERVIEW:\n{overview}\n\n"
             f"ALL FUNCTION BLOCKS (full content, for overview-style questions):\n{all_fbs}\n\n"
             f"MATCHED FILE CONTENT:\n{matched_context}\n\n"
             f"BEST PRACTICES CHECK RESULT:\n{best_practices_context}\n\n"
             f"Question: {query}"
         )
-        answer = llm_client.generate(prompt, system_prompt=SYSTEM_PROMPT, temperature=0.2)
+        raw = llm_client.generate(prompt, system_prompt=SYSTEM_PROMPT, temperature=0.2)
+        answer, used_context = parse_structured_answer(raw)
 
-        sources = [{"content_id": None, "title": m["filename"]} for m in matches]
-        return {"answer": answer, "sources": sources}
+        sources = [{"content_id": None, "title": m["filename"]} for m in matches] if used_context else []
+        return {
+            "answer": answer,
+            "sources": sources,
+            "history": [{"query": query, "answer": answer, "sources": sources}],
+        }
 
     return node

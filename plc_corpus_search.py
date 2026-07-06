@@ -135,6 +135,13 @@ def find_corpus_file(filename_hint: str) -> Path | None:
     return None
 
 
+def read_corpus_file(file_path: Path) -> dict:
+    """Wrap a resolved corpus file as a match dict, same shape as
+    search_plc_corpus's results — used when a file was resolved by name
+    (find_corpus_file) rather than by keyword search."""
+    return {"filename": file_path.name, "content": file_path.read_text(encoding="utf-8", errors="replace"), "score": 1000}
+
+
 def run_best_practices_check(file_path: Path) -> dict:
     """Run the real iec-checker static analyzer (PLCopen coding-guideline
     enforcement) against a file via Docker, and return its actual findings —

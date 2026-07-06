@@ -12,27 +12,26 @@ stays swappable — pass an OllamaClient instead of GeminiClient and
 nothing else here changes.
 """
 
-import json
-import re
-
 from langsmith import traceable
 
 from agents.state import AgentState
+from agents.conversation_context import format_recent_history
+from agents.structured_answer import JSON_INSTRUCTION, parse_structured_answer
 from retrieval import retrieve
 
-# Sources should only ever be shown if the answer actually relied on them —
-# a doc clearing the similarity threshold is a different question from
-# whether the model's answer used it (a greeting or gibberish query can
-# retrieve docs that pass the score cutoff by chance, without the answer
-# engaging with them at all). So the model reports used_context itself
-# rather than us inferring it from the retrieval score.
-_JSON_INSTRUCTION = (
-    ' Respond with ONLY a JSON object, no markdown fences: '
-    '{"answer": "your answer text", "used_context": true or false}. '
-    "used_context is true only if the provided context passages actually informed "
-    "your answer. Set it false if the context was irrelevant, if the question isn't "
-    "answerable from it, or if the question itself isn't a real informational "
-    "question (e.g. a greeting or gibberish)."
+# Without this, a meta-question ("what did I just ask", "what have we
+# covered") has no real transcript to draw from, and the model will guess
+# rather than admit it — a real bug found in testing: it pattern-matched
+# onto its own system prompt text and presented that back as the user's
+# first question, since that was the only "meta" text available to it.
+_HISTORY_INSTRUCTION = (
+    " You're also given RECENT CONVERSATION — real prior turns in this "
+    "session. If the question is about the conversation itself (what did I "
+    "just ask, what have we covered, summarize this conversation), answer "
+    "from that directly rather than from the corpus context. Don't answer "
+    "a meta-question about the conversation using retrieved documents, and "
+    "don't confuse your own system instructions with something the user "
+    "said."
 )
 
 SYSTEM_PROMPT_GROUNDED = (
@@ -41,7 +40,7 @@ SYSTEM_PROMPT_GROUNDED = (
     "robotics). Answer the user's question using ONLY the provided context passages. "
     "If the context doesn't contain enough information to answer confidently, say so "
     "explicitly rather than guessing. Mention which document(s) the answer draws from."
-    + _JSON_INSTRUCTION
+    + JSON_INSTRUCTION + _HISTORY_INSTRUCTION
 )
 
 SYSTEM_PROMPT_WEB = (
@@ -50,7 +49,7 @@ SYSTEM_PROMPT_WEB = (
     "answering from the web search results provided instead. Answer using ONLY "
     "those results, and say so if they don't actually answer the question. "
     "Mention which source(s) the answer draws from."
-    + _JSON_INSTRUCTION
+    + JSON_INSTRUCTION + _HISTORY_INSTRUCTION
 )
 
 SYSTEM_PROMPT_UNGROUNDED = (
@@ -59,20 +58,8 @@ SYSTEM_PROMPT_UNGROUNDED = (
     "anything relevant to this question. Answer from your own general knowledge "
     "if you can, but say clearly and explicitly that this answer is not grounded "
     "in any retrieved source — it's the model's own knowledge, unverified."
-    + _JSON_INSTRUCTION
+    + JSON_INSTRUCTION + _HISTORY_INSTRUCTION
 )
-
-
-def _parse_structured_answer(raw: str) -> tuple:
-    """Returns (answer_text, used_context). Falls back to treating the raw
-    text as the answer with used_context=True if the model didn't return
-    valid JSON — fails open rather than silently hiding real sources."""
-    cleaned = re.sub(r"^```(?:json)?|```$", "", raw.strip(), flags=re.MULTILINE).strip()
-    try:
-        parsed = json.loads(cleaned)
-        return parsed.get("answer", raw), bool(parsed.get("used_context", True))
-    except (json.JSONDecodeError, AttributeError):
-        return raw, True
 
 
 def make_technical_document_agent_nodes(vdb, llm_client, web_search_tool, top_k: int = 5):
@@ -118,9 +105,15 @@ def make_technical_document_agent_nodes(vdb, llm_client, web_search_tool, top_k:
             system_prompt = SYSTEM_PROMPT_UNGROUNDED
             sources = []
 
-        prompt = f"Context:\n{context}\n\nQuestion: {state['query']}"
+        history_text = format_recent_history(state.get("history"))
+        prompt = f"RECENT CONVERSATION:\n{history_text}\n\nContext:\n{context}\n\nQuestion: {state['query']}"
         raw = llm_client.generate(prompt, system_prompt=system_prompt, temperature=0.2)
-        answer, used_context = _parse_structured_answer(raw)
-        return {"answer": answer, "sources": sources if used_context else []}
+        answer, used_context = parse_structured_answer(raw)
+        final_sources = sources if used_context else []
+        return {
+            "answer": answer,
+            "sources": final_sources,
+            "history": [{"query": state["query"], "answer": answer, "sources": final_sources}],
+        }
 
     return retrieve_step, route_after_retrieve, web_search_step, generate_step
