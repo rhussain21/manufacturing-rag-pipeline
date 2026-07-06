@@ -1,68 +1,103 @@
 """
-AI Industry Signals - Multi-Agent System
+AI Industry Signals - Agent System
 
-Architecture:
-    RouterAgent (orchestrator)
-      ├── SQLAgent     -> relationalDB
-      ├── VectorAgent  -> VectorDB + LLM (RAG)
-      └── WebAgent     -> InternetSearchTool + LLM
+LangGraph-based. Currently one agent: Technical Doc Expert, answering
+questions grounded in the manufacturing corpus via HyDE + hybrid retrieval.
+
+Run:
+    python main.py                          # interactive chat (loads once, ask multiple questions)
+    python main.py "What is IEC 62443?"      # single question, answer, exit
+    python main.py --debug                  # either mode, but show setup/init logging
 """
 
-from device_config import config
-
-from agents.factory import AgentFactory
-from logging_config import setup_debug_logging
-import os
+import argparse
+import contextlib
+import io
 import logging
-import json
+import warnings
 
-setup_debug_logging()
-logger = logging.getLogger(__name__)
 
-print("Initializing Multi-Agent System...")
-TAVILY_API_KEY = os.getenv("TAVILY_API_KEY")
-OLLAMA_MODEL = os.getenv("OLLAMA_MODEL", "llama3:latest")
+def _setup():
+    import os
 
-factory = AgentFactory(
-    corpus_vector_path="Vectors/corpus_vectors/",
-    relational_db_path="Database/industry_signals.db",
-    tavily_api_key=TAVILY_API_KEY,
-    ollama_model=OLLAMA_MODEL
-)
+    from device_config import config
+    from db_vector_lance import LanceVectorDB
+    from llm_client import GeminiClient
+    from tools.web_search import InternetSearchTool
+    from agents.graph import build_graph
 
-system = factory.create_system()
+    vdb = LanceVectorDB(
+        config.LANCE_VECTOR_PATH,
+        embedding_dim=768,
+        model_name="nomic-ai/nomic-embed-text-v1.5",
+        trust_remote_code=True,
+    )
+    llm_client = GeminiClient(model="gemini-2.5-flash")
+    web_search_tool = InternetSearchTool(provider="tavily", api_key=os.getenv("TAVILY_API_KEY"))
+    return build_graph(vdb, llm_client, web_search_tool)
 
-print("=" * 50)
-print("Multi-Agent System Ready!")
-print(f"  Agents: {list(system.agents.keys())}")
-print(f"  Model: {OLLAMA_MODEL}")
-print(f"  Web Search: {'Tavily' if TAVILY_API_KEY else 'DuckDuckGo'}")
-print("=" * 50)
+
+def _ask(graph, query: str) -> dict:
+    return graph.invoke({"query": query, "retrieved_docs": [], "web_results": [], "answer": "", "sources": []})
+
+
+def _print_answer(query: str, result: dict):
+    print("=" * 60)
+    print(f"Query: {query}")
+    print("=" * 60)
+    print(result["answer"])
+    print()
+    if result["sources"]:
+        print("Sources:")
+        for s in result["sources"]:
+            if s.get("content_id") is not None:
+                print(f"  - [{s['content_id']}] {s['title']}")
+            else:
+                print(f"  - (web) {s['title']} — {s.get('url', '')}")
+    print()
+
+
+def _quiet_ask(graph, query: str) -> dict:
+    with contextlib.redirect_stdout(io.StringIO()):
+        return _ask(graph, query)
+
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("query", nargs="*")
+    parser.add_argument("--debug", action="store_true", help="show setup/init logging (device config, model loading, etc.)")
+    args = parser.parse_args()
+    one_shot_query = " ".join(args.query)
+    ask = _ask if args.debug else _quiet_ask
+
+    if args.debug:
+        graph = _setup()
+    else:
+        logging.disable(logging.WARNING)
+        warnings.filterwarnings("ignore")
+        with contextlib.redirect_stdout(io.StringIO()):
+            graph = _setup()
+
+    if one_shot_query:
+        result = ask(graph, one_shot_query)
+        _print_answer(one_shot_query, result)
+        return
+
+    print("Technical Doc Expert — ask a question, or 'exit' to quit.")
+    print()
+    while True:
+        try:
+            query = input("> ").strip()
+        except (EOFError, KeyboardInterrupt):
+            print()
+            break
+        if not query:
+            continue
+        if query.lower() in ("exit", "quit"):
+            break
+        result = ask(graph, query)
+        _print_answer(query, result)
 
 
 if __name__ == "__main__":
-    test_queries = [
-        "How many documents do we have? Show me stats",
-        "List all content",
-        "Find content titled manufacturing",
-        "What is the current focus in manufacturing? Specifically around AI?",
-        "How does smart manufacturing improve industrial efficiency?",
-        "What is the Knicks' latest score?",
-        "what is a dinosaur?"
-    ]
-
-    for i, query in enumerate(test_queries, 1):
-        print(f"\n{'='*60}")
-        print(f"Query {i}: {query}")
-        print(f"{'='*60}")
-
-        result = system.process(query)
-
-        print(f"Agent:     {result.agent_name}")
-        print(f"Status:    {result.status}")
-        print(f"Duration:  {result.duration_ms}ms" if hasattr(result, 'duration_ms') else "")
-        print(f"Result:")
-        print(json.dumps(result.data if hasattr(result, 'data') else result, indent=2, default=str)[:500])
-
-    print(f"\nSystem Info:")
-    print(json.dumps(factory.get_system_info(), indent=2, default=str))
+    main()

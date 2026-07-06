@@ -27,3 +27,4 @@ text_markdowns/
 analysis/
 reducto_pilot/downloaded/
 reducto_pilot/raw/
+.langgraph_api/
