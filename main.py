@@ -1,8 +1,10 @@
 """
 AI Industry Signals - Agent System
 
-LangGraph-based. Currently one agent: Technical Doc Expert, answering
-questions grounded in the manufacturing corpus via HyDE + hybrid retrieval.
+LangGraph-based, two personas routed automatically based on the question:
+Technical Document Agent (manufacturing corpus, HyDE + hybrid retrieval)
+and PLC Expert (Structured Text code explanation + best-practices checks
+against the plc_simulation corpus).
 
 Run:
     python main.py                          # interactive chat (loads once, ask multiple questions)
@@ -52,8 +54,10 @@ def _print_answer(query: str, result: dict):
         for s in result["sources"]:
             if s.get("content_id") is not None:
                 print(f"  - [{s['content_id']}] {s['title']}")
-            else:
+            elif "url" in s:
                 print(f"  - (web) {s['title']} — {s.get('url', '')}")
+            else:
+                print(f"  - (plc corpus) {s['title']}")
     print()
 
 
@@ -83,7 +87,7 @@ def main():
         _print_answer(one_shot_query, result)
         return
 
-    print("Technical Doc Expert — ask a question, or 'exit' to quit.")
+    print("Technical Document Agent / PLC Expert — ask a question, or 'exit' to quit.")
     print()
     while True:
         try:

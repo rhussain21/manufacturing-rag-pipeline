@@ -1,5 +1,5 @@
 """
-Technical Doc Expert — answers questions grounded in the manufacturing
+Technical Document Agent — answers questions grounded in the manufacturing
 corpus via HyDE + hybrid retrieval (retrieval.py, MRR 0.489), with a
 Corrective-RAG-style fallback: corpus retrieval first (free, local,
 already fast); only if nothing survives the similarity threshold does it
@@ -75,7 +75,7 @@ def _parse_structured_answer(raw: str) -> tuple:
         return raw, True
 
 
-def make_technical_doc_expert_nodes(vdb, llm_client, web_search_tool, top_k: int = 5):
+def make_technical_document_agent_nodes(vdb, llm_client, web_search_tool, top_k: int = 5):
     @traceable(name="retrieve_step")
     def retrieve_step(state: AgentState) -> dict:
         docs = retrieve(state["query"], vdb, llm_client, top_k=top_k)
