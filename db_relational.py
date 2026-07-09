@@ -643,6 +643,59 @@ class relationalDB:
         )
         return rows[0] if rows else {}
 
+    def get_corpus_inventory(self) -> dict:
+        """Deterministic counts of what's actually in the searchable corpus —
+        real aggregates from the DB, not something an LLM should be asked to
+        guess or count from a handful of semantically-retrieved passages.
+        Uses the exact same filter workflows/vectorize_lance.py's
+        _get_approved_content() uses to decide what gets embedded, so these
+        counts reflect what's really retrievable, not everything ever
+        ingested (rejected/pending/do-not-vectorize rows are excluded)."""
+        rows = self.query("""
+            SELECT c.content_type, c.source_name, cm.doc_type, cm.topic_tags
+            FROM content c
+            LEFT JOIN content_metadata cm ON cm.content_id = c.id
+            WHERE c.screening_status = 'approved'
+              AND c.extraction_status IN ('completed', 'NA')
+              AND (c.do_not_vectorize = FALSE OR c.do_not_vectorize IS NULL)
+              AND c.transcript IS NOT NULL
+              AND c.transcript != ''
+        """)
+
+        by_content_type = {}
+        by_doc_type = {}
+        by_source = {}
+        tag_counts = {}
+        for row in rows:
+            by_content_type[row.get("content_type") or "unknown"] = \
+                by_content_type.get(row.get("content_type") or "unknown", 0) + 1
+            by_doc_type[row.get("doc_type") or "unclassified"] = \
+                by_doc_type.get(row.get("doc_type") or "unclassified", 0) + 1
+            by_source[row.get("source_name") or "unknown"] = \
+                by_source.get(row.get("source_name") or "unknown", 0) + 1
+            raw_tags = row.get("topic_tags")
+            if raw_tags:
+                try:
+                    tags = json.loads(raw_tags)
+                except (TypeError, ValueError):
+                    tags = []
+                if isinstance(tags, list):
+                    for tag in tags:
+                        if tag:
+                            tag_counts[tag] = tag_counts.get(tag, 0) + 1
+
+        def _sorted(d: dict, limit: int | None = None) -> dict:
+            items = sorted(d.items(), key=lambda kv: kv[1], reverse=True)
+            return dict(items[:limit] if limit else items)
+
+        return {
+            "total": len(rows),
+            "by_content_type": _sorted(by_content_type),
+            "by_doc_type": _sorted(by_doc_type),
+            "by_source": _sorted(by_source, limit=15),
+            "top_topics": _sorted(tag_counts, limit=20),
+        }
+
     def file_exists(self, file_path):
         try:
             result = self.execute("SELECT id FROM content WHERE file_path = ?", [file_path]).fetchone()

@@ -27,11 +27,13 @@ def _setup():
     import os
 
     from device_config import config
+    from db_relational import relationalDB
     from db_vector_lance import LanceVectorDB
     from llm_client import GeminiClient
     from tools.web_search import InternetSearchTool
     from agents.graph import build_graph
 
+    db = relationalDB(config.DB_PATH)
     vdb = LanceVectorDB(
         config.LANCE_VECTOR_PATH,
         embedding_dim=768,
@@ -40,13 +42,13 @@ def _setup():
     )
     llm_client = GeminiClient(model="gemini-2.5-flash")
     web_search_tool = InternetSearchTool(provider="tavily", api_key=os.getenv("TAVILY_API_KEY"))
-    return build_graph(vdb, llm_client, web_search_tool)
+    return build_graph(vdb, llm_client, web_search_tool, db)
 
 
 def _ask(graph, query: str, thread_id: str) -> dict:
     config = {"configurable": {"thread_id": thread_id}}
     return graph.invoke(
-        {"query": query, "retrieved_docs": [], "web_results": [], "answer": "", "sources": [], "history": []},
+        {"query": query, "retrieved_docs": [], "web_results": [], "answer": "", "sources": [], "history": [], "routed_personas": []},
         config=config,
     )
 
@@ -110,7 +112,17 @@ def main():
             continue
         if query.lower() in ("exit", "quit"):
             break
-        result = ask(graph, query, thread_id)
+        try:
+            result = ask(graph, query, thread_id)
+        except Exception as e:
+            # A transient failure (API rate limit, a dropped connection) on
+            # one turn shouldn't kill the whole session — print it plainly
+            # and let the user try again, rather than crashing out with a
+            # raw traceback and losing the conversation.
+            print(f"That turn failed: {e}")
+            print("Try again — this doesn't end the conversation.")
+            print()
+            continue
         _print_answer(query, result)
 
 

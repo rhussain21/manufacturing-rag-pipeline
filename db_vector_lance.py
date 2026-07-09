@@ -74,6 +74,12 @@ class LanceVectorDB:
         self._trust_remote_code = trust_remote_code
         self._bm25_index = None
         self._bm25_rows: List[Dict] = []
+        # Opened LanceDB table handles, cached by name. Without this,
+        # _get_table() re-opened the table from disk on every single call —
+        # confirmed root cause of "Too many open files" (os error 24)
+        # crashing retrieval mid-session once enough queries had each
+        # opened a fresh table handle that was never closed.
+        self._table_cache: Dict[str, object] = {}
 
         os.makedirs(self.vector_dir, exist_ok=True)
 
@@ -168,19 +174,27 @@ class LanceVectorDB:
     # ── Table helpers ─────────────────────────────────────────────────
 
     def _get_table(self, name: str = None):
-        """Return an existing LanceDB table or None."""
+        """Return an existing LanceDB table or None. Cached by name — see
+        _table_cache comment in __init__ for why this matters."""
         tbl_name = name or self._table_name
+        if tbl_name in self._table_cache:
+            return self._table_cache[tbl_name]
         if tbl_name in self.db.table_names():
-            return self.db.open_table(tbl_name)
+            tbl = self.db.open_table(tbl_name)
+            self._table_cache[tbl_name] = tbl
+            return tbl
         return None
 
     def _create_or_open_table(self, name: str, records: list):
         """Create table from records, or append to existing."""
         if name in self.db.table_names():
-            tbl = self.db.open_table(name)
+            tbl = self._table_cache.get(name) or self.db.open_table(name)
             tbl.add(records)
+            self._table_cache[name] = tbl
             return tbl
-        return self.db.create_table(name, records)
+        tbl = self.db.create_table(name, records)
+        self._table_cache[name] = tbl
+        return tbl
 
     @staticmethod
     def _build_records(
@@ -248,6 +262,7 @@ class LanceVectorDB:
         # Drop existing table
         if tbl_name in self.db.table_names():
             self.db.drop_table(tbl_name)
+            self._table_cache.pop(tbl_name, None)
             print(f"Dropped existing table '{tbl_name}'")
 
         self.upsert_documents(texts, metadata, vectors, table_name=tbl_name)

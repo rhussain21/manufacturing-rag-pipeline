@@ -102,10 +102,18 @@ SYSTEM_PROMPT = (
 def _last_plc_source(history: list) -> str | None:
     """Most recent PLC-corpus filename this conversation actually discussed —
     used when the current query has no filename of its own (e.g. "does that
-    follow best practices") and needs to resolve what "that" refers to."""
+    follow best practices") and needs to resolve what "that" refers to.
+
+    Checking title.endswith(".st") specifically (not just content_id is None
+    and no url) matters: Diagnosis Agent's energy-data source has the exact
+    same shape (content_id: None, no url key) — a real bug found in testing,
+    where a PLC follow-up after intervening energy-data turns picked up
+    "synthetic_data/energy_data.csv" as if it were a candidate PLC filename,
+    failed to resolve it, and silently kept stale/irrelevant keyword-search
+    matches instead of walking further back to the real last PLC file."""
     for turn in reversed(history):
         for s in turn.get("sources") or []:
-            if s.get("content_id") is None and "url" not in s:
+            if s.get("content_id") is None and "url" not in s and s["title"].endswith(".st"):
                 return s["title"]
     return None
 

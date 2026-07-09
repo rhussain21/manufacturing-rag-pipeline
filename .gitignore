@@ -28,3 +28,7 @@ analysis/
 reducto_pilot/downloaded/
 reducto_pilot/raw/
 .langgraph_api/
+Dashboards/charts.py
+*.docx
+*.pptx
+project_summary.pdf

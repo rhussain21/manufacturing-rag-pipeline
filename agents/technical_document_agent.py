@@ -7,9 +7,10 @@ try a web search (an actual API call, so it should be rare); only if that
 also comes up empty does it fall back to an ungrounded answer from the
 model's own knowledge, clearly labeled as such.
 
-vdb, llm_client, and web_search_tool are injected via closures so this
+vdb, llm_client, web_search_tool, and db are injected via closures so this
 stays swappable — pass an OllamaClient instead of GeminiClient and
-nothing else here changes.
+nothing else here changes. db (a relationalDB) is used only for a
+deterministic corpus-inventory query, not for retrieval itself.
 """
 
 from langsmith import traceable
@@ -34,10 +35,45 @@ _HISTORY_INSTRUCTION = (
     "said."
 )
 
+# A real, confirmed bug: "give me a summary of the files i have" got
+# answered from whatever docs were semantically nearest (e.g. unrelated
+# Mitsubishi Electric content) instead of a real inventory — HyDE + hybrid
+# retrieval always returns *something*, even for a question that isn't
+# actually about any single document's content. CORPUS INVENTORY is a real
+# aggregate computed from the DB (relationalDB.get_corpus_inventory, same
+# filter workflows/vectorize_lance.py uses to decide what's actually
+# searchable), always attached below regardless of what retrieval found —
+# same pattern PLC Expert already uses for its own corpus overview.
+# Placed BEFORE the "answer using ONLY the provided context passages" rule
+# below, and phrased as a decision to make first — an earlier version
+# appended this after that rule instead, and in testing the model kept
+# answering "summary of the files I have" from the retrieved passages
+# anyway, treating the blanket "ONLY context passages" instruction as the
+# controlling one. Telling it to decide the question type FIRST, before
+# that rule even applies, fixed it.
+_INVENTORY_INSTRUCTION = (
+    " FIRST, decide what kind of question this is. You're given CORPUS "
+    "INVENTORY — real, deterministic counts of what's in the searchable "
+    "corpus (by content type, document type, source, and topic). If the "
+    "question asks how many documents exist, what's in the corpus, or for "
+    "a summary/inventory/list of the files or documents available (e.g. "
+    "\"give me a summary of the files I have\", \"how many documents do you "
+    "have\", \"what's in the corpus\") — answer ONLY from CORPUS INVENTORY, "
+    "and ignore the retrieved context passages below entirely, even if they "
+    "look topically related. The retrieved passages are just the few docs "
+    "that scored highest on semantic similarity to the question text, not "
+    "a real count or list, and using them for an inventory question is "
+    "wrong even when one of them happens to mention files or documents. "
+    "Otherwise, for a real content question, follow the context-passage "
+    "rule below."
+)
+
 SYSTEM_PROMPT_GROUNDED = (
     "You are a technical documentation expert for industrial automation and "
     "manufacturing systems (PLCs, SCADA, safety standards, industrial networking, "
-    "robotics). Answer the user's question using ONLY the provided context passages. "
+    "robotics)."
+    + _INVENTORY_INSTRUCTION +
+    " Answer the user's question using ONLY the provided context passages. "
     "If the context doesn't contain enough information to answer confidently, say so "
     "explicitly rather than guessing. Mention which document(s) the answer draws from."
     + JSON_INSTRUCTION + _HISTORY_INSTRUCTION
@@ -46,9 +82,10 @@ SYSTEM_PROMPT_GROUNDED = (
 SYSTEM_PROMPT_WEB = (
     "You are a technical documentation expert for industrial automation and "
     "manufacturing systems. The internal corpus had nothing relevant, so you're "
-    "answering from the web search results provided instead. Answer using ONLY "
-    "those results, and say so if they don't actually answer the question. "
-    "Mention which source(s) the answer draws from."
+    "answering from the web search results provided instead."
+    + _INVENTORY_INSTRUCTION +
+    " Otherwise, answer using ONLY those results, and say so if they don't actually "
+    "answer the question. Mention which source(s) the answer draws from."
     + JSON_INSTRUCTION + _HISTORY_INSTRUCTION
 )
 
@@ -58,11 +95,24 @@ SYSTEM_PROMPT_UNGROUNDED = (
     "anything relevant to this question. Answer from your own general knowledge "
     "if you can, but say clearly and explicitly that this answer is not grounded "
     "in any retrieved source — it's the model's own knowledge, unverified."
-    + JSON_INSTRUCTION + _HISTORY_INSTRUCTION
+    + JSON_INSTRUCTION + _HISTORY_INSTRUCTION + _INVENTORY_INSTRUCTION
 )
 
 
-def make_technical_document_agent_nodes(vdb, llm_client, web_search_tool, top_k: int = 5):
+def _format_inventory(inv: dict) -> str:
+    lines = [f"{inv['total']} documents currently in the searchable corpus."]
+    if inv["by_content_type"]:
+        lines.append("By content type: " + ", ".join(f"{v} {k}" for k, v in inv["by_content_type"].items()))
+    if inv["by_doc_type"]:
+        lines.append("By document type: " + ", ".join(f"{v} {k}" for k, v in inv["by_doc_type"].items()))
+    if inv["by_source"]:
+        lines.append("Top sources: " + ", ".join(f"{v} {k}" for k, v in inv["by_source"].items()))
+    if inv["top_topics"]:
+        lines.append("Top topics: " + ", ".join(f"{v} {k}" for k, v in inv["top_topics"].items()))
+    return "\n".join(lines)
+
+
+def make_technical_document_agent_nodes(vdb, llm_client, web_search_tool, db, top_k: int = 5):
     @traceable(name="retrieve_step")
     def retrieve_step(state: AgentState) -> dict:
         docs = retrieve(state["query"], vdb, llm_client, top_k=top_k)
@@ -105,8 +155,13 @@ def make_technical_document_agent_nodes(vdb, llm_client, web_search_tool, top_k:
             system_prompt = SYSTEM_PROMPT_UNGROUNDED
             sources = []
 
+        inventory_text = _format_inventory(db.get_corpus_inventory())
         history_text = format_recent_history(state.get("history"))
-        prompt = f"RECENT CONVERSATION:\n{history_text}\n\nContext:\n{context}\n\nQuestion: {state['query']}"
+        prompt = (
+            f"RECENT CONVERSATION:\n{history_text}\n\n"
+            f"CORPUS INVENTORY:\n{inventory_text}\n\n"
+            f"Context:\n{context}\n\nQuestion: {state['query']}"
+        )
         raw = llm_client.generate(prompt, system_prompt=system_prompt, temperature=0.2)
         answer, used_context = parse_structured_answer(raw)
         final_sources = sources if used_context else []

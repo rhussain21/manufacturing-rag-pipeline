@@ -19,6 +19,12 @@ class AgentState(TypedDict):
     web_results: list
     answer: str
     sources: list
+    # Written by the router node, read by the conditional edge right after
+    # it to pick the next node(s). A list, not a single string — a compound
+    # question ("how many PLC programs, and what's my power usage") needs
+    # more than one persona to actually answer it, not just whichever one
+    # the router happens to pick first.
+    routed_personas: list
     # Annotated[..., operator.add] is a LangGraph reducer: instead of each
     # turn's return value overwriting this field, it gets appended to
     # whatever the checkpointer already has for this thread. Every other

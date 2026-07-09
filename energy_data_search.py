@@ -53,6 +53,81 @@ def get_energy_data_overview() -> str:
     return "\n".join(lines)
 
 
+# Confirmed against the actual data (not assumed): every row is exactly 1
+# minute apart. Needed to convert instantaneous power (W) into real energy
+# (kWh) via proper time-integration — summing/averaging raw watts across
+# rows isn't a meaningful "total energy used" figure on its own, and asking
+# the LLM to eyeball that from a handful of sample rows is exactly the
+# failure mode this function exists to replace.
+_MINUTES_PER_ROW = 1
+
+
+def compute_energy_summary(site: str = None) -> str:
+    """Real, computed power/energy statistics per site — not an LLM
+    impression from sample rows. Covers the full available time range,
+    since this is a static snapshot, not a live feed — there's no
+    meaningful "right now" to report on otherwise."""
+    df = _load()
+    sites = [site] if site else sorted(df["site"].unique())
+
+    lines = []
+    for s in sites:
+        site_df = df[df["site"] == s]
+        if site_df.empty:
+            continue
+        lines.append(
+            f"{s} ({len(site_df)} minutes, "
+            f"{site_df['timestamp'].min()} to {site_df['timestamp'].max()}):"
+        )
+        for col, label in [
+            ("production_power_w", "Production"),
+            ("consumption_power_w", "Consumption"),
+            ("grid_power_w", "Grid import(-)/export(+)"),
+        ]:
+            avg_w = site_df[col].mean()
+            total_kwh = site_df[col].sum() * _MINUTES_PER_ROW / 60 / 1000
+            lines.append(f"  {label}: avg {avg_w:.0f} W, total {total_kwh:.1f} kWh over the period")
+        lines.append(f"  Average battery state of charge: {site_df['battery_soc_pct'].mean():.1f}%")
+
+    return "\n".join(lines)
+
+
+def compute_anomaly_trends(site: str = None) -> str:
+    """Real, computed anomaly-rate trend per site — splits each site's data
+    in half by timestamp and compares anomaly rates, giving an actual
+    direction (increasing/decreasing/stable) rather than an LLM impression.
+    Also surfaces each site's single most common anomaly type with a real
+    count, not a guess."""
+    df = _load().sort_values("timestamp")
+    sites = [site] if site else sorted(df["site"].unique())
+
+    lines = []
+    for s in sites:
+        site_df = df[df["site"] == s]
+        if site_df.empty:
+            continue
+        midpoint = len(site_df) // 2
+        first_rate = site_df.iloc[:midpoint]["is_anomaly"].mean()
+        second_rate = site_df.iloc[midpoint:]["is_anomaly"].mean()
+        if second_rate > first_rate * 1.1:
+            direction = "increasing"
+        elif second_rate < first_rate * 0.9:
+            direction = "decreasing"
+        else:
+            direction = "stable"
+        lines.append(
+            f"{s}: anomaly rate {first_rate:.1%} (first half of period) -> "
+            f"{second_rate:.1%} (second half) — {direction}"
+        )
+        anomalies = site_df[site_df["is_anomaly"]]
+        if not anomalies.empty:
+            top_type = anomalies["anomaly_type"].value_counts().idxmax()
+            top_count = int((anomalies["anomaly_type"] == top_type).sum())
+            lines.append(f"  Most common anomaly type: {top_type} ({top_count} occurrences)")
+
+    return "\n".join(lines)
+
+
 def find_site_and_anomaly_mentions(query: str) -> tuple:
     """Which sites/anomaly types (if any) a piece of text names explicitly —
     shared by both the live query and, when the query itself names none,
