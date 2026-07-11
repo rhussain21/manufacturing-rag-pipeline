@@ -1744,7 +1744,12 @@ def tab_reliability_demo(data):
         if scenario is None:
             st.info("Pick a scenario.")
         else:
-            sl(scenario['title'].upper())
+            # meta['title'], not scenario['title'] — the latter is baked
+            # into the cached JSON at generation time and has no reason to
+            # stay in sync with _RD_SCENARIOS when a title gets renamed
+            # (confirmed real: it didn't, and the chat header showed a
+            # stale name after a rename here while the card was correct).
+            sl((meta['title'] if meta else scenario['title']).upper())
             if scenario['kind'] == 'before_after':
                 variant = st.radio(
                     'variant', ['before', 'after'],

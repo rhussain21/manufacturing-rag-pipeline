@@ -2,7 +2,7 @@
   "multi_intent": {
     "id": "multi_intent",
     "kind": "single",
-    "title": "One question, two domains",
+    "title": "One Question, Two Experts",
     "captured_at": "2026-07-10 18:52:31",
     "turns": [
       {
@@ -31,7 +31,7 @@
   "web_search_fallback": {
     "id": "web_search_fallback",
     "kind": "single",
-    "title": "Corpus miss -> real web search, not a guess",
+    "title": "Honest About What It Knows",
     "captured_at": "2026-07-10 18:52:31",
     "turns": [
       {
@@ -77,7 +77,7 @@
   "memory_followup": {
     "id": "memory_followup",
     "kind": "single",
-    "title": "\"That\" resolved from conversation history",
+    "title": "Remembers the Conversation",
     "captured_at": "2026-07-10 18:52:31",
     "turns": [
       {

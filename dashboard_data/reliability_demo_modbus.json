@@ -1,7 +1,7 @@
 {
   "id": "modbus_before_after",
   "kind": "before_after",
-  "title": "A real bug, found and fixed \u2014 same question, before and after",
+  "title": "Wrong Answer -> Fixed",
   "captured_at_before": "2026-07-10 (v3 eval run)",
   "captured_at_after": "2026-07-10 (v4 eval run, post general-knowledge fix)",
   "before": [
