@@ -1,7 +1,7 @@
-streamlit>=1.32.0
-streamlit-javascript>=0.1.5
-pandas>=2.0.0
-numpy>=1.24.0
-plotly>=5.18.0
+streamlit==1.58.0
+streamlit-javascript==0.1.5
+pandas==3.0.3
+numpy==2.4.6
+plotly==6.8.0
 requests>=2.31.0
 openai>=1.0.0
