@@ -8,7 +8,7 @@ engaging with it at all. So the model reports used_context itself, rather
 than us inferring it from retrieval/match scores.
 
 Originally built for Technical Document Agent; extracted here once PLC
-Expert and Diagnosis Agent needed the same discipline (both were showing
+Expert and Analytics Agent needed the same discipline (both were showing
 stale keyword-matched sources on turns that actually answered from
 conversation history instead — the model's own signal is what determines
 that, not the fact that a search function returned something).

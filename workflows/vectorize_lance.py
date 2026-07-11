@@ -337,6 +337,26 @@ class LanceVectorizer:
         """Print the path for AnythingLLM configuration."""
         return self.lance.export_for_anythingllm()
 
+    def compact(self):
+        """Merge small per-batch fragments into larger ones (LanceDB's
+        table.optimize(), default 7-day version retention — safe to run
+        after every ingestion run, not just as one-off maintenance).
+
+        Without this, every vectorize_corpus/vectorize_signals run adds one
+        new on-disk fragment per batch_size chunk of rows — real, confirmed
+        impact: after ~1,450 uncompacted batches (92k rows at batch=64), a
+        single search had to open a file handle per fragment and crashed
+        the live chat app mid-session with "Too many open files" (os error
+        24, LanceDB IO). Compacting after each run keeps fragment count low
+        continuously instead of letting it grow unbounded run over run.
+        """
+        for tbl_name in [self.CORPUS_TABLE, self.SIGNAL_TABLE]:
+            if tbl_name not in self.lance.db.table_names():
+                continue
+            tbl = self.lance._get_table(tbl_name)
+            print(f"Compacting '{tbl_name}'...")
+            tbl.optimize()
+
 
 # ── CLI ───────────────────────────────────────────────────────────────
 
@@ -379,6 +399,9 @@ def main():
         signal_count = lv.vectorize_signals(
             limit=args.limit, batch_size=args.batch, rebuild=args.rebuild,
         )
+
+    if corpus_count or signal_count:
+        lv.compact()
 
     lv.summary()
 

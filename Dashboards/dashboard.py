@@ -13,6 +13,7 @@ Run:
 import json
 import os
 import sys
+import time
 import requests
 from collections import Counter
 
@@ -396,6 +397,35 @@ st.markdown(f"""<style>
         div[data-testid="stMetric"] {{ padding: 10px 12px !important; }}
         div[data-testid="stMetric"] [data-testid="stMetricValue"] {{ font-size: 1.3rem !important; }}
     }}
+
+    /* ── Behavior Demo tab ── */
+    .rd-badge {{
+        display: inline-block; padding: 3px 12px; border-radius: 999px;
+        background: {GRN_PALE}; color: {GRN}; font-size: 0.75rem; font-weight: 600;
+        letter-spacing: 0.01em;
+    }}
+    .rd-cached-note {{
+        font-size: 0.75rem; color: {TXT2}; margin: 2px 0 6px 0;
+        display: flex; align-items: center; gap: 6px; flex-wrap: wrap;
+    }}
+    .rd-turn {{ margin-bottom: 14px; display: flex; }}
+    .rd-turn.user {{ justify-content: flex-end; }}
+    .rd-bubble-user {{
+        background: {TBL_CELL}; border-radius: 16px; padding: 9px 15px;
+        max-width: 78%; color: {TXT_DARK}; font-size: 0.92rem;
+    }}
+    .rd-assistant-meta {{ display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }}
+    .rd-persona-badge {{
+        display: inline-block; padding: 2px 10px; border-radius: 999px;
+        background: {GRN_PALE}; color: {GRN}; font-size: 0.7rem; font-weight: 600;
+    }}
+    .rd-latency {{ font-size: 0.72rem; color: {TXT2}; }}
+    .rd-source-chip {{
+        display: inline-block; padding: 2px 10px; border-radius: 999px;
+        background: #fff; border: 1px solid {BDR}; color: {TXT2};
+        font-size: 0.7rem; margin: 4px 4px 0 0;
+    }}
+    .rd-toggle-label {{ font-size: 0.85rem; font-weight: 600; color: {TXT_DARK}; margin-bottom: 6px; }}
 </style>""", unsafe_allow_html=True)
 
 # ── Color scales ──────────────────────────────────────────────────────────
@@ -524,6 +554,16 @@ TAB_EXPLAINERS = {
         "what": "How well the system retrieves the right supporting evidence for labeled test questions.",
         "why": "This is the core quality measure for RAG. It checks whether the system finds useful evidence before an LLM ever generates an answer.",
         "watch_for": "Low recall, weak MRR, unresolved queries, or test questions where the right document exists but is not being retrieved.",
+    },
+    "Answer Quality": {
+        "what": "Whether the final answers from the real, live agent pipeline (not a notebook shortcut) actually contain correct, grounded information — tracked across every real pipeline change, not just retrieval in isolation.",
+        "why": "Good retrieval doesn't guarantee a good answer. This is the accountability layer: fact recall, groundedness, and hallucination rate on the exact system a user would actually talk to.",
+        "watch_for": "Fact recall below target, rising hallucination rate after a change, or a config comparison where a routing/generation improvement doesn't actually move the numbers.",
+    },
+    "Behavior Demo": {
+        "what": "Real, cached conversations captured from the live system — not live calls.",
+        "why": "Numbers show something improved. This shows what improved.",
+        "watch_for": "Who answered, what they cited, and how the answer changed.",
     },
     "System Logs": {
         "what": "Operational events from ingestion, processing, embedding, retrieval, and evaluation runs.",
@@ -1394,6 +1434,332 @@ def tab_retrieval_quality(data):
 
 
 # ══════════════════════════════════════════════════════════════════════════
+# TAB: Answer Quality  (NB4, real agent-graph pipeline — hardcoded from
+# notebooks/eval_snapshots.json, updated after each versioned eval run. Same
+# pattern as Retrieval Quality above: numbers are point-in-time snapshots,
+# not live-queried, so this file is the source of truth until the next run.)
+# ══════════════════════════════════════════════════════════════════════════
+
+# v1 -> v3 -> v4 progression on the same 15-query, human-authored test set.
+# v2 has no nb4_answer_quality entry (corpus-only snapshot). v3 rewired NB4
+# to call the real agent graph (router -> retrieval -> generation) instead
+# of a notebook-only bypass; v4 is one scoped prompt fix on top of v3 (see
+# "Chat Agent System" in the README for what the fix was and why).
+_AQ_TIMELINE = [
+    {'label': 'Original Baseline',        'fact_recall': 0.583, 'groundedness': 0.913, 'milestone': None},
+    {'label': 'Connected to Real System', 'fact_recall': 0.693, 'groundedness': 0.821, 'milestone': True},
+    {'label': 'General-Knowledge Fix',    'fact_recall': 0.833, 'groundedness': 0.947, 'milestone': True},
+]
+
+# Config comparison — same 15 queries, four retrieval/generation configs,
+# scored the same way (fact-recall + groundedness/hallucination LLM judge).
+# C_agent_graph is the real production pipeline; A/B/D are raw retrieval
+# ablations that bypass routing and resolved-query resolution entirely.
+_AQ_CONFIGS = [
+    {'config': 'A: Dense Only',                 'fact_recall': 0.457, 'hallucination_rate': 0.067},
+    {'config': 'B: Hybrid',                     'fact_recall': 0.503, 'hallucination_rate': 0.067},
+    {'config': 'D: Signals + Hybrid + Rerank',  'fact_recall': 0.537, 'hallucination_rate': 0.000},
+    {'config': 'C: Real Agent Graph (prod)',    'fact_recall': 0.693, 'hallucination_rate': 0.000},
+]
+
+# Per-query manual groundedness vs. RAGAS faithfulness, v3 snapshot (before
+# the general-knowledge fix, same run RAGAS was scored against). Included
+# deliberately even though it doesn't flatter either metric — the divergence
+# itself is the finding: q13 scores 0.0 manual / 1.0 RAGAS, q21 scores 0.92
+# manual / 0.03 RAGAS. Two "rigorous-looking" numbers that actively
+# disagree, not just noisy around each other.
+_AQ_MANUAL_VS_RAGAS = [
+    {'id': 'q01', 'manual': 0.90, 'ragas': 0.062, 'query': 'What is IEC 62443 and what does it cover?'},
+    {'id': 'q02', 'manual': 1.00, 'ragas': 0.182, 'query': 'What is OPC Unified Architecture?'},
+    {'id': 'q04', 'manual': 0.90, 'ragas': 0.524, 'query': 'What are ISA/IEC 62443 security levels and conduit zones?'},
+    {'id': 'q06', 'manual': 1.00, 'ragas': 0.160, 'query': 'What is SCADA and how is it used in industrial process control?'},
+    {'id': 'q07', 'manual': 1.00, 'ragas': 0.500, 'query': 'What is Siemens doing in industrial edge AI?'},
+    {'id': 'q08', 'manual': 0.90, 'ragas': 0.500, 'query': 'Rockwell Automation cybersecurity products and documentation'},
+    {'id': 'q13', 'manual': 0.00, 'ragas': 1.000, 'query': 'How does Modbus compare to OPC UA for industrial communication?'},
+    {'id': 'q14', 'manual': 0.90, 'ragas': 0.412, 'query': 'HMI vs SCADA: architecture differences and use cases'},
+    {'id': 'q15', 'manual': 0.90, 'ragas': 0.478, 'query': 'Edge computing vs cloud computing for manufacturing analytics'},
+    {'id': 'q20', 'manual': 0.90, 'ragas': 0.711, 'query': 'Predictive maintenance using AI in industrial settings'},
+    {'id': 'q21', 'manual': 0.92, 'ragas': 0.032, 'query': 'Industrial cybersecurity best practices for OT networks'},
+    {'id': 'q23', 'manual': 1.00, 'ragas': 0.333, 'query': 'Security vulnerabilities and attack surface of industrial robots'},
+    {'id': 'q24', 'manual': 0.90, 'ragas': 0.000, 'query': 'Object-oriented programming patterns for industrial PLC code'},
+    {'id': 'q26', 'manual': 0.90, 'ragas': 0.200, 'query': 'How does zero trust network security apply to industrial OT environments?'},
+    {'id': 'q27', 'manual': 0.20, 'ragas': 0.714, 'query': 'Convergence of edge AI and Industry 5.0 in smart manufacturing'},
+]
+
+
+def tab_answer_quality(data):
+    tab_explainer("Answer Quality")
+
+    # ── KPI cards ─────────────────────────────────────────────────────────
+    c = st.columns(5)
+    with c[0]: mc("TEST QUERIES", "15")
+    with c[1]: mc("FACT RECALL", "0.833")
+    with c[2]: mc("GROUNDEDNESS", "0.947")
+    with c[3]: mc("HALLUCINATION RATE", "0%")
+    with c[4]: mc("COMPLETENESS", "0.887")
+
+    # ── Fact recall / groundedness progression ──────────────────────────────
+    sl("ANSWER QUALITY ACROSS THREE REAL PIPELINE CHANGES")
+    so("Same 15 hand-authored test queries at every point. The jump on the right is one scoped fix, found by reading real system traces and verified against the exact failing case before this re-run confirmed it.")
+
+    tl_df = pd.DataFrame(_AQ_TIMELINE)
+    fig_aq = go.Figure()
+    fig_aq.add_trace(go.Scatter(
+        x=tl_df['label'], y=tl_df['fact_recall'],
+        mode='lines+markers+text', name='Fact Recall',
+        line=dict(color='#4C72B0', width=2.5),
+        marker=dict(size=10, color='#4C72B0', line=dict(color='#FFFFFF', width=2)),
+        text=[f'{v:.3f}' for v in tl_df['fact_recall']],
+        textposition='top center', textfont=dict(color='#000000', size=13),
+    ))
+    fig_aq.add_trace(go.Scatter(
+        x=tl_df['label'], y=tl_df['groundedness'],
+        mode='lines+markers+text', name='Groundedness',
+        line=dict(color='#55A868', width=2.5, dash='dot'),
+        marker=dict(size=10, color='#55A868', line=dict(color='#FFFFFF', width=2)),
+        text=[f'{v:.3f}' for v in tl_df['groundedness']],
+        textposition='bottom center', textfont=dict(color='#000000', size=13),
+    ))
+    for row in _AQ_TIMELINE:
+        if row['milestone']:
+            fig_aq.add_shape(
+                type='line', x0=row['label'], x1=row['label'], y0=0.55, y1=1.0,
+                line=dict(color='#C44E52', width=1.5, dash='dash'),
+            )
+    fig_aq.update_layout(**_lay(
+        height=380,
+        xaxis=dict(title='', fixedrange=True),
+        yaxis=dict(title='Score', range=[0.55, 1.0], fixedrange=True),
+        dragmode=False,
+        showlegend=True,
+    ))
+    st.plotly_chart(fig_aq, use_container_width=True, config=PLOTLY_CONFIG)
+
+    # ── Config comparison ────────────────────────────────────────────────────
+    sl("REAL PIPELINE VS. RAW RETRIEVAL CONFIGS")
+    so("The production pipeline (router + resolved-query + corrective RAG) beats every raw retrieval ablation on fact recall, and matches the best config's 0% hallucination rate — the routing/resolution overhead isn't just latency, it measurably improves correctness.")
+
+    cfg_df = pd.DataFrame(_AQ_CONFIGS)
+    fig_cfg = go.Figure()
+    fig_cfg.add_trace(go.Bar(
+        name='Fact Recall', x=cfg_df['config'], y=cfg_df['fact_recall'],
+        marker_color='#4C72B0', opacity=0.88,
+        text=[f'{v:.3f}' for v in cfg_df['fact_recall']],
+        textposition='outside', textfont=dict(color='#000000', size=12),
+    ))
+    fig_cfg.add_trace(go.Bar(
+        name='Hallucination Rate', x=cfg_df['config'], y=cfg_df['hallucination_rate'],
+        marker_color='#C44E52', opacity=0.88,
+        text=[f'{v:.1%}' for v in cfg_df['hallucination_rate']],
+        textposition='outside', textfont=dict(color='#000000', size=12),
+    ))
+    fig_cfg.update_layout(**_lay(
+        height=420, barmode='group',
+        xaxis=dict(tickangle=-10),
+        yaxis=dict(title='Score', range=[0, 0.85]),
+    ))
+    st.plotly_chart(fig_cfg, use_container_width=True, config={'staticPlot': True})
+
+    # ── Manual vs RAGAS divergence ───────────────────────────────────────────
+    sl("MANUAL JUDGE VS. RAGAS — WHERE THE TWO DISAGREE")
+    so("Points on the diagonal would mean the two methods agree. Most don't — q13 and q21 are near-total inversions. Treated as an open methodology gap (an eval reference-ID review flagged but not yet done), not resolved by picking whichever number looks better.")
+
+    rv_df = pd.DataFrame(_AQ_MANUAL_VS_RAGAS)
+    fig_rv = go.Figure()
+    fig_rv.add_trace(go.Scatter(
+        x=[0, 1], y=[0, 1], mode='lines',
+        line=dict(color='#999999', width=1.5, dash='dash'),
+        name='Perfect agreement', showlegend=True, hoverinfo='skip',
+    ))
+    fig_rv.add_trace(go.Scatter(
+        x=rv_df['manual'], y=rv_df['ragas'], mode='markers+text',
+        text=rv_df['id'], textposition='top center',
+        textfont=dict(color='#000000', size=10),
+        marker=dict(size=12, color='#4C72B0', opacity=0.85, line=dict(color='#FFFFFF', width=1)),
+        name='Query', showlegend=False,
+        customdata=rv_df['query'],
+        hovertemplate='<b>%{text}</b>: %{customdata}<br>Manual: %{x:.2f}  RAGAS: %{y:.2f}<extra></extra>',
+    ))
+    fig_rv.update_layout(**_lay(
+        height=420,
+        xaxis=dict(title='Manual Groundedness', range=[-0.05, 1.05]),
+        yaxis=dict(title='RAGAS Faithfulness', range=[-0.05, 1.05]),
+        showlegend=True,
+    ))
+    st.plotly_chart(fig_rv, use_container_width=True, config=PLOTLY_CONFIG)
+
+
+# ══════════════════════════════════════════════════════════════════════════
+# TAB: Behavior Demo  (every response below is a REAL cached answer from
+# an actual graph.invoke() run against the live agent system, captured
+# once and replayed — not scripted text, not a live call. See
+# tools/resilient_batch.py's docstring for why demos in this project don't
+# depend on a network call succeeding live.)
+# ══════════════════════════════════════════════════════════════════════════
+
+_RD_SCENARIOS = [
+    {
+        'id': 'modbus_before_after', 'title': 'Wrong Answer -> Fixed',
+        'sub': 'Watch the same question fail, then get answered, after one real fix.',
+        'takeaway': "The score going from 0.69 to 0.83 tells you something got better. It doesn't show what — this does: a flat \"I don't know\" turning into a real, sourced answer, from one targeted fix.",
+    },
+    {
+        'id': 'web_search_fallback', 'title': "Honest About What It Knows",
+        'sub': "The corpus barely mentions this topic — it says so, then still helps.",
+        'takeaway': "The system notices the corpus barely mentions this topic, says so honestly, and still answers using general knowledge instead of just giving up. It only cites the corpus when it actually relied on it.",
+    },
+    {
+        'id': 'multi_intent', 'title': 'One Question, Two Experts',
+        'sub': 'A question with two parts in it gets both parts answered.',
+        'takeaway': "This question really has two separate questions inside it. Instead of answering just one and dropping the other, the system hands each half to the right specialist at the same time and combines their answers.",
+    },
+    {
+        'id': 'memory_followup', 'title': 'Remembers the Conversation',
+        'sub': 'A follow-up question that only makes sense with context.',
+        'takeaway': "\"Does that also cover conduit zones?\" means nothing on its own. The system remembers what was just discussed and figures out what \"that\" refers to before it goes looking for an answer — the same way a person would.",
+    },
+]
+
+
+@st.cache_data(ttl=300)
+def load_reliability_scenarios() -> dict:
+    scenarios = {}
+    for fname in ('reliability_demo_modbus.json', 'reliability_demo_fresh.json'):
+        loaded = load_json(fname)
+        if not loaded:
+            continue
+        if 'id' in loaded:
+            scenarios[loaded['id']] = loaded
+        else:
+            scenarios.update(loaded)
+    return scenarios
+
+
+def _rd_render_turn(turn: dict, animate: bool):
+    if turn['role'] == 'user':
+        st.markdown(
+            f'<div class="rd-turn user"><div class="rd-bubble-user">{turn["content"]}</div></div>',
+            unsafe_allow_html=True,
+        )
+        return
+
+    personas = turn.get('personas') or []
+    badges = ''.join(f'<span class="rd-persona-badge">{p}</span>' for p in personas)
+    latency = turn.get('latency_s')
+    latency_html = f'<span class="rd-latency">{latency:.1f}s</span>' if latency else ''
+    st.markdown(f'<div class="rd-assistant-meta">{badges}{latency_html}</div>', unsafe_allow_html=True)
+
+    full_text = turn['content']
+    if animate:
+        placeholder = st.empty()
+        words = full_text.split(' ')
+        shown = ''
+        for i in range(0, len(words), 3):
+            shown += (' ' if shown else '') + ' '.join(words[i:i + 3])
+            placeholder.markdown(shown + ' ▌')
+            time.sleep(0.02)
+        placeholder.markdown(shown)
+    else:
+        st.markdown(full_text)
+
+    sources = turn.get('sources') or []
+    if sources:
+        chips = ''.join(f'<span class="rd-source-chip">{s}</span>' for s in sources)
+        st.markdown(chips, unsafe_allow_html=True)
+
+
+def _rd_render_conversation(turns: list, captured_at: str, key: str):
+    st.markdown(
+        f'<div class="rd-cached-note"><span class="rd-badge">CACHED</span> {captured_at}</div>',
+        unsafe_allow_html=True,
+    )
+    # Animate only the first time this exact conversation is shown in this
+    # session — flipping tabs or re-selecting the same card afterward just
+    # renders it instantly instead of replaying the reveal every time.
+    seen_key = f'rd_seen_{key}'
+    animate = seen_key not in st.session_state
+    st.session_state[seen_key] = True
+
+    with st.container(height=360, border=True):
+        for turn in turns:
+            _rd_render_turn(turn, animate)
+
+
+def tab_reliability_demo(data):
+    tab_explainer("Behavior Demo")
+
+    scenarios = load_reliability_scenarios()
+
+    if 'rd_selected' not in st.session_state:
+        st.session_state.rd_selected = next(
+            (s['id'] for s in _RD_SCENARIOS if s['id'] in scenarios), None
+        )
+    if 'rd_variant' not in st.session_state:
+        st.session_state.rd_variant = 'before'
+
+    # Pick a card -> see the chat -> see what it means — laid out
+    # left-to-right so nothing has to be scrolled past to reach the next
+    # step, instead of stacking picker / chat / explanation vertically.
+    col_pick, col_chat, col_mean = st.columns([1.0, 1.7, 1.1], gap="medium")
+
+    with col_pick:
+        sl("SCENARIOS")
+        for s in _RD_SCENARIOS:
+            available = s['id'] in scenarios
+            is_selected = st.session_state.rd_selected == s['id']
+            if st.button(
+                s['title'], key=f"rd_card_{s['id']}", disabled=not available,
+                use_container_width=True, type='primary' if is_selected else 'secondary',
+            ):
+                st.session_state.rd_selected = s['id']
+                st.session_state.rd_variant = 'before'
+                # Without this, the button's own primary/secondary styling
+                # for THIS click is computed from is_selected above — set
+                # BEFORE this click's state update — so it draws with the
+                # old (unselected) style on the click that actually
+                # selected it, and only shows highlighted after whatever
+                # click happens next. Forcing an immediate rerun makes the
+                # highlight land on the same click that caused it.
+                st.rerun()
+            st.caption(s['sub'] if available else f"{s['sub']} (not generated)")
+
+    sel = st.session_state.rd_selected
+    scenario = scenarios.get(sel)
+    meta = next((s for s in _RD_SCENARIOS if s['id'] == sel), None)
+
+    # WHAT THIS MEANS renders BEFORE the chat on purpose — Streamlit executes
+    # top-to-bottom regardless of visual column order, and the chat's
+    # streaming reveal below is full of real time.sleep() calls. Rendering
+    # it second meant this column sat blank until the whole reveal
+    # finished, even though it's laid out beside it, not after it.
+    with col_mean:
+        sl("WHAT THIS MEANS")
+        if meta:
+            st.markdown(
+                f'<div style="font-size:0.86rem; line-height:1.55; color:{TXT_DARK};">{meta["takeaway"]}</div>',
+                unsafe_allow_html=True,
+            )
+
+    with col_chat:
+        if scenario is None:
+            st.info("Pick a scenario.")
+        else:
+            sl(scenario['title'].upper())
+            if scenario['kind'] == 'before_after':
+                variant = st.radio(
+                    'variant', ['before', 'after'],
+                    index=1 if st.session_state.rd_variant == 'after' else 0,
+                    format_func=lambda v: 'Before the fix' if v == 'before' else 'After the fix',
+                    horizontal=True, label_visibility='collapsed', key=f"rd_radio_{sel}",
+                )
+                st.session_state.rd_variant = variant
+                captured_at = scenario['captured_at_after'] if variant == 'after' else scenario['captured_at_before']
+                _rd_render_conversation(scenario[variant], captured_at, key=f"{sel}_{variant}")
+            else:
+                _rd_render_conversation(scenario['turns'], scenario['captured_at'], key=sel)
+
+
+# ══════════════════════════════════════════════════════════════════════════
 # Main
 # ══════════════════════════════════════════════════════════════════════════
 
@@ -1421,6 +1787,8 @@ def main():
         "Pipeline Overview",
         "Dataset Quality",
         "Retrieval Quality",
+        "Answer Quality",
+        "Behavior Demo",
     ])
 
     with tabs[0]: tab_overview(data)
@@ -1429,6 +1797,8 @@ def main():
         st.divider()
         tab_sources(data)
     with tabs[2]: tab_retrieval_quality(data)
+    with tabs[3]: tab_answer_quality(data)
+    with tabs[4]: tab_reliability_demo(data)
 
     if exported_at:
         st.caption(f"Data snapshot: {exported_at[:19]}")

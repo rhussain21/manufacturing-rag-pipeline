@@ -6,8 +6,9 @@ retrieve -> web_search -> generate when nothing clears the similarity
 threshold — the Corrective RAG flow), PLC Expert (a single node that
 explains PLC/Structured Text code and checks it against PLCopen coding
 guidelines via iec-checker, grounded in the plc_simulation corpus), and
-Diagnosis Agent (a single node answering questions about synthetic
-energy/production telemetry, grounded in synthetic_data/energy_data.csv).
+Analytics Agent (a single node answering questions about synthetic
+energy/production telemetry, grounded in synthetic_data/energy_data.csv,
+with real-code-computed inline charts when the question calls for one).
 Plus Direct Reply (agents/direct_reply.py), a fast path for anything that
 doesn't need a domain persona at all — see its own module docstring for
 the real latency bug that motivated it.
@@ -19,7 +20,7 @@ where to go: straight to a single persona's flow, or to multi_intent when
 the router named more than one. multi_intent exists for compound questions
 a single persona can't fully answer on its own (a real, confirmed case:
 "how many PLC programs do I have, and what's my current power usage" —
-neither plc_expert nor diagnosis_agent alone covers both halves). It calls
+neither plc_expert nor analytics_agent alone covers both halves). It calls
 each named persona's existing node function directly as a plain Python
 function (not more graph nodes/edges) and merges their answers — this
 keeps the graph structure simple and leaves every individual persona's own
@@ -45,7 +46,7 @@ from langgraph.checkpoint.sqlite import SqliteSaver
 from agents.state import AgentState
 from agents.technical_document_agent import make_technical_document_agent_nodes
 from agents.plc_expert import make_plc_expert_node
-from agents.diagnosis_agent import make_diagnosis_agent_node
+from agents.analytics_agent import make_analytics_agent_node
 from agents.direct_reply import make_direct_reply_node
 from agents.router import make_router_node, pick_next_node
 
@@ -54,7 +55,7 @@ _CHECKPOINT_DB = Path(__file__).resolve().parent.parent / "Database" / "agent_ch
 _PERSONA_LABELS = {
     "technical_document_agent": "General manufacturing/industry knowledge",
     "plc_expert": "PLC programs",
-    "diagnosis_agent": "Energy/production data",
+    "analytics_agent": "Energy/production data",
 }
 
 
@@ -73,14 +74,14 @@ def make_graph_nodes(vdb, llm_client, web_search_tool, db):
     retrieve_step, route_after_retrieve, web_search_step, generate_step = \
         make_technical_document_agent_nodes(vdb, llm_client, web_search_tool, db)
     plc_expert_step = make_plc_expert_node(llm_client)
-    diagnosis_agent_step = make_diagnosis_agent_node(llm_client)
+    analytics_agent_step = make_analytics_agent_node(llm_client)
     direct_reply_step = make_direct_reply_node(llm_client)
 
     def run_persona(name: str, state: dict) -> dict:
         if name == "plc_expert":
             return plc_expert_step(state)
-        if name == "diagnosis_agent":
-            return diagnosis_agent_step(state)
+        if name == "analytics_agent":
+            return analytics_agent_step(state)
         return _run_technical_document_agent(
             state, retrieve_step, route_after_retrieve, web_search_step, generate_step
         )
@@ -110,19 +111,24 @@ def make_graph_nodes(vdb, llm_client, web_search_tool, db):
             all_sources.extend(result.get("sources") or [])
 
         answer = "\n\n".join(parts)
+        # Only analytics_agent ever produces a chart_spec — a compound
+        # question naming it alongside another persona still gets its chart,
+        # same as its sources getting merged in above.
+        chart_spec = results.get("analytics_agent", {}).get("chart_spec") if "analytics_agent" in personas else None
         return {
             "answer": answer,
             "sources": all_sources,
+            "chart_spec": chart_spec,
             "history": [{"query": state["query"], "answer": answer, "sources": all_sources}],
         }
 
     return retrieve_step, route_after_retrieve, web_search_step, generate_step, \
-        plc_expert_step, diagnosis_agent_step, direct_reply_step, multi_intent_step
+        plc_expert_step, analytics_agent_step, direct_reply_step, multi_intent_step
 
 
 def build_graph(vdb, llm_client, web_search_tool, db):
     retrieve_step, route_after_retrieve, web_search_step, generate_step, \
-        plc_expert_step, diagnosis_agent_step, direct_reply_step, multi_intent_step = \
+        plc_expert_step, analytics_agent_step, direct_reply_step, multi_intent_step = \
         make_graph_nodes(vdb, llm_client, web_search_tool, db)
     router_node = make_router_node(llm_client)
 
@@ -132,7 +138,7 @@ def build_graph(vdb, llm_client, web_search_tool, db):
     graph.add_node("web_search", web_search_step)
     graph.add_node("generate", generate_step)
     graph.add_node("plc_expert", plc_expert_step)
-    graph.add_node("diagnosis_agent", diagnosis_agent_step)
+    graph.add_node("analytics_agent", analytics_agent_step)
     graph.add_node("direct_reply", direct_reply_step)
     graph.add_node("multi_intent", multi_intent_step)
 
@@ -140,7 +146,7 @@ def build_graph(vdb, llm_client, web_search_tool, db):
     graph.add_conditional_edges("router", pick_next_node, {
         "technical_document_agent": "retrieve",
         "plc_expert": "plc_expert",
-        "diagnosis_agent": "diagnosis_agent",
+        "analytics_agent": "analytics_agent",
         "direct_reply": "direct_reply",
         "multi_intent": "multi_intent",
     })
@@ -151,7 +157,7 @@ def build_graph(vdb, llm_client, web_search_tool, db):
     graph.add_edge("web_search", "generate")
     graph.add_edge("generate", END)
     graph.add_edge("plc_expert", END)
-    graph.add_edge("diagnosis_agent", END)
+    graph.add_edge("analytics_agent", END)
     graph.add_edge("direct_reply", END)
     graph.add_edge("multi_intent", END)
 

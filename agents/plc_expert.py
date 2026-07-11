@@ -18,6 +18,7 @@ from langsmith import traceable
 from agents.state import AgentState
 from agents.conversation_context import format_recent_history
 from agents.structured_answer import JSON_INSTRUCTION, parse_structured_answer
+from agents.streaming import stream_llm_answer
 from plc_corpus_search import (
     search_plc_corpus, get_corpus_overview, get_all_function_blocks_content,
     run_best_practices_check, find_corpus_file, read_corpus_file,
@@ -105,7 +106,7 @@ def _last_plc_source(history: list) -> str | None:
     follow best practices") and needs to resolve what "that" refers to.
 
     Checking title.endswith(".st") specifically (not just content_id is None
-    and no url) matters: Diagnosis Agent's energy-data source has the exact
+    and no url) matters: Analytics Agent's energy-data source has the exact
     same shape (content_id: None, no url key) — a real bug found in testing,
     where a PLC follow-up after intervening energy-data turns picked up
     "synthetic_data/energy_data.csv" as if it were a candidate PLC filename,
@@ -121,7 +122,13 @@ def _last_plc_source(history: list) -> str | None:
 def make_plc_expert_node(llm_client, top_k: int = 3):
     @traceable(name="plc_expert_node")
     def node(state: AgentState) -> dict:
-        query = state["query"]
+        raw_query = state["query"]
+        # resolved_query (agents/router.py) for search, so a follow-up like
+        # "does that follow best practices too?" searches the real resolved
+        # question, not the bare pronoun text — raw_query stays untouched
+        # for the history entry below, so the transcript shows what the
+        # user actually typed.
+        query = state.get("resolved_query") or raw_query
         matches = search_plc_corpus(query, top_k=top_k)
 
         # A query that doesn't name a specific file of its own (no exact-stem
@@ -178,14 +185,14 @@ def make_plc_expert_node(llm_client, top_k: int = 3):
             f"BEST PRACTICES CHECK RESULT:\n{best_practices_context}\n\n"
             f"Question: {query}"
         )
-        raw = llm_client.generate(prompt, system_prompt=SYSTEM_PROMPT, temperature=0.2)
+        raw = stream_llm_answer(llm_client, prompt, system_prompt=SYSTEM_PROMPT, temperature=0.2)
         answer, used_context = parse_structured_answer(raw)
 
         sources = [{"content_id": None, "title": m["filename"]} for m in matches] if used_context else []
         return {
             "answer": answer,
             "sources": sources,
-            "history": [{"query": query, "answer": answer, "sources": sources}],
+            "history": [{"query": raw_query, "answer": answer, "sources": sources}],
         }
 
     return node

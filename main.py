@@ -4,7 +4,7 @@ AI Industry Signals - Agent System
 LangGraph-based, three personas routed automatically based on the question:
 Technical Document Agent (manufacturing corpus, HyDE + hybrid retrieval),
 PLC Expert (Structured Text code explanation + best-practices checks
-against the plc_simulation corpus), and Diagnosis Agent (synthetic
+against the plc_simulation corpus), and Analytics Agent (synthetic
 energy/production telemetry, synthetic_data/energy_data.csv). Conversation
 history persists within a session via a SQLite checkpointer, so follow-up
 questions can refer back to prior turns.
@@ -33,7 +33,8 @@ def _setup():
     from tools.web_search import InternetSearchTool
     from agents.graph import build_graph
 
-    db = relationalDB(config.DB_PATH)
+    # DB_PATH_ANALYTICS, not DB_PATH — see chat_app.py's load_graph for why.
+    db = relationalDB(config.DB_PATH_ANALYTICS)
     vdb = LanceVectorDB(
         config.LANCE_VECTOR_PATH,
         embedding_dim=768,
@@ -48,7 +49,7 @@ def _setup():
 def _ask(graph, query: str, thread_id: str) -> dict:
     config = {"configurable": {"thread_id": thread_id}}
     return graph.invoke(
-        {"query": query, "retrieved_docs": [], "web_results": [], "answer": "", "sources": [], "history": [], "routed_personas": []},
+        {"query": query, "resolved_query": "", "retrieved_docs": [], "web_results": [], "answer": "", "sources": [], "chart_spec": None, "history": [], "routed_personas": []},
         config=config,
     )
 
@@ -100,7 +101,7 @@ def main():
         _print_answer(one_shot_query, result)
         return
 
-    print("Technical Document Agent / PLC Expert / Diagnosis Agent — ask a question, or 'exit' to quit.")
+    print("Technical Document Agent / PLC Expert / Analytics Agent — ask a question, or 'exit' to quit.")
     print()
     while True:
         try:

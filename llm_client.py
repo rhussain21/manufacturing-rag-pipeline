@@ -5,6 +5,7 @@ import time
 import logging
 import traceback
 import platform
+from abc import ABC, abstractmethod
 from pathlib import Path
 from typing import List, Dict, Any, Optional
 from dotenv import load_dotenv
@@ -77,7 +78,40 @@ def _classify_error(e: Exception) -> str:
     return etype
 
 
-class OllamaClient:
+class BaseLLMClient(ABC):
+    """Common interface every LLM client in this project implements — lets
+    calling code (agent nodes, eval/judge scripts, tools/resilient_batch
+    jobs) depend on this contract instead of a specific provider's SDK.
+    This isn't aspirational: the eval harness already swaps GeminiClient
+    (generates real answers) and OpenAIClient (scores them as an
+    independent judge) through identical call sites without either one
+    knowing about the other.
+
+    Not enforced via a shared __init__ — each provider's constructor takes
+    genuinely different arguments (a model name, a base_url, nothing at
+    all) — only the methods calling code actually depends on are part of
+    the contract.
+    """
+
+    model_name: str
+
+    @abstractmethod
+    def generate(self, prompt: str, system_prompt: str, temperature: float = 0.7) -> str:
+        """Returns the full generated text. Retries internally on
+        transient errors (rate limits, timeouts, server errors) per the
+        provider's own backoff policy; raises after exhausting retries."""
+        raise NotImplementedError
+
+    def generate_stream(self, prompt: str, system_prompt: str, temperature: float = 0.7):
+        """Generator of text deltas. Default implementation falls back to
+        one non-streamed chunk via generate() — only GeminiClient overrides
+        this with real token streaming today. Callers (agents/streaming.py)
+        can always call generate_stream() with no hasattr() check, on any
+        client that implements this interface."""
+        yield self.generate(prompt, system_prompt, temperature)
+
+
+class OllamaClient(BaseLLMClient):
     def __init__(self, model="llama3:latest", base_url="http://localhost:11434"):
         self.model = model
         self.model_name = model
@@ -130,7 +164,7 @@ class OllamaClient:
         raise last_error or RuntimeError(f"Ollama failed after {MAX_RETRIES} attempts")
 
 
-class GeminiClient:
+class GeminiClient(BaseLLMClient):
     def __init__(self, model="gemini-2.5-flash"):
         from google import genai
         from google.genai import types
@@ -217,7 +251,76 @@ class GeminiClient:
 
         raise last_error or RuntimeError(f"Gemini failed after {MAX_RETRIES} attempts")
 
-class OpenAIClient:
+    def generate_stream(self, prompt, system_prompt, temperature=0.7):
+        """Generator of text deltas via the SDK's generate_content_stream.
+
+        Retry policy differs from generate() in exactly one way, on purpose:
+        a failure BEFORE any chunk has been yielded retries from scratch
+        (nothing has been shown to the user yet, so a clean restart is
+        invisible), but a failure AFTER partial text has streamed does NOT
+        retry — a restart would duplicate or splice text mid-answer.
+        Instead it yields one short trailing note and stops cleanly, so a
+        UI consumer (st.write_stream) never sees a mid-stream exception.
+        """
+        full_prompt = f"{system_prompt}\n\n{prompt}"
+        last_error = None
+
+        for attempt in range(1, MAX_RETRIES + 1):
+            yielded_any = False
+            try:
+                stream = self._client.models.generate_content_stream(
+                    model=self.model_name,
+                    contents=full_prompt,
+                    config=self._types.GenerateContentConfig(
+                        temperature=temperature,
+                        max_output_tokens=8192,
+                        http_options=self._types.HttpOptions(timeout=60000),  # ms; prevents an indefinite hang on a stalled connection
+                    ),
+                )
+                for chunk in stream:
+                    # chunk.text can be None (e.g. a final metadata-only
+                    # chunk) — skip those rather than yielding "None".
+                    text = getattr(chunk, "text", None)
+                    if text:
+                        yielded_any = True
+                        yield text
+                if not yielded_any:
+                    # Same classification path as generate()'s empty-response
+                    # case: the 'safety' keyword makes _classify_error treat
+                    # it as safety_filter (no retry — it'll keep failing).
+                    raise RuntimeError("Gemini stream returned empty response (safety filter or empty response)")
+                return
+
+            except Exception as e:
+                error_cat = _classify_error(e)
+                last_error = e
+
+                if yielded_any:
+                    # Partial text already shown — never retry (see docstring).
+                    logger.warning(
+                        f"Gemini stream failed after partial output ({error_cat}: {e}); not retrying"
+                    )
+                    yield "\n\n_[response cut off due to an error]_"
+                    return
+
+                if error_cat in ('rate_limit', 'quota_exceeded', 'timeout', 'server_error', 'connection_error'):
+                    wait = BASE_BACKOFF ** attempt * (3 if error_cat == 'rate_limit' else 1)
+                    logger.warning(f"Gemini stream attempt {attempt}/{MAX_RETRIES} failed ({error_cat}), retrying in {wait}s")
+                    time.sleep(wait)
+                elif error_cat == 'safety_filter':
+                    # Don't retry safety blocks — they'll keep failing
+                    raise
+                elif attempt < MAX_RETRIES:
+                    wait = BASE_BACKOFF ** attempt
+                    logger.warning(f"Gemini stream attempt {attempt}/{MAX_RETRIES} failed ({error_cat}: {e}), retrying in {wait}s")
+                    time.sleep(wait)
+                else:
+                    raise
+
+        raise last_error or RuntimeError(f"Gemini stream failed after {MAX_RETRIES} attempts")
+
+
+class OpenAIClient(BaseLLMClient):
     def __init__(self, model="gpt-4o"):
         from openai import OpenAI
         self.model_name = model
@@ -259,7 +362,7 @@ class OpenAIClient:
         raise last_error or RuntimeError(f"OpenAI failed after {MAX_RETRIES} attempts")
 
 
-class ClaudeClient:
+class ClaudeClient(BaseLLMClient):
     def __init__(self, model="claude-sonnet-4-6"):
         import anthropic
         self.model_name = model
@@ -300,89 +403,3 @@ class ClaudeClient:
         raise last_error or RuntimeError(f"Claude failed after {MAX_RETRIES} attempts")
 
 
-class LLMClient:
-    def __init__(self, vector_db, relational_db, llm_client):
-        self.vdb = vector_db
-        self.db = relational_db
-        self.llm_client = llm_client
-    
-    def query(self, question, top_k=5, temperature=0.7):
-        context = self.retrieve(query=question, top_k=top_k)
-        prompt = self.generate_prompt(question=question, context=context)
-        response = self.generate_response(prompt, temperature=temperature)
-        
-        return response
-        
-    def retrieve(self, query, top_k=5, filters=None):
-        results = self.vdb.search(query=query, top_k=top_k)
-
-        if not results:
-            return "No relevant context found."
-        
-
-        context_chunks = []
-        for r in results:
-            if isinstance(r, (list, tuple)):
-                text = r[0]
-            elif isinstance(r, dict):
-                text = r.get("document") or r.get("text") or str(r)
-            else:
-                text = str(r)
-            context_chunks.append(text.strip())
-
-        return "\n\n".join(context_chunks)
- 
-    def generate_prompt(self, question, context):
-        system_prompt = """You are an expert industry analyst specializing in smart manufacturing, 
-        industrial automation, and technology trends. Provide accurate, well-cited answers 
-        based on the provided context documents."""
-        
-        user_prompt = f"""Context from industry documents:
-        {context}
-
-        Question: {question}
-
-        Instructions:
-        - Answer based ONLY on the provided context
-        - Be specific and technical when appropriate
-        - If information is not in context, say so clearly
-        - Provide concise, factual responses
-        """
-                
-        return user_prompt
-            
-    def generate_response(self, prompt, temperature=0.7):
-        system_prompt = """You are an expert industry analyst specializing in smart manufacturing, 
-        industrial automation, and technology trends. Provide accurate, well-cited answers 
-        based on the provided context documents."""
-        
-        return self.llm_client.generate(prompt, system_prompt, temperature)
-
-if __name__ == "__main__":
-    from db_vector import VectorDB
-    from db_relational import relationalDB
-
-    rel_path = os.path.expanduser('~/Documents/ai-projects/ai_industry_signals/')
-    content_dir = os.path.join(rel_path, 'content_files')
-
-    db_path = os.path.join(rel_path, 'Database/industry_signals.db')
-    vdb_path = os.path.join(rel_path, 'Vectors/corpus_vectors')
-
-    print("Initializing Relational Database...")
-    db = relationalDB(db_path)
-    db.init_db()
-    
-    print("Intializing Vector Database...")
-    vdb = VectorDB("Vectors/corpus_vectors/")
-    vdb.load("corpus_vectors")
-
-    llm_client = OllamaClient(model="llama3:latest")
-    llm_client = LLMClient(vdb, db, llm_client)
-    
-    query = "What is the current focus in manufacturing? Specifically around AI?"
-
-    results = llm_client.query(query)
-    print(f"Results at temp: 0.7: {results}")
-
-    results = llm_client.query(query, temperature=0.2)
-    print(f"Results at temp: 0.2: {results}")

@@ -1,0 +1,123 @@
+{
+  "multi_intent": {
+    "id": "multi_intent",
+    "kind": "single",
+    "title": "One question, two domains",
+    "captured_at": "2026-07-10 18:52:31",
+    "turns": [
+      {
+        "role": "user",
+        "content": "How many PLC programs do I have, and what's my current power usage?"
+      },
+      {
+        "role": "assistant",
+        "id": "multi_intent",
+        "ok": true,
+        "content": "**PLC programs:**\nYou have 11 PLC programs.\nI cannot determine your current power usage from the provided code. The function blocks are designed to read power measurement data from specific Beckhoff terminals, not to report the power usage of the PLC system itself.\n\n**Energy/production data:**\nI do not have any information about the number of PLC programs. The provided data focuses on energy telemetry, not control systems or software.\n\nRegarding power usage, as this is a static dataset, there isn't a \"current\" snapshot. Instead, I can provide the average consumption over the entire period for each site:\n*   **Meridian Assembly Line:** averaged 1845 W\n*   **Northgate Manufacturing Plant:** averaged 3632 W\n*   **Willowbrook Fabrication Shop:** averaged 599 W",
+        "personas": [
+          "plc_expert",
+          "analytics_agent"
+        ],
+        "sources": [
+          "(corpus) EL3443_DPM_CurrentOnly.st",
+          "(corpus) FB_EL3423.st",
+          "(corpus) FB_EL3443.st",
+          "(corpus) synthetic_data/energy_data.csv"
+        ],
+        "latency_s": 6.5
+      }
+    ]
+  },
+  "web_search_fallback": {
+    "id": "web_search_fallback",
+    "kind": "single",
+    "title": "Corpus miss -> real web search, not a guess",
+    "captured_at": "2026-07-10 18:52:31",
+    "turns": [
+      {
+        "role": "user",
+        "content": "What is Kirchhoff's law?"
+      },
+      {
+        "role": "assistant",
+        "id": "web_search",
+        "ok": true,
+        "content": "The provided context mentions \"Kirchhoff's Law\" as a heading in \"The IDC Engineers Pocket Guide\" but does not provide a definition or explanation of the law itself. (The IDC Engineers Pocket Guide)\n\nFrom my general knowledge, Kirchhoff's Laws are fundamental principles used in electrical circuit analysis. There are two main laws:\n\n1.  **Kirchhoff's Current Law (KCL)**: States that the algebraic sum of currents entering any node (or junction) in an electrical circuit is equal to the sum of currents leaving that node. In other words, the total current entering a junction is equal to the total current leaving the junction. This is based on the principle of conservation of charge.\n2.  **Kirchhoff's Voltage Law (KVL)**: States that the algebraic sum of all voltages (potential differences) around any closed loop in a circuit is equal to zero. This is based on the principle of conservation of energy.",
+        "personas": [
+          "technical_document_agent"
+        ],
+        "sources": [],
+        "latency_s": 16.7
+      }
+    ]
+  },
+  "guardrail_holding": {
+    "id": "guardrail_holding",
+    "kind": "single",
+    "title": "No history to invent -> says so",
+    "captured_at": "2026-07-10 18:52:31",
+    "turns": [
+      {
+        "role": "user",
+        "content": "What did I ask you before this?"
+      },
+      {
+        "role": "assistant",
+        "id": "guardrail_fresh",
+        "ok": true,
+        "content": "There haven't been any prior turns in this conversation yet. This is our first interaction.",
+        "personas": [
+          "direct_reply"
+        ],
+        "sources": [],
+        "latency_s": 1.5
+      }
+    ]
+  },
+  "memory_followup": {
+    "id": "memory_followup",
+    "kind": "single",
+    "title": "\"That\" resolved from conversation history",
+    "captured_at": "2026-07-10 18:52:31",
+    "turns": [
+      {
+        "role": "user",
+        "content": "What is IEC 62443?"
+      },
+      {
+        "role": "assistant",
+        "content": "The IEC 62443 is a series of international standards that provide a risk-based framework for industrial cybersecurity, specifically designed for Industrial Automation and Control Systems (IACS) and Operational Technology (OT) environments (Shieldworkz, The Essential Guide to the IEC 62443 industrial cybersecurity ..., [PDF] Protecting operations through cyber security: ABB Drives solutions).\n\nKey aspects of IEC 62443 include:\n*   **Development and Purpose** It was developed by both the ISA99 and IEC committees to enhance the safety, availability, integrity, and confidentiality of components and systems used in industrial automation and control ([PDF] Practical Overview of Implementing IEC 62443 Security Levels in ...).\n*   **Scope and Applicability** The standards are applicable across various industrial control segments and have been approved by many countries ([PDF] Practical Overview of Implementing IEC 62443 Security Levels in ..., [PDF] The Most Critical Step to Secure an Industrial Control System - Anixter). They help asset owners and operators design technical solutions with integrated security measures and capabilities (The Essential Guide to the IEC 62443 industrial cybersecurity ...).\n*   **Framework and Lifecycle** IEC 62443 defines a cybersecurity lifecycle, which is a framework used to secure IACS, consisting of four major phases, including an assessment phase ([PDF] The Most Critical Step to Secure an Industrial Control System - Anixter). It addresses both technical controls and organizational processes (Shieldworkz).\n*   **Organizational and Product Criteria** It structures organizational IACS security maturity and posture, and provides criteria for security products, programs, and service providers (The Essential Guide to the IEC 62443 industrial cybersecurity ...).\n*   **Relationship to Other Standards** The IEC 62443 series is based on the requirements of the ISO 27000 series and addresses the specific needs of IT and OT in industrial communication networks and system security in production areas ([PDF] Protecting operations through cyber security: ABB Drives solutions).",
+        "personas": [
+          "technical_document_agent"
+        ],
+        "sources": [
+          "The Essential Guide to the IEC 62443 industrial cybersecurity ...",
+          "[PDF] Practical Overview of Implementing IEC 62443 Security Levels in ...",
+          "[PDF] Protecting operations through cyber security: ABB Drives solutions",
+          "[PDF] The Most Critical Step to Secure an Industrial Control System - Anixter",
+          "Industrial Cybersecurity Guide & Platform - Shieldworkz"
+        ],
+        "latency_s": 16.7
+      },
+      {
+        "role": "user",
+        "content": "does that also cover conduit zones?"
+      },
+      {
+        "role": "assistant",
+        "content": "Yes, the IEC 62443 standard covers the concept of zones and conduits. It introduces the idea of segmenting Industrial Automation and Control Systems (IACS) into \"zones\" (logical or physical groupings of assets) and \"conduits\" (communication paths between these zones).\n\nSpecifically:\n*   IEC 62443-3-2 requires defining a system under consideration (SUC), partitioning it into zones and conduits, assessing risk for each, and establishing security level targets (SL-T) for them (The Essential Guide to the IEC 62443 industrial cybersecurity ...).\n*   The standard emphasizes identifying all conduits between zones and properly protecting them, including securing remote access (Practical Overview of Implementing IEC 62443 Security Levels in ..., The Most Critical Step to Secure an Industrial Control System - Anixter).\n*   This segmentation strategy, using zones and conduits, helps minimize risk by isolating systems based on functionality and criticality (Technical Guide to ISA/IEC-62443 Industrial Cybersecurity Standards).\n*   The security level assigned to each zone can vary, and network segmentation can further divide zones into smaller ones (Practical Overview of Implementing IEC 62443 Security Levels in ..., The Most Critical Step to Secure an Industrial Control System - Anixter).",
+        "personas": [
+          "technical_document_agent"
+        ],
+        "sources": [
+          "The Essential Guide to the IEC 62443 industrial cybersecurity ...",
+          "[PDF] Practical Overview of Implementing IEC 62443 Security Levels in ...",
+          "IEC 62443: Ultimate OT Security Guide | Rockwell Automation | US",
+          "Technical Guide to ISA/IEC-62443 Industrial Cybersecurity Standards",
+          "[PDF] The Most Critical Step to Secure an Industrial Control System - Anixter"
+        ],
+        "latency_s": 16.3
+      }
+    ]
+  }
+}

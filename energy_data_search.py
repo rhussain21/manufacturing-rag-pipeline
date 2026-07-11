@@ -1,5 +1,5 @@
 """
-Query layer over the synthetic energy telemetry data for the Diagnosis Agent.
+Query layer over the synthetic energy telemetry data for the Analytics Agent.
 
 synthetic_data/energy_data.csv — 3 fictional sites (edge_id 0/1/2), one row
 per site per synthetic minute, ground-truth anomaly labels (is_anomaly /
@@ -131,7 +131,7 @@ def compute_anomaly_trends(site: str = None) -> str:
 def find_site_and_anomaly_mentions(query: str) -> tuple:
     """Which sites/anomaly types (if any) a piece of text names explicitly —
     shared by both the live query and, when the query itself names none,
-    the conversation history fallback in diagnosis_agent.py."""
+    the conversation history fallback in analytics_agent.py."""
     df = _load()
     query_lower = query.lower()
     site_matches = [s for s in df["site"].unique() if s.split()[0].lower() in query_lower]
@@ -166,6 +166,83 @@ def filter_energy_data(site_matches: list, anomaly_matches: list, max_sample_row
         parts.append("\nSample anomalous rows:\n" + anomalous.head(max_sample_rows).to_string(index=False))
 
     return "\n".join(parts)
+
+
+# Whitelists for compute_grouped_series — real code validates and rejects
+# anything off this list rather than passing arbitrary strings through to a
+# groupby/eval. This is the "fixed, validated aggregation primitive" from
+# the analytics-agent charting design: no LLM-generated code, no eval/exec,
+# just a single parameterized function covering the realistic query space
+# for this dataset's fixed shape (3 sites, 5 numeric metrics, one anomaly
+# dimension, one time dimension).
+_VALID_METRICS = (
+    "battery_soc_pct", "battery_power_w", "grid_power_w",
+    "production_power_w", "consumption_power_w",
+)
+_VALID_GROUP_BY = ("site", "day", "hour", "anomaly_type")
+_VALID_AGG = ("mean", "sum", "max", "min")
+
+
+def compute_grouped_series(metrics: list, group_by: str, agg: str = "mean",
+                            site_matches: list = None, anomaly_matches: list = None) -> dict:
+    """Real, computed grouped/aggregated series — the one aggregation
+    primitive the Analytics Agent's charting feeds from. Every input is
+    whitelist-validated (never eval/exec'd), unknown metrics are dropped
+    silently, an unknown group_by/agg falls back to a safe default — this
+    function can only ever produce a groupby over real columns with a real
+    pandas aggregation, nothing else.
+
+    Returns {"x": [...], "series": {metric: [values...]}}, x aligned
+    positionally with each series list — this exact dict is what both
+    describe_grouped_series (LLM prose) and chart_spec["data"] (the actual
+    plot) consume, so narrated and plotted numbers can never drift apart.
+    Reuses the same site_matches/anomaly_matches filter shape as
+    filter_energy_data so it composes with existing site/anomaly detection
+    instead of duplicating it.
+    """
+    metrics = [m for m in metrics if m in _VALID_METRICS]
+    if not metrics:
+        return {"x": [], "series": {}}
+    if group_by not in _VALID_GROUP_BY:
+        group_by = "site"
+    if agg not in _VALID_AGG:
+        agg = "mean"
+
+    df = _load()
+    if site_matches:
+        df = df[df["site"].isin(site_matches)]
+    if anomaly_matches:
+        df = df[df["anomaly_type"].isin(anomaly_matches)]
+    if df.empty:
+        return {"x": [], "series": {}}
+
+    if group_by == "day":
+        key = df["timestamp"].dt.date.astype(str)
+    elif group_by == "hour":
+        key = df["timestamp"].dt.hour
+    else:
+        key = df[group_by]
+
+    grouped = df.groupby(key)[metrics].agg(agg)
+    grouped = grouped.sort_index()
+
+    return {
+        "x": [str(x) for x in grouped.index.tolist()],
+        "series": {m: [round(float(v), 2) for v in grouped[m].tolist()] for m in metrics},
+    }
+
+
+def describe_grouped_series(data: dict, group_by: str, agg: str) -> str:
+    """Plain-text rendering of compute_grouped_series's output for the LLM's
+    prompt — same formatting style as compute_energy_summary. Reads from the
+    exact same dict passed to chart_spec, never recomputed separately."""
+    if not data["x"]:
+        return "No data matched for the requested grouping."
+    lines = [f"Grouped by {group_by}, {agg} per group:"]
+    for metric, values in data["series"].items():
+        pairs = ", ".join(f"{x}={v}" for x, v in zip(data["x"], values))
+        lines.append(f"  {metric}: {pairs}")
+    return "\n".join(lines)
 
 
 def search_energy_data(query: str, max_sample_rows: int = 5) -> str:

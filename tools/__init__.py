@@ -15,6 +15,10 @@ Discovery tools:
     - InstitutionSearchAdapter — NIST + NSF
     - StackOverflowAdapter    — Stack Exchange API
     - PDFExtractor            — PDF download + text extraction
+
+Infrastructure:
+    - run_batch  — resilient batch execution over flaky/rate-limited APIs
+                   (real subprocess-kill timeouts, resumable checkpoints)
 """
 
 from tools.base import BaseTool
@@ -28,6 +32,7 @@ from tools.institution_search import InstitutionSearchAdapter
 from tools.stackoverflow_search import StackOverflowAdapter
 from tools.web_scraper import WebScraper
 from tools.pdf_extractor import PDFExtractor
+from tools.resilient_batch import run_batch
 
 __all__ = [
     'BaseTool',
@@ -35,4 +40,5 @@ __all__ = [
     'RSSAdapter', 'GitHubAdapter',
     'AcademicSearchAdapter', 'InstitutionSearchAdapter', 'StackOverflowAdapter',
     'PDFExtractor',
+    'run_batch',
 ]

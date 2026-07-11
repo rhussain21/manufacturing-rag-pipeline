@@ -52,21 +52,54 @@ Metrics: BoundaryScore (does a chunk start and end at a natural sentence boundar
 ### NB3 — Retrieval Quality
 Does the system return the right documents when asked?
 
-Metrics: Recall@k, Precision@k, MRR. Failures classified into four types: hit, buried, miss, absent. Tested across dense, hybrid, and reranked configurations against a 31-query human-labeled test set.
+Metrics: Recall@k, Precision@k, MRR. Tested across dense, hybrid, reranked, signal-filtered, SQL-filtered, and HyDE configurations against a 27-query human-labeled test set.
 
 | Method | MRR | Recall@10 |
 |---|---|---|
-| Dense only | 0.307 | 0.385 |
-| Hybrid + Reranker | 0.412 | — |
+| Dense only | 0.399 | 0.403 |
+| Hybrid (RRF) | 0.442 | 0.453 |
+| Hybrid + Reranker | 0.426 | 0.473 |
+| HyDE + Hybrid *(current production config)* | 0.436 | 0.447 |
 
-> Retrieval is measured against a labeled test set built by hand — not a proxy metric. These numbers mean something.
+> Retrieval is measured against a labeled test set built by hand — not a proxy metric. These numbers mean something. Full config comparison (signal-filtered, SQL-filtered, reranker pool-size sweep) is versioned in `notebooks/eval_snapshots.json`.
 
 ### NB4 — Answer Quality
 Does better retrieval actually produce better answers?
 
-Metrics: FactRecall (did the answer contain the required facts?), Groundedness (is each claim traceable to a retrieved document?), Hallucination rate. Evaluated using LLM-as-judge with structured prompts against 15 human-authored test cases with pre-defined key facts.
+Metrics: FactRecall (did the answer contain the required facts?), Groundedness (is each claim traceable to a retrieved document?), Completeness, Hallucination rate. Evaluated using LLM-as-judge with structured prompts against 15 human-authored test cases with pre-defined key facts, run through the **real production agent graph** (router → retrieval → generation), not a notebook-only shortcut.
 
-> This is the final accountability check. A high-retrieval system that generates ungrounded answers is not a helpful system.
+| Metric | Baseline | Current |
+|---|---|---|
+| Fact recall | 0.583 | **0.833** |
+| Groundedness | 0.913 | 0.947 |
+| Hallucination rate | 0% | 0% |
+
+> This is the final accountability check. A high-retrieval system that generates ungrounded answers is not a helpful system. The jump from baseline to current isn't a tuning artifact — it's a real bug found via trace triage (see "Chat Agent System" below), fixed, and re-measured to confirm it worked.
+
+---
+
+## Chat Agent System
+
+The evaluation framework above measures a conversational, multi-persona agent system (`agents/`, `chat_app.py`) — not a single retrieve-then-generate function.
+
+**Four personas, routed automatically per question**, built on LangGraph:
+
+| Persona | Handles | Grounded in |
+|---|---|---|
+| `technical_document_agent` | General manufacturing/industry questions | HyDE + hybrid retrieval over the document corpus, with a corrective-RAG web-search fallback |
+| `plc_expert` | PLC / Structured Text code questions, best-practices checks | A reference code corpus + `iec-checker` (a real static analyzer, not an LLM opinion) |
+| `analytics_agent` | Energy/production telemetry questions, including real-code-computed charts | `pandas`-computed statistics — never an LLM guessing at numbers |
+| `direct_reply` | Greetings, meta-conversation, genuinely off-topic questions | Conversation history / general knowledge — skips retrieval entirely for latency |
+
+A **router** (one LLM call per turn) both classifies intent and resolves follow-ups ("does that follow best practices too?") into standalone queries before retrieval ever runs. A `multi_intent` node handles compound questions that span more than one persona, running them concurrently.
+
+**Design choices that matter more than the routing:**
+
+- **Fail-open vs. fail-closed, deliberately different.** The structured-output marker that decides whether to show sources fails *open* (ambiguous → show the source anyway, since hiding a real answer is worse than an occasional over-citation). The chart-generation directive fails *closed* (ambiguous → no chart, since a wrong chart is worse than no chart). Same codebase, two different risk profiles, on purpose.
+- **Charts are computed, never generated.** `analytics_agent`'s chart feature works like input validation: a real-code keyword pre-pass decides *whether and what* to chart *before* the LLM ever sees the question. The LLM only ever picks bar-vs-line — it never chooses what data goes in, and the aggregation function (`energy_data_search.compute_grouped_series`) whitelists exact column names and operations, never `eval`/`exec`. The same dict that feeds the chart is what's narrated in prose, so the two can't drift apart.
+- **A real bug, found and fixed via trace triage, not guessing.** Two eval queries scored zero on fact-recall. Reading the actual LangSmith trace (not the code) showed the system correctly refusing to discuss a well-known industry protocol because the local corpus had no content on it — a real gap between "the corpus doesn't cover this" and "I don't know this." The fix (`agents/technical_document_agent.py`, `agents/direct_reply.py`) lets the model answer from general knowledge when retrieval only partially covers a question, while still refusing when it genuinely doesn't know — verified against the exact failing case, then confirmed with a full re-run: fact-recall 0.693 → 0.833.
+
+Run it: `streamlit run chat_app.py`
 
 ---
 
@@ -106,7 +139,7 @@ Discovery → LLM Gate 1 → Download → Extract → LLM Gate 2 → Quality Fil
 
 The dual LLM gate design keeps junk out of the corpus: Gate 1 operates on metadata (cheap, fast), Gate 2 operates on full extracted text (slower, higher signal).
 
-**Corpus stats:** 736 documents, 78,467 chunks — arxiv papers, NIST docs, Stack Overflow PLC Q&A, vendor manuals, industrial automation podcasts.
+**Corpus stats:** 849 documents, 95,579 chunks — arxiv papers, NIST docs, Stack Overflow PLC Q&A, vendor manuals, industrial automation podcasts.
 
 ---
 
@@ -125,11 +158,23 @@ ai_industry_signals/
 │   ├── content_screener.py  # LLM gate 2 (content quality)
 │   ├── data_quality.py      # Statistical quality gates
 │   └── signals.py           # Structured signal extraction
-├── agents/             # Router, SQL, vector, and web agents
-├── tools/              # Source-specific scrapers and extractors
+├── agents/             # Chat agent system (see "Chat Agent System" above)
+│   ├── graph.py             # LangGraph StateGraph — routes to personas, compiles with checkpointer
+│   ├── router.py            # Intent classification + follow-up resolution (one LLM call/turn)
+│   ├── technical_document_agent.py  # HyDE + hybrid retrieval, corrective-RAG web fallback
+│   ├── plc_expert.py        # PLC code Q&A + iec-checker best-practices analysis
+│   ├── analytics_agent.py   # Energy telemetry Q&A + real-code-computed charts
+│   ├── direct_reply.py      # Fast path — greetings, meta-questions, off-topic
+│   ├── chart_directive.py   # Fail-closed chart-type parsing (see design notes above)
+│   └── streaming.py         # Token-streaming helper shared by every persona node
+├── tools/              # Source-specific scrapers/extractors + shared infrastructure
+│   └── resilient_batch.py   # Subprocess-based defensive batch execution (real timeouts, resumable)
 ├── workflows/          # Operational scripts (ingest, vectorize, cleanup, rechunk)
-├── notebooks/          # Four-notebook evaluation framework
+├── notebooks/          # Four-notebook evaluation framework + eval_snapshots.json (versioned history)
 ├── Dashboards/         # Streamlit corpus and quality dashboards
+├── chat_app.py          # Streamlit chat UI for the agent system
+├── main.py               # CLI chat interface
+├── llm_client.py        # BaseLLMClient interface + Gemini/OpenAI/Claude/Ollama implementations
 ├── db_relational.py    # DuckDB / PostgreSQL abstraction
 ├── db_vector_lance.py  # LanceDB vector store
 ├── sync_client.py      # Jetson → Mac data sync
@@ -140,10 +185,13 @@ ai_industry_signals/
 
 ## What This Demonstrates
 
-- **Evaluation-first thinking** — retrieval and answer quality measured with real metrics against human-authored test sets, not vibes
+- **Evaluation-first thinking** — retrieval and answer quality measured with real metrics against human-authored test sets, not vibes. `notebooks/eval_snapshots.json` versions every eval run (v1 baseline → v2 corpus expansion → v3 real-pipeline methodology fix → v4 prompt fix), so improvement claims are backed by before/after numbers, not assertions.
+- **Observability over guessing** — every agent node is `@traceable` into LangSmith. Real production bugs (including the fact-recall regression fixed between v3 and v4) were found by reading actual traces, not by staring at code.
+- **Guardrails as deliberate tradeoffs, not defaults** — fail-open vs. fail-closed decided per-feature based on which failure mode is worse; chart data is whitelisted and real-code-computed, never LLM-generated; a corrective-RAG fallback chain (corpus → web → explicitly-labeled ungrounded) instead of hoping the model doesn't fabricate.
 - **Quality traceability** — when answers are wrong, the framework identifies which layer caused it (corpus, chunking, retrieval, or generation)
 - **Pipeline discipline** — multi-stage ingestion with explicit quality gates; corpus quality is a prerequisite, not an afterthought
-- **Systems thinking** — two-device architecture, hardware-aware config, async sync, production-style logging
+- **Resilient infrastructure, not just resilient prompts** — `tools/resilient_batch.py` exists because thread-based timeouts don't actually bound wall-clock time against a flaky/rate-limited API; every long-running eval in this project runs through it
+- **Systems thinking** — two-device architecture, hardware-aware config, async sync, production-style logging, a formal LLM-client interface (`llm_client.BaseLLMClient`) so swapping providers touches zero call sites
 
 ---
 
@@ -173,18 +221,31 @@ VECTOR_DEVICE=cpu python workflows/vectorize_lance.py --rebuild --corpus-only
 **5. Build your evaluation test set** — 20–30 queries with human-labeled relevant document IDs and key facts per query. Run `notebooks/03_retrieval_evaluation.ipynb` then `notebooks/04_end_to_end_answer_evaluation.ipynb`.
 
 ### Environment Variables
-| Variable | Description | Default |
-|---|---|---|
-| `PG_HOST` | PostgreSQL host (Jetson) | `localhost` |
-| `PG_PORT` | PostgreSQL port | `5432` |
-| `PG_DB` | Database name | `industry_signals` |
-| `VECTOR_DEVICE` | Embedding device (`cpu`, `mps`, `cuda`) | auto-detect |
-| `LLM_URL` | Ollama endpoint for local LLM | `http://localhost:11434` |
+
+Copy `.env.example` to `.env.mac` (or `.env`), fill in your own keys. Only
+`GEMINI_API_KEY` and `TAVILY_API_KEY` are required to run the chat app —
+everything else in the template is optional and commented with what it's
+for. Never commit the filled-in file; `.env`, `.env.mac`, and `.env.jetson`
+are all gitignored.
+
+---
+
+## Quick Start (chat app, Mac)
+
+```bash
+pip install -r requirements.txt
+cp .env.example .env.mac        # then fill in GEMINI_API_KEY + TAVILY_API_KEY
+streamlit run chat_app.py       # or: python main.py for a CLI chat
+```
+
+Requires a vectorized corpus already present under `Vectors/lance` (see
+`workflows/vectorize_lance.py`) — this repo's own corpus isn't bundled.
 
 ---
 
 ## Update History
 
+- 07/10/2026 — Chat agent system: multi-persona router (technical docs, PLC expert, analytics + charting, direct reply), token streaming, real-code-computed charts, LangSmith tracing throughout. Found and fixed a real fact-recall regression via trace triage (0.693 → 0.833). Added `tools/resilient_batch.py` (subprocess-based defensive batch execution) and a formal `llm_client.BaseLLMClient` interface. Full NB3/NB4 re-run against the current corpus, versioned in `notebooks/eval_snapshots.json`.
 - 05/20/2026 — v2 complete: sentence-aware chunking, quality gates, hybrid retrieval + reranker, 31-query labeled test set, NB4 answer evaluation framework
 - 03/03/2026 — Initial prototype: multi-agent system for retrieval and routing
 - 02/16/2026 — Initial data infrastructure: ETL pipeline, relational DB, vector DB

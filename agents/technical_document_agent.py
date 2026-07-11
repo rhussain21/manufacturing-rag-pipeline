@@ -18,6 +18,7 @@ from langsmith import traceable
 from agents.state import AgentState
 from agents.conversation_context import format_recent_history
 from agents.structured_answer import JSON_INSTRUCTION, parse_structured_answer
+from agents.streaming import stream_llm_answer
 from retrieval import retrieve
 
 # Without this, a meta-question ("what did I just ask", "what have we
@@ -73,9 +74,22 @@ SYSTEM_PROMPT_GROUNDED = (
     "manufacturing systems (PLCs, SCADA, safety standards, industrial networking, "
     "robotics)."
     + _INVENTORY_INSTRUCTION +
-    " Answer the user's question using ONLY the provided context passages. "
-    "If the context doesn't contain enough information to answer confidently, say so "
-    "explicitly rather than guessing. Mention which document(s) the answer draws from."
+    " Answer the user's question primarily from the provided context passages, and "
+    "mention which document(s) the answer draws from. The retrieved passages cleared "
+    "a similarity threshold, but that doesn't guarantee they fully cover the question "
+    "— a comparison question can retrieve strong context for one side and nothing for "
+    "the other; a specific question can retrieve only related-but-incomplete material. "
+    "Real, confirmed bug this fixes: asked to compare Modbus and OPC UA, retrieval "
+    "surfaced only OPC UA context, and the model refused to discuss Modbus at all — a "
+    "widely-known industrial protocol it plainly knows — instead of answering the part "
+    "the corpus covers and supplementing the rest. So: for whatever part of the "
+    "question the context actually covers, answer from it and cite the document(s). "
+    "For any part it doesn't cover, answer from your own general knowledge if it's a "
+    "real, well-established fact you're confident of (an industry-standard protocol, "
+    "a physical law, a widely-documented concept) — just say plainly which parts came "
+    "from the corpus and which are your own general knowledge, don't blend them "
+    "silently. Only say you don't know a part if you genuinely don't — general "
+    "knowledge that fills a real gap in retrieval is not guessing."
     + JSON_INSTRUCTION + _HISTORY_INSTRUCTION
 )
 
@@ -115,7 +129,12 @@ def _format_inventory(inv: dict) -> str:
 def make_technical_document_agent_nodes(vdb, llm_client, web_search_tool, db, top_k: int = 5):
     @traceable(name="retrieve_step")
     def retrieve_step(state: AgentState) -> dict:
-        docs = retrieve(state["query"], vdb, llm_client, top_k=top_k)
+        # resolved_query (agents/router.py), not the raw query — a follow-up
+        # like "so answer it then" has no retrievable content of its own;
+        # the router already resolved it into the real standalone question
+        # using conversation history. Falls back to query for direct calls
+        # (e.g. tests) that don't go through the router first.
+        docs = retrieve(state.get("resolved_query") or state["query"], vdb, llm_client, top_k=top_k)
         return {"retrieved_docs": docs}
 
     def route_after_retrieve(state: AgentState) -> str:
@@ -123,7 +142,7 @@ def make_technical_document_agent_nodes(vdb, llm_client, web_search_tool, db, to
 
     @traceable(name="web_search_step")
     def web_search_step(state: AgentState) -> dict:
-        result = web_search_tool.search(state["query"], max_results=5)
+        result = web_search_tool.search(state.get("resolved_query") or state["query"], max_results=5)
         return {"web_results": result.get("results", [])}
 
     @traceable(name="generate_step")
@@ -157,12 +176,14 @@ def make_technical_document_agent_nodes(vdb, llm_client, web_search_tool, db, to
 
         inventory_text = _format_inventory(db.get_corpus_inventory())
         history_text = format_recent_history(state.get("history"))
+        # resolved_query here too — the model should answer the real
+        # standalone question, not "so answer it then" verbatim.
         prompt = (
             f"RECENT CONVERSATION:\n{history_text}\n\n"
             f"CORPUS INVENTORY:\n{inventory_text}\n\n"
-            f"Context:\n{context}\n\nQuestion: {state['query']}"
+            f"Context:\n{context}\n\nQuestion: {state.get('resolved_query') or state['query']}"
         )
-        raw = llm_client.generate(prompt, system_prompt=system_prompt, temperature=0.2)
+        raw = stream_llm_answer(llm_client, prompt, system_prompt=system_prompt, temperature=0.2)
         answer, used_context = parse_structured_answer(raw)
         final_sources = sources if used_context else []
         return {

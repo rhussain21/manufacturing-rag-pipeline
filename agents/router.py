@@ -3,8 +3,9 @@ Router — decides which persona(s) handle a query: Technical Document Agent
 (general manufacturing/industry questions, grounded in the document corpus),
 PLC Expert (questions about specific PLC/Structured Text code in the
 plc_simulation corpus, including best-practices/guideline checks),
-Diagnosis Agent (questions about the synthetic energy/production telemetry
-data), or Direct Reply (agents/direct_reply.py — greetings, small talk,
+Analytics Agent (questions about the synthetic energy/production telemetry
+data, including real-code-computed charts), or Direct Reply
+(agents/direct_reply.py — greetings, small talk,
 meta-questions about the conversation, or real questions with no
 connection to any of the above; skips retrieval/tools entirely).
 
@@ -37,29 +38,57 @@ Sees recent conversation history (from the checkpointer), not just the bare
 current-turn query — a follow-up like "does that follow best practices
 too?" has no PLC-specific words in it at all, and would misroute without
 knowing the previous exchange was about a specific PLC file.
+
+Also resolves the current turn into a standalone query (`resolved_query`),
+in this same LLM call rather than a separate one. Real, confirmed bug this
+fixes: retrieval (agents/technical_document_agent.py's retrieve_step) reads
+state["query"] and only ever saw the literal current-turn text — for a
+follow-up like "so answer it then" or "yes that's what I meant", that
+literal text carries no retrievable content at all, so retrieval ran
+against "so answer it then" instead of whatever the actual question was,
+and came back empty even though the corpus had the answer. Bundled into
+the router's existing call (not a new one) because the router already
+makes one LLM call every turn regardless — same reasoning as everything
+else in this file.
 """
 
 from langsmith import traceable
 
 from agents.conversation_context import format_recent_history
 
-_PERSONAS = ("technical_document_agent", "plc_expert", "diagnosis_agent")
+_PERSONAS = ("technical_document_agent", "plc_expert", "analytics_agent")
 _DIRECT_REPLY = "direct_reply"
 
 ROUTER_SYSTEM_PROMPT = (
-    "You route a user's question to one or more of three domain specialists, "
-    "OR, when none of them actually apply, to direct_reply alone. Use the "
-    "recent conversation history for context when the current question "
-    "alone is ambiguous (e.g. a follow-up like \"does that follow best "
-    "practices too?\" with no topic words of its own — check what the prior "
-    "exchange was actually about). Respond with ONLY the relevant name(s), "
-    "comma-separated if more than one: \"technical_document_agent\", "
-    "\"plc_expert\", \"diagnosis_agent\", \"direct_reply\". No punctuation "
-    "beyond the commas, no explanation.\n\n"
+    "You do two things with the current question, using recent conversation "
+    "history for context when the question alone is ambiguous:\n\n"
+    "1. Resolve it into a standalone query. If it depends on prior turns to "
+    "mean anything — a confirmation (\"yes that's what I meant\"), a "
+    "correction (\"no I meant 21 CFR part 11\"), a continuation (\"so answer "
+    "it then\"), or a pronoun/reference (\"does that follow best practices "
+    "too?\") — rewrite it as the real, self-contained question being asked, "
+    "using the topic from recent history. If it's already standalone (or is "
+    "a greeting/small talk/meta-question with nothing to resolve), repeat it "
+    "unchanged. This resolved form is what actually gets searched against "
+    "the document corpus, so it must contain the real subject matter, not "
+    "just the surface words of the current turn.\n\n"
+    "2. Route it to one or more of three domain specialists, OR, when none "
+    "of them actually apply, to direct_reply alone. A confirmation or "
+    "correction of a previous domain question (\"yes that's what I meant\", "
+    "\"so answer it then\", \"no I meant X\") ALWAYS routes to whichever "
+    "specialist handled that previous question, never to direct_reply — "
+    "direct_reply cannot search the corpus or continue the answer, so "
+    "routing a confirmation there silently drops the question.\n\n"
+    "Respond in exactly this two-line format, no other text:\n"
+    "QUERY: <the resolved standalone question>\n"
+    "ROUTE: <name(s), comma-separated if more than one>\n\n"
+    "Valid names for ROUTE: \"technical_document_agent\", \"plc_expert\", "
+    "\"analytics_agent\", \"direct_reply\". No punctuation beyond the commas, "
+    "no explanation.\n\n"
     "Name more than one specialist ONLY when the question genuinely has "
     "multiple distinct parts that each belong to a different specialist "
     "(e.g. \"how many PLC programs do I have, and what's my current power "
-    "usage\" needs both plc_expert and diagnosis_agent — neither one alone "
+    "usage\" needs both plc_expert and analytics_agent — neither one alone "
     "covers the whole question). Don't split a question that's really just "
     "one topic phrased with multiple words — that's still exactly one "
     "specialist. direct_reply never combines with anything else — if any "
@@ -83,13 +112,14 @@ ROUTER_SYSTEM_PROMPT = (
     "grounded in actual code examples (e.g. \"what does FB_EL3423 do\", "
     "\"summarize the PLC code we have\", \"does this follow best "
     "practices\").\n\n"
-    "diagnosis_agent: questions about the synthetic energy/production "
+    "analytics_agent: questions about the synthetic energy/production "
     "telemetry data — battery storage, grid power, production/consumption, "
     "anomalies at specific sites (Willowbrook, Meridian, Northgate), or "
     "anomaly types (battery_capacity_fade, sensor_dropout, demand_spike, "
     "grid_instability, production_underperformance) (e.g. \"what happened at "
     "Willowbrook\", \"what does grid instability look like in the data\", "
-    "\"how many anomalies are there\").\n\n"
+    "\"how many anomalies are there\", \"compare production across sites\", "
+    "\"chart battery state of charge over time\").\n\n"
     "direct_reply: greetings and small talk (\"hi\", \"sup\", \"thanks\"); "
     "meta-questions about the conversation itself (\"what did I just ask\", "
     "\"what have we covered\", \"what was the first question\") — these "
@@ -105,8 +135,8 @@ ROUTER_SYSTEM_PROMPT = (
 )
 
 
-def _parse_personas(raw: str) -> list:
-    decision = raw.strip().lower()
+def _parse_personas(route_line: str) -> list:
+    decision = route_line.strip().lower()
     found = [p for p in (*_PERSONAS, _DIRECT_REPLY) if p in decision]
     if not found:
         return ["technical_document_agent"]
@@ -117,6 +147,25 @@ def _parse_personas(raw: str) -> list:
     return real or [_DIRECT_REPLY]
 
 
+def _parse_router_output(raw: str, fallback_query: str) -> tuple:
+    """Splits the router's two-line QUERY:/ROUTE: response. Falls back to
+    the raw current-turn query and a whole-response persona scan if the
+    model didn't follow the format — same tolerance-for-drift approach
+    _parse_personas already took before this, since matching exact LLM
+    output formatting isn't worth a hard failure over."""
+    query_line, route_line = None, None
+    for line in raw.splitlines():
+        stripped = line.strip()
+        if query_line is None and stripped.lower().startswith("query:"):
+            query_line = stripped[len("query:"):].strip()
+        elif route_line is None and stripped.lower().startswith("route:"):
+            route_line = stripped[len("route:"):].strip()
+
+    resolved_query = query_line or fallback_query
+    personas = _parse_personas(route_line if route_line is not None else raw)
+    return resolved_query, personas
+
+
 def make_router_node(llm_client):
     @traceable(name="router")
     def router_node(state) -> dict:
@@ -124,7 +173,8 @@ def make_router_node(llm_client):
         prompt = f"Recent conversation:\n{history_text}\n\nCurrent question: {state['query']}"
 
         raw = llm_client.generate(prompt, system_prompt=ROUTER_SYSTEM_PROMPT, temperature=0.0)
-        return {"routed_personas": _parse_personas(raw)}
+        resolved_query, personas = _parse_router_output(raw, state["query"])
+        return {"routed_personas": personas, "resolved_query": resolved_query}
 
     return router_node
 

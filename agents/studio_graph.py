@@ -17,7 +17,8 @@ from llm_client import GeminiClient
 from tools.web_search import InternetSearchTool
 from agents.graph import build_graph
 
-_db = relationalDB(config.DB_PATH)
+# DB_PATH_ANALYTICS, not DB_PATH — see chat_app.py's load_graph for why.
+_db = relationalDB(config.DB_PATH_ANALYTICS)
 _vdb = LanceVectorDB(
     config.LANCE_VECTOR_PATH,
     embedding_dim=768,
