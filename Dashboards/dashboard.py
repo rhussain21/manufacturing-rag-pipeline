@@ -99,6 +99,17 @@ st.markdown(f"""<style>
         --gdg-accent-light: #d4edda;
     }}
 
+    /* ── Pin the root font-size ──────────────────────────────────────────
+       Every font-size in this file is in rem, which resolves against the
+       <html> element's font-size. Streamlit sets that base (default 16px)
+       and has CHANGED it across releases — and Streamlit Cloud can install
+       a different version than local dev, so the deployed app rendered
+       every rem-scaled element proportionally larger than local ("zoomed
+       in"). Pinning html to 16px (Streamlit's own default, so no change
+       locally) makes the whole rem-based layout render identically
+       regardless of which version the host installs. */
+    html {{ font-size: 16px !important; }}
+
     /* ── Global: black text everywhere ── */
     *, *::before, *::after {{ color: {TXT_DARK} !important; }}
 
@@ -150,12 +161,22 @@ st.markdown(f"""<style>
         border: none;
         margin-top: 0 !important;
     }}
-    .stTabs [data-baseweb="tab-list"] {{
+    /* Both selectors, because the DOM attribute Streamlit puts on the tab
+       list ([data-baseweb="tab-list"]) has varied across versions, while
+       the ARIA [role="tablist"] is stable — the deployed version wasn't
+       matching the baseweb-only selector, so the tabs fell back to
+       left-aligned. width:100% is the actual centering fix: justify-content
+       only centers when the flex container spans the full width to have
+       room to center within (local's version defaulted to full width, the
+       deployed one didn't). */
+    .stTabs [data-baseweb="tab-list"],
+    .stTabs [role="tablist"] {{
         background: {INNER_BG} !important;
         border-radius: 0;
         padding: 0;
         border-bottom: 2px solid {BDR};
         justify-content: center !important;
+        width: 100% !important;
         gap: 0;
     }}
     .stTabs [data-baseweb="tab"] {{
@@ -1806,7 +1827,10 @@ def main():
     with tabs[4]: tab_reliability_demo(data)
 
     if exported_at:
-        st.caption(f"Data snapshot: {exported_at[:19]}")
+        # streamlit version appended temporarily to confirm the deployed
+        # host's version vs local (the rem-scaling / tab-alignment
+        # differences trace to a version mismatch between the two).
+        st.caption(f"Data snapshot: {exported_at[:19]}  ·  st {st.__version__}")
 
 
 if __name__ == '__main__':
