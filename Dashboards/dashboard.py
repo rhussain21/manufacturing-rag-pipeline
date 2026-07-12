@@ -179,11 +179,17 @@ st.markdown(f"""<style>
         width: 100% !important;
         gap: 0;
     }}
-    .stTabs [data-baseweb="tab"] {{
+    /* [role="tab"] alongside [data-baseweb="tab"] for the same reason as
+       the tab-list above: the deployed Streamlit's individual tabs weren't
+       matching the baseweb selector, so they lost their padding and ran
+       together ("Pipeline OverviewDataset Quality..." with no gap). The
+       ARIA role is stable across versions. */
+    .stTabs [data-baseweb="tab"],
+    .stTabs [role="tab"] {{
         color: {TXT_DARK} !important;
         font-weight: 600;
         border-radius: 0;
-        padding: 10px 18px;
+        padding: 10px 18px !important;
         font-size: 1.02rem;
         border-bottom: 3px solid transparent;
         background: transparent !important;
@@ -194,8 +200,10 @@ st.markdown(f"""<style>
         border-bottom: 3px solid {GRN} !important;
         font-weight: 700 !important;
     }}
-    .stTabs [data-baseweb="tab"]:hover {{ color: {GRN_LT} !important; }}
-    .stTabs [data-baseweb="tab-panel"] {{
+    .stTabs [data-baseweb="tab"]:hover,
+    .stTabs [role="tab"]:hover {{ color: {GRN_LT} !important; }}
+    .stTabs [data-baseweb="tab-panel"],
+    .stTabs [role="tabpanel"] {{
         background: {INNER_BG} !important;
         border-radius: 0;
         padding: 28px 52px 36px 52px !important;
@@ -398,12 +406,15 @@ st.markdown(f"""<style>
         .dash-hero-text {{ white-space: normal !important; font-size: 0.74rem !important; }}
         .dash-hero-note {{ font-size: 0.66rem !important; }}
 
-        .stTabs [data-baseweb="tab-list"] {{ gap: 0 !important; }}
-        .stTabs [data-baseweb="tab"] {{
+        .stTabs [data-baseweb="tab-list"],
+        .stTabs [role="tablist"] {{ gap: 0 !important; }}
+        .stTabs [data-baseweb="tab"],
+        .stTabs [role="tab"] {{
             padding: 8px 8px !important;
             font-size: 0.76rem !important;
         }}
-        .stTabs [data-baseweb="tab-panel"] {{ padding: 16px 12px 24px 12px !important; }}
+        .stTabs [data-baseweb="tab-panel"],
+        .stTabs [role="tabpanel"] {{ padding: 16px 12px 24px 12px !important; }}
 
         .tab-explainer {{ padding: 12px 14px !important; gap: 10px !important; }}
         .tab-explainer-text {{ font-size: 0.78rem !important; }}
